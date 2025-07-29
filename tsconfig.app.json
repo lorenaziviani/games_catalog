@@ -6,34 +6,29 @@
     "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "module": "ESNext",
     "skipLibCheck": true,
-
-    /* Bundler mode */
-    "moduleResolution": "bundler",
+    "moduleResolution": "node",
     "allowImportingTsExtensions": true,
     "verbatimModuleSyntax": true,
     "moduleDetection": "force",
     "noEmit": true,
     "jsx": "react-jsx",
-
-    /* Linting */
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "erasableSyntaxOnly": true,
     "noFallthroughCasesInSwitch": true,
-    "noUncheckedSideEffectImports": true
+    "noUncheckedSideEffectImports": true,
+    "baseUrl": "./",
+    "paths": {
+      "@/*": ["src/*"],
+      "@assets/*": ["src/assets/*"],
+      "@components/*": ["src/components/*"],
+      "@pages/*": ["src/pages/*"],
+      "@styles/*": ["src/styles/*"],
+      "@utils/*": ["src/utils/*"],
+      "@hooks/*": ["src/hooks/*"],
+      "@contexts/*": ["src/contexts/*"],
+      "@services/*": ["src/services/*"]
+    }
   },
-  "include": ["src"],
-  "baseUrl": ".",
-  "paths": {
-    "@/*": ["src/*"],
-    "@assets/*": ["src/assets/*"],
-    "@components/*": ["src/components/*"],
-    "@pages/*": ["src/pages/*"],
-    "@styles/*": ["src/styles/*"],
-    "@utils/*": ["src/utils/*"],
-    "@hooks/*": ["src/hooks/*"],
-    "@contexts/*": ["src/contexts/*"],
-    "@services/*": ["src/services/*"]
-  }
+  "include": ["src"]
 }
