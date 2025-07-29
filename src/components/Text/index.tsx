@@ -1,19 +1,20 @@
+import { ElementType, TextVariant } from '@/types/common'
 import type { FontSizeType } from '@styles/fontSize'
 import * as S from './styles'
 
 type TextProps = {
   children: string
-  as?: 'p' | 'span' | 'h2' | 'h3'
-  $variant?: 'primary' | 'secondary'
+  as?: ElementType
+  $variant?: TextVariant
 } & FontSizeType
 
 export const Text = ({
   children,
-  as = 'p',
+  as = ElementType.P,
   $lgFontSize,
   $mdFontSize,
   $smFontSize,
-  $variant = 'primary'
+  $variant = TextVariant.PRIMARY
 }: TextProps) => {
   return (
     <S.TextContent

@@ -1,6 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { BrowserRouter } from 'react-router-dom'
+import type { ReactNode } from 'react'
+import { MemoryRouter } from 'react-router-dom'
 import Header from './index'
+
+const HeaderWrapper = ({ children }: { children: ReactNode }) => {
+  return <MemoryRouter initialEntries={['/']}>{children}</MemoryRouter>
+}
 
 const meta: Meta<typeof Header> = {
   title: 'Components/Header',
@@ -10,9 +15,9 @@ const meta: Meta<typeof Header> = {
   },
   decorators: [
     Story => (
-      <BrowserRouter>
+      <HeaderWrapper>
         <Story />
-      </BrowserRouter>
+      </HeaderWrapper>
     )
   ]
 }
@@ -23,17 +28,13 @@ type Story = StoryObj<typeof Header>
 export const Default: Story = {}
 
 export const WithContent: Story = {
-  decorators: [
-    Story => (
-      <BrowserRouter>
-        <div style={{ minHeight: '100vh' }}>
-          <Story />
-          <div style={{ padding: '2rem', textAlign: 'center' }}>
-            <h2>Conteúdo da página</h2>
-            <p>Este é o conteúdo que aparece abaixo do header.</p>
-          </div>
-        </div>
-      </BrowserRouter>
-    )
-  ]
+  render: () => (
+    <div style={{ minHeight: '100vh' }}>
+      <Header />
+      <div style={{ padding: '2rem', textAlign: 'center' }}>
+        <h2>Conteúdo da página</h2>
+        <p>Este é o conteúdo que aparece abaixo do header.</p>
+      </div>
+    </div>
+  )
 }

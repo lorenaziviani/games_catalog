@@ -23,7 +23,8 @@ const config: StorybookConfig = {
       '@utils': '/src/utils',
       '@hooks': '/src/hooks',
       '@services': '/src/services',
-      '@config': '/src/config'
+      '@config': '/src/config',
+      '@types': '/src/types'
     }
     return config
   }

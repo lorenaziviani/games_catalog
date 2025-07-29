@@ -1,18 +1,20 @@
+import { TextVariant } from '@/types/common'
+import { mobile, tablet } from '@styles/breakpoint'
+import { fontSizeToRem, type FontSize } from '@styles/fontSize'
 import styled from 'styled-components'
-import { mobile, tablet } from '../../styles/breakpoint'
-import { fontSizeToRem, type FontSize } from '../../styles/fontSize'
+import { getTextColorByVariant } from '../../utils/themeUtils'
 
 type TextProps = {
   $lgFontSize?: FontSize
   $mdFontSize?: FontSize
   $smFontSize?: FontSize
-  $variant?: 'primary' | 'secondary'
+  $variant?: TextVariant
 }
 
 export const TextContent = styled.p<TextProps>`
   font-size: ${props => fontSizeToRem(props.$lgFontSize || 16)};
-  color: ${({ theme, $variant }) =>
-    $variant === 'primary' ? theme.primary : theme.secondary};
+  color: ${({ $variant, theme }) =>
+    $variant ? getTextColorByVariant($variant, theme) : theme.primary};
   ${tablet} {
     font-size: ${props =>
       fontSizeToRem(props.$mdFontSize || props.$lgFontSize || 16)};

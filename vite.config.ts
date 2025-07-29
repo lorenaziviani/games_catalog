@@ -40,7 +40,8 @@ export default defineConfig({
       '@utils': path.resolve(dirname, 'src/utils'),
       '@hooks': path.resolve(dirname, 'src/hooks'),
       '@contexts': path.resolve(dirname, 'src/contexts'),
-      '@services': path.resolve(dirname, 'src/services')
+      '@services': path.resolve(dirname, 'src/services'),
+      '@types': path.resolve(dirname, 'src/types')
     }
   },
   define: {
