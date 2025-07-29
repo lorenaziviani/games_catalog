@@ -21,7 +21,9 @@ const config: StorybookConfig = {
       '@pages': '/src/pages',
       '@styles': '/src/styles',
       '@utils': '/src/utils',
-      '@hooks': '/src/hooks'
+      '@hooks': '/src/hooks',
+      '@services': '/src/services',
+      '@config': '/src/config'
     }
     return config
   }

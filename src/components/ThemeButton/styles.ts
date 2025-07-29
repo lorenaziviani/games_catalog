@@ -18,7 +18,7 @@ export const Button = styled.button`
   position: absolute;
   top: 20px;
   right: 20px;
-  z-index: 1000;
+  z-index: 50;
   background-color: ${({ theme }) => theme.primary};
   color: ${({ theme }) => theme.secondary};
   &:hover {
