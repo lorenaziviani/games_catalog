@@ -1,23 +1,19 @@
 import { useState } from 'react'
-import './App.css'
+import { ThemeProvider } from 'styled-components'
+import ThemeButton from './components/ThemeButton'
+import { GlobalStyle } from './styles/global'
+import { DarkTheme, LightTheme } from './styles/theme'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [isDarkMode, setIsDarkMode] = useState(false)
 
   return (
     <>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount(count => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <ThemeProvider theme={isDarkMode ? DarkTheme : LightTheme}>
+        <GlobalStyle />
+        <ThemeButton onClick={() => setIsDarkMode(!isDarkMode)} />
+        <h1>Catálogo de Heróis</h1>
+      </ThemeProvider>
     </>
   )
 }
