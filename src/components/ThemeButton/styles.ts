@@ -1,4 +1,9 @@
+import { MainContainer } from '@styles/global'
 import styled from 'styled-components'
+
+export const Container = styled(MainContainer)`
+  position: relative;
+`
 
 export const Button = styled.button`
   display: flex;
@@ -10,10 +15,10 @@ export const Button = styled.button`
   border-radius: 50%;
   border: 2px solid ${({ theme }) => theme.secondary};
   cursor: pointer;
-  position: fixed;
+  position: absolute;
+  top: 20px;
+  right: 20px;
   z-index: 1000;
-  top: 1.5%;
-  right: 1.5%;
   background-color: ${({ theme }) => theme.primary};
   color: ${({ theme }) => theme.secondary};
   &:hover {
