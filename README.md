@@ -145,6 +145,12 @@ heroes_catalog/
 │   │   ├── Banner/         # Componente de banner com badge
 │   │   ├── Card/           # Card de jogo
 │   │   ├── FavoriteButton/ # Botão de favoritar
+│   │   ├── Filters/        # Sistema de filtros
+│   │   │   ├── DateRangeFilter/    # Filtro de data
+│   │   │   ├── MultiSelectFilter/  # Filtro de seleção múltipla
+│   │   │   ├── TextFilter/         # Filtro de texto
+│   │   │   ├── RangeSlider/        # Slider de range
+│   │   │   └── FilterSection/      # Seção de filtros
 │   │   ├── GameGrid/       # Grid de jogos
 │   │   ├── GamesList/      # Lista de jogos
 │   │   ├── Header/         # Cabeçalho
@@ -168,6 +174,8 @@ heroes_catalog/
 │   │   └── env.ts          # Variáveis de ambiente
 │   ├── hooks/              # Custom hooks
 │   │   ├── useFavorites.ts # Hook para favoritos
+│   │   ├── useGameData.ts  # Hook para dados de jogos
+│   │   ├── useFilters.ts   # Hook para filtros
 │   │   ├── useGames.ts     # Hook para jogos
 │   │   └── useSort.ts      # Hook para ordenação
 │   ├── pages/              # Páginas
@@ -194,6 +202,7 @@ heroes_catalog/
 │   │   └── theme.ts        # Temas
 │   ├── types/              # Tipos TypeScript
 │   │   ├── common.ts       # Tipos comuns (enums, constantes)
+│   │   ├── filter.ts       # Tipos de filtros
 │   │   ├── game.ts         # Tipos de jogo
 │   │   └── theme.d.ts      # Tipos de tema
 │   ├── utils/              # Utilitários
@@ -204,8 +213,9 @@ heroes_catalog/
 │   ├── App.tsx             # Componente principal
 │   └── main.tsx            # Entry point
 ├── docs/                   # Documentação
-│   └── favorite-flow.drawio.png # Diagrama do fluxo de favoritos
-│   └── architecture.drawio.png # Diagrama de arquitetura
+│   ├── architecture.drawio.png # Diagrama de arquitetura
+│   ├── favorite-flow.drawio.png # Diagrama do fluxo de favoritos
+│   └── filter-flow.md      # Fluxo do sistema de filtros
 ├── e2e/                    # Testes end-to-end
 ├── public/                 # Arquivos públicos
 └── tests-examples/         # Exemplos de testes
@@ -224,6 +234,78 @@ heroes_catalog/
 - **Ordenação**: Ordenação por nome, rating, data de lançamento
 - **Detalhes do Jogo**: Informações completas de cada jogo
 - **Responsividade**: Design adaptativo para diferentes telas
+
+#### **Sistema de Filtros Avançado**
+
+O sistema de filtros foi desenvolvido de forma centralizada, oferecendo uma experiência robusta e consistente de filtragem de jogos.
+
+##### **Funcionalidades Principais:**
+
+- **Filtros Múltiplos**: Gêneros, plataformas, lojas, tags
+- **Filtro de Data**: Range de datas de lançamento
+- **Filtro de Rating**: Range de avaliação Metacritic
+- **Filtro de Texto**: Busca por nome do jogo
+- **Persistência Local**: Filtros salvos automaticamente
+- **Reset de Filtros**: Limpeza fácil de todos os filtros
+- **Contadores Ativos**: Indicadores de filtros ativos
+- **Componentes Reutilizáveis**: Filtros modulares e testáveis
+
+##### **Componentes de Filtro:**
+
+- **DateRangeFilter**: Filtro de range de datas
+- **MultiSelectFilter**: Filtro de seleção múltipla
+- **TextFilter**: Filtro de texto
+- **RangeSlider**: Slider de range para ratings
+- **FilterSection**: Seção organizadora de filtros
+
+##### **Arquitetura do Sistema de Filtros:**
+
+![Diagrama do Fluxo de Filtros](./docs/filter-flow.drawio.png)
+
+O diagrama ilustra o fluxo completo do sistema de filtros, incluindo:
+
+1. **Inicialização**: Carregamento de dados e filtros salvos
+2. **Aplicação de Filtros**: Processamento de filtros ativos
+3. **Busca na API**: Construção de parâmetros de busca
+4. **Cache e Performance**: Otimização de requisições
+5. **Interface do Usuário**: Feedback visual e interação
+
+##### **Tecnologias Utilizadas:**
+
+- **React Query**: Cache inteligente e sincronização
+- **TypeScript Enums**: Tipos centralizados em `common.ts`
+- **Custom Hooks**: useFilters, useGameData, useGames
+- **Styled Components**: Design responsivo e tema dinâmico
+- **localStorage**: Persistência de filtros
+
+##### **Constantes Centralizadas:**
+
+```typescript
+// Filtros
+export const FILTER_FIELDS = {
+  GENRES: 'genres',
+  PLATFORMS: 'platforms',
+  STORES: 'stores',
+  TAGS: 'tags'
+} as const
+
+// Datas
+export const DATE_RANGE_DEFAULTS = {
+  START: '1960-01-01',
+  END: '2030-12-31'
+} as const
+
+// API
+export const API_QUERY_PARAMS = {
+  SEARCH: 'search',
+  GENRES: 'genres',
+  PLATFORMS: 'platforms',
+  STORES: 'stores',
+  TAGS: 'tags',
+  DATES: 'dates',
+  METACRITIC: 'metacritic'
+} as const
+```
 
 #### **Sistema de Favoritos Completo**
 
@@ -309,40 +391,6 @@ interface FavoritesState {
 - **Componentes Reutilizáveis** - Biblioteca de componentes
 
 ## 📋 TODO List - Funcionalidades Pendentes
-
-### **Filtros Avançados**
-
-- [ ] **Filtro por Plataforma**
-  - [ ] PlayStation, Xbox, Nintendo, PC
-  - [ ] Múltipla seleção
-  - [ ] Interface de filtro intuitiva
-- [ ] **Filtro por Gênero**
-  - [ ] Ação, Aventura, RPG, Estratégia, etc.
-  - [ ] Seleção múltipla
-  - [ ] Contador de jogos por gênero
-- [ ] **Filtro por Rating**
-  - [ ] Faixa de rating (1-5)
-  - [ ] Slider interativo
-  - [ ] Filtro por Metacritic Score
-- [ ] **Filtro por Data**
-  - [ ] Ano de lançamento
-  - [ ] Período personalizado
-  - [ ] Jogos recentes vs clássicos
-- [ ] **Filtros Combinados**
-  - [ ] Múltiplos filtros simultâneos
-  - [ ] Salvar filtros favoritos
-  - [ ] Reset de filtros
-
-### **Sistema de Favoritos**
-
-- [ ] **Página de Favoritos**
-  - [ ] Busca nos favoritos
-- [ ] **Persistência de Dados**
-  - [ ] Backup de favoritos
-- [ ] **Funcionalidades Avançadas**
-  - [ ] Categorização de favoritos
-  - [ ] Tags personalizadas
-  - [ ] Compartilhamento de favoritos
 
 ### **Visualização de Jogo**
 
@@ -457,7 +505,7 @@ interface FavoritesState {
 
 ```bash
 # Clone o repositório
-git clone https://github.com/seu-usuario/heroes-catalog.git
+git clone https://github.com/lorenaziviani/heroes-catalog.git
 cd heroes-catalog
 
 # Instale as dependências

@@ -11,9 +11,11 @@ import {
   selectIsLoading,
   toggleFavorite
 } from '@/store/favorites'
+import { FILTER_FIELDS } from '@/types/common'
 import type { Game } from '@/types/game'
 import { useCallback, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import type { GameItem } from '../types/filter'
 
 export const useFavorites = () => {
   const dispatch = useDispatch<AppDispatch>()
@@ -56,6 +58,20 @@ export const useFavorites = () => {
     return favorites.some(game => game.id === gameId)
   }
 
+  const filterDataFromFavorites = (favorites: Game[]) => {
+    const genres = extractUniqueItems(favorites, FILTER_FIELDS.GENRES)
+    const platforms = extractUniqueItems(favorites, FILTER_FIELDS.PLATFORMS)
+    const stores = extractUniqueItems(favorites, FILTER_FIELDS.STORES)
+    const tags = extractUniqueItems(favorites, FILTER_FIELDS.TAGS)
+
+    return {
+      genres,
+      platforms,
+      stores,
+      tags
+    }
+  }
+
   return {
     favorites,
     favoritesCount,
@@ -65,7 +81,8 @@ export const useFavorites = () => {
     removeFavorite,
     toggleFavoriteGame,
     clearAllFavorites,
-    isFavorite
+    isFavorite,
+    filterDataFromFavorites
   }
 }
 
@@ -117,4 +134,45 @@ export const useFavoritesStats = () => {
   }
 
   return stats
+}
+
+type ExtractableField = keyof typeof FIELD_CONFIGS
+
+const FIELD_CONFIGS = {
+  genres: (g: Game) =>
+    g.genres
+      ?.map(item => ({ value: item.id.toString(), label: item.name }))
+      .sort((a, b) => a.label.localeCompare(b.label)) || [],
+  tags: (g: Game) =>
+    g.tags
+      ?.map(item => ({ value: item.id.toString(), label: item.name }))
+      .sort((a, b) => a.label.localeCompare(b.label)) || [],
+  platforms: (g: Game) =>
+    g.platforms
+      ?.map(p => ({
+        value: p.platform.id.toString(),
+        label: p.platform.name
+      }))
+      .sort((a, b) => a.label.localeCompare(b.label)) || [],
+  stores: (g: Game) =>
+    g.stores
+      ?.map(s => ({
+        value: s.store.id.toString(),
+        label: s.store.name
+      }))
+      .sort((a, b) => a.label.localeCompare(b.label)) || []
+} satisfies Record<string, (game: Game) => GameItem[]>
+
+const extractUniqueItems = (
+  favorites: Game[],
+  field: ExtractableField
+): GameItem[] => {
+  const items = favorites.flatMap(FIELD_CONFIGS[field])
+  const uniqueMap = new Map<string, GameItem>()
+  for (const item of items) {
+    if (item && item.value && item.label) {
+      uniqueMap.set(item.value, item)
+    }
+  }
+  return Array.from(uniqueMap.values())
 }

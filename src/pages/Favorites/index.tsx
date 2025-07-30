@@ -1,30 +1,39 @@
 import { env } from '@/config/env'
-import { useFavorites } from '@/hooks/useFavorites'
 import { DEFAULT_SORT, ElementType, TextVariant } from '@/types/common'
 import { scrollToTop } from '@/utils/scrollUtils'
 import Banner from '@components/Banner'
+import Filters from '@components/Filters'
 import List from '@components/List'
 import Sort from '@components/Sort'
+import Stats from '@components/Stats'
 import Text from '@components/Text'
+import { useFavorites } from '@hooks/useFavorites'
+import { useFilters } from '@hooks/useFilters'
 import { useSort } from '@hooks/useSort'
 import { useMemo, useState } from 'react'
 import { FaHeart } from 'react-icons/fa'
-import { Stats } from '../../components'
 
 const FavoritesPage = () => {
-  const { favorites, isLoading, error, clearAllFavorites } = useFavorites()
+  const { favorites, filterDataFromFavorites, clearAllFavorites } =
+    useFavorites()
+
+  const { genres, platforms, stores, tags } = filterDataFromFavorites(favorites)
+
   const [currentPage, setCurrentPage] = useState(1)
+
+  const {
+    filters,
+    filteredGames,
+    updateFilter,
+    resetFilters,
+    hasActiveFilters,
+    activeFiltersCount
+  } = useFilters(favorites)
+
   const { sortedGames, currentSort, handleSortChange } = useSort(
-    favorites,
+    filteredGames,
     DEFAULT_SORT
   )
-
-  const handleClearAll = () => {
-    if (window.confirm('Tem certeza que deseja limpar todos os favoritos?')) {
-      clearAllFavorites()
-      setCurrentPage(1)
-    }
-  }
 
   const paginatedFavorites = useMemo(() => {
     const startIndex = (currentPage - 1) * env.DEFAULT_PAGE_SIZE
@@ -36,10 +45,24 @@ const FavoritesPage = () => {
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page)
-
     setTimeout(() => {
       scrollToTop()
     }, 0)
+  }
+
+  const handleClearAll = () => {
+    clearAllFavorites()
+    setCurrentPage(1)
+  }
+
+  const handleFilterChange = (type: any, value: any) => {
+    updateFilter(type, value)
+    setCurrentPage(1)
+  }
+
+  const handleResetFilters = () => {
+    resetFilters()
+    setCurrentPage(1)
   }
 
   return (
@@ -74,21 +97,33 @@ const FavoritesPage = () => {
         showClearButton={true}
       />
 
+      <Filters
+        filters={filters}
+        onUpdateFilter={handleFilterChange}
+        onResetFilters={handleResetFilters}
+        hasActiveFilters={hasActiveFilters}
+        activeFiltersCount={activeFiltersCount}
+        availableGenres={genres}
+        availablePlatforms={platforms}
+        availableStores={stores}
+        availableTags={tags}
+      />
+
       <Sort currentSort={currentSort} onSortChange={handleSortChange} />
 
       <List
         games={paginatedFavorites}
-        loading={isLoading}
-        error={error}
+        loading={false}
+        error={null}
         currentPage={currentPage}
         totalPages={totalPages}
-        searchTerm=""
-        onSearch={() => {}}
         onPageChange={handlePageChange}
-        showSearch={false}
         showPagination={true}
-        emptyMessage="Nenhum jogo favoritado ainda. Adicione jogos aos seus favoritos para vê-los aqui!"
-        loadingMessage="Carregando favoritos..."
+        emptyMessage={
+          hasActiveFilters
+            ? 'Nenhum jogo encontrado com os filtros aplicados.'
+            : 'Você ainda não tem jogos favoritos.'
+        }
       />
     </>
   )

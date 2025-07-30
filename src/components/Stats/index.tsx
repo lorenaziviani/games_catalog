@@ -1,5 +1,6 @@
 import type { Game } from '@/types/game'
 import { useMemo } from 'react'
+import { FaTrashCan } from 'react-icons/fa6'
 import { ElementType, TextVariant } from '../../types/common'
 import Text from '../Text'
 import * as S from './styles'
@@ -53,77 +54,81 @@ const Stats = ({ games, onClearAll, showClearButton = false }: StatsProps) => {
   }
 
   return (
-    <S.StatsContainer>
-      <S.StatItem>
-        <Text
-          as={ElementType.TITLE}
-          $variant={TextVariant.SECONDARY}
-          $lgFontSize={40}
-        >
-          {`${stats.totalGames}`}
-        </Text>
-        <Text
-          as={ElementType.P}
-          $variant={TextVariant.SECONDARY}
-          $lgFontSize={20}
-        >
-          Total de Jogos
-        </Text>
-      </S.StatItem>
-      <S.StatItem>
-        <Text
-          as={ElementType.TITLE}
-          $variant={TextVariant.SECONDARY}
-          $lgFontSize={40}
-        >
-          {`${stats.averageRating.toFixed(1)}`}
-        </Text>
-        <Text
-          as={ElementType.P}
-          $variant={TextVariant.SECONDARY}
-          $lgFontSize={20}
-        >
-          Avaliação Média
-        </Text>
-      </S.StatItem>
-      <S.StatItem>
-        <Text
-          as={ElementType.TITLE}
-          $variant={TextVariant.SECONDARY}
-          $lgFontSize={40}
-        >
-          {`${stats.uniqueGenres}`}
-        </Text>
-        <Text
-          as={ElementType.P}
-          $variant={TextVariant.SECONDARY}
-          $lgFontSize={20}
-        >
-          Gêneros
-        </Text>
-      </S.StatItem>
-      <S.StatItem>
-        <Text
-          as={ElementType.TITLE}
-          $variant={TextVariant.SECONDARY}
-          $lgFontSize={40}
-        >
-          {`${stats.uniquePlatforms}`}
-        </Text>
-        <Text
-          as={ElementType.P}
-          $variant={TextVariant.SECONDARY}
-          $lgFontSize={20}
-        >
-          Plataformas
-        </Text>
-      </S.StatItem>
-      {showClearButton && onClearAll && (
-        <S.ActionButton onClick={onClearAll} disabled={games.length === 0}>
-          Limpar Todos
-        </S.ActionButton>
-      )}
-    </S.StatsContainer>
+    <>
+      <S.StatsContainer>
+        <S.StatItem>
+          <Text
+            as={ElementType.TITLE}
+            $variant={TextVariant.SECONDARY}
+            $lgFontSize={40}
+          >
+            {`${stats.totalGames}`}
+          </Text>
+          <Text
+            as={ElementType.P}
+            $variant={TextVariant.SECONDARY}
+            $lgFontSize={20}
+          >
+            Total de Jogos
+          </Text>
+        </S.StatItem>
+        <S.StatItem>
+          <Text
+            as={ElementType.TITLE}
+            $variant={TextVariant.SECONDARY}
+            $lgFontSize={40}
+          >
+            {`${stats.averageRating.toFixed(1)}`}
+          </Text>
+          <Text
+            as={ElementType.P}
+            $variant={TextVariant.SECONDARY}
+            $lgFontSize={20}
+          >
+            Avaliação Média
+          </Text>
+        </S.StatItem>
+        <S.StatItem>
+          <Text
+            as={ElementType.TITLE}
+            $variant={TextVariant.SECONDARY}
+            $lgFontSize={40}
+          >
+            {`${stats.uniqueGenres}`}
+          </Text>
+          <Text
+            as={ElementType.P}
+            $variant={TextVariant.SECONDARY}
+            $lgFontSize={20}
+          >
+            Gêneros
+          </Text>
+        </S.StatItem>
+        <S.StatItem>
+          <Text
+            as={ElementType.TITLE}
+            $variant={TextVariant.SECONDARY}
+            $lgFontSize={40}
+          >
+            {`${stats.uniquePlatforms}`}
+          </Text>
+          <Text
+            as={ElementType.P}
+            $variant={TextVariant.SECONDARY}
+            $lgFontSize={20}
+          >
+            Plataformas
+          </Text>
+        </S.StatItem>
+      </S.StatsContainer>
+      <S.ActionContainer>
+        {showClearButton && onClearAll && (
+          <S.ActionButton onClick={onClearAll} disabled={games.length === 0}>
+            <FaTrashCan /> Remover meus favoritos
+          </S.ActionButton>
+        )}
+      </S.ActionContainer>
+    </>
   )
 }
 

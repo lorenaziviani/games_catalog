@@ -8,7 +8,6 @@ import {
 import type { Game } from '@/types/game'
 import LoadingSpinner from '@components/LoadingSpinner'
 import Pagination from '@components/Pagination'
-import SearchBar from '@components/SearchBar'
 import Text from '../Text'
 import * as S from './styles'
 
@@ -18,10 +17,7 @@ type ListProps = {
   error: string | null
   currentPage: number
   totalPages: number
-  searchTerm: string
-  onSearch: (value: string) => void
   onPageChange: (page: number) => void
-  showSearch?: boolean
   showPagination?: boolean
   emptyMessage?: string
   loadingMessage?: string
@@ -33,10 +29,7 @@ const List = ({
   error,
   currentPage,
   totalPages,
-  searchTerm,
-  onSearch,
   onPageChange,
-  showSearch = true,
   showPagination = true,
   emptyMessage = 'Nenhum jogo encontrado.',
   loadingMessage = LoadingMessage.GAMES
@@ -52,14 +45,6 @@ const List = ({
 
   return (
     <S.Container>
-      {showSearch && (
-        <SearchBar
-          value={searchTerm}
-          onChange={onSearch}
-          placeholder="Buscar jogos..."
-        />
-      )}
-
       {error && (
         <S.ErrorMessage>
           <Text

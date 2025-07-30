@@ -17,10 +17,6 @@ export const getThemeColor = (
   return isDarkMode(theme) ? darkColor : lightColor
 }
 
-export const getTextColorByTheme = (theme: DefaultTheme): string => {
-  return isDarkMode(theme) ? theme.secondary : theme.primary
-}
-
 export const getTextColorByVariant = (
   variant: TextVariant,
   theme: DefaultTheme
@@ -43,6 +39,24 @@ export const getTextColorByVariant = (
   }
 }
 
-export const getBackgroundColor = (theme: DefaultTheme): string => {
+export const getDarkPrimaryLightSecondary = (theme: DefaultTheme): string => {
   return isDarkMode(theme) ? theme.primary : theme.secondary
+}
+
+export const getDarkSecondaryLightQuaternary = (
+  theme: DefaultTheme
+): string => {
+  return isDarkMode(theme) ? theme.secondary : theme.quaternary
+}
+
+export const getDarkQuaternaryLightPrimary = (theme: DefaultTheme): string => {
+  return isDarkMode(theme) ? theme.quaternary : theme.primary
+}
+
+export const getDarkSecondaryLightPrimary = (theme: DefaultTheme): string => {
+  return isDarkMode(theme) ? theme.secondary : theme.primary
+}
+
+export const getDarkTertiaryLightQuaternary = (theme: DefaultTheme): string => {
+  return isDarkMode(theme) ? theme.tertiary : theme.quaternary
 }

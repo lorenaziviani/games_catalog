@@ -5,176 +5,131 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import React from 'react'
 import { Provider } from 'react-redux'
 
-const mockGames: Game[] = [
-  {
-    id: 1,
-    name: 'The Witcher 3: Wild Hunt',
-    slug: 'the-witcher-3-wild-hunt',
-    background_image: 'https://placehold.co/600x400',
-    rating: 4.8,
-    rating_top: 5,
-    metacritic: 93,
-    playtime: 120,
-    released: '2015-05-19',
-    updated: '2023-12-14T10:00:00Z',
-    platforms: [
-      {
-        platform: {
-          id: 4,
-          name: 'PC',
-          slug: 'pc'
-        },
-        requirements: {}
-      },
-      {
-        platform: {
-          id: 187,
-          name: 'PlayStation 4',
-          slug: 'playstation4'
-        },
-        requirements: {}
-      }
-    ],
-    genres: [
-      { id: 5, name: 'RPG', slug: 'role-playing-games-rpg' },
-      { id: 3, name: 'Adventure', slug: 'adventure' }
-    ],
-    publishers: [{ id: 1, name: 'CD Projekt', slug: 'cd-projekt' }],
-    developers: [{ id: 1, name: 'CD Projekt Red', slug: 'cd-projekt-red' }],
-    tags: [
-      { id: 1, name: 'Open World', slug: 'open-world' },
-      { id: 2, name: 'Story Rich', slug: 'story-rich' }
-    ],
-    esrb_rating: { id: 4, name: 'Mature', slug: 'mature' },
-    short_screenshots: []
+const mockGame: Game = {
+  id: 1,
+  name: 'The Legend of Zelda: Breath of the Wild',
+  slug: 'the-legend-of-zelda-breath-of-the-wild',
+  background_image:
+    'https://media.rawg.io/media/games/7cf/7cfc9220b401b7a300e409e539c9b5e8.jpg',
+  rating: 4.5,
+  rating_top: 5,
+  metacritic: 97,
+  playtime: 120,
+  released: '2017-03-03',
+  updated: '2023-01-01T00:00:00',
+  tba: false,
+  added: 1500,
+  added_by_status: {
+    yet: 50,
+    owned: 1000,
+    beaten: 300,
+    toplay: 100,
+    dropped: 30,
+    playing: 20
   },
-  {
-    id: 2,
-    name: 'Red Dead Redemption 2',
-    slug: 'red-dead-redemption-2',
-    background_image: 'https://placehold.co/600x400',
-    rating: 4.7,
-    rating_top: 5,
-    metacritic: 96,
-    playtime: 80,
-    released: '2018-10-26',
-    updated: '2023-12-14T10:00:00Z',
-    platforms: [
-      {
-        platform: {
-          id: 4,
-          name: 'PC',
-          slug: 'pc'
-        },
-        requirements: {}
+  ratings: [
+    {
+      id: 5,
+      title: 'exceptional',
+      count: 100,
+      percent: 80.0
+    },
+    {
+      id: 4,
+      title: 'recommended',
+      count: 20,
+      percent: 16.0
+    },
+    {
+      id: 3,
+      title: 'meh',
+      count: 5,
+      percent: 4.0
+    }
+  ],
+  ratings_count: 125,
+  reviews_text_count: 10,
+  suggestions_count: 50,
+  user_game: null,
+  reviews_count: 15,
+  saturated_color: '0f0f0f',
+  dominant_color: '0f0f0f',
+  platforms: [
+    {
+      platform: {
+        id: 4,
+        name: 'PC',
+        slug: 'pc',
+        image: null,
+        year_end: null,
+        year_start: null,
+        games_count: 552949,
+        image_background:
+          'https://media.rawg.io/media/games/021/021c4e21a1824d2526f925eff6324653.jpg'
       },
-      {
-        platform: {
-          id: 187,
-          name: 'PlayStation 4',
-          slug: 'playstation4'
-        },
-        requirements: {}
-      }
-    ],
-    genres: [
-      { id: 3, name: 'Adventure', slug: 'adventure' },
-      { id: 5, name: 'RPG', slug: 'role-playing-games-rpg' }
-    ],
-    publishers: [{ id: 2, name: 'Rockstar Games', slug: 'rockstar-games' }],
-    developers: [{ id: 2, name: 'Rockstar Games', slug: 'rockstar-games' }],
-    tags: [
-      { id: 3, name: 'Western', slug: 'western' },
-      { id: 4, name: 'Open World', slug: 'open-world' }
-    ],
-    esrb_rating: { id: 4, name: 'Mature', slug: 'mature' },
-    short_screenshots: []
-  },
-  {
-    id: 3,
-    name: 'Cyberpunk 2077',
-    slug: 'cyberpunk-2077',
-    background_image: 'https://placehold.co/600x400',
-    rating: 4.2,
-    rating_top: 5,
-    metacritic: 75,
-    playtime: 60,
-    released: '2020-12-10',
-    updated: '2023-12-14T10:00:00Z',
-    platforms: [
-      {
-        platform: {
-          id: 4,
-          name: 'PC',
-          slug: 'pc'
-        },
-        requirements: {}
+      released_at: '2020-12-10',
+      requirements_en: {
+        minimum: 'Windows 10',
+        recommended: 'Windows 10, 16GB RAM'
       },
-      {
-        platform: {
-          id: 187,
-          name: 'PlayStation 4',
-          slug: 'playstation4'
-        },
-        requirements: {}
+      requirements_ru: null
+    }
+  ],
+  genres: [
+    {
+      id: 1,
+      name: 'Action',
+      slug: 'action',
+      games_count: 100,
+      image_background:
+        'https://media.rawg.io/media/games/1f4/1f47a270b8f241e4676b14d39ec620f7.jpg'
+    },
+    {
+      id: 2,
+      name: 'Adventure',
+      slug: 'adventure',
+      games_count: 200,
+      image_background:
+        'https://media.rawg.io/media/games/b6b/b6b20bfc4b34e312dbc8aac53c95a348.jpg'
+    }
+  ],
+  tags: [
+    {
+      id: 1,
+      name: 'Open World',
+      slug: 'open-world',
+      language: 'eng',
+      games_count: 150,
+      image_background:
+        'https://media.rawg.io/media/games/1f4/1f47a270b8f241e4676b14d39ec620f7.jpg'
+    },
+    {
+      id: 2,
+      name: 'Exploration',
+      slug: 'exploration',
+      language: 'eng',
+      games_count: 120,
+      image_background:
+        'https://media.rawg.io/media/games/b6b/b6b20bfc4b34e312dbc8aac53c95a348.jpg'
+    }
+  ],
+  short_screenshots: [],
+  stores: [
+    {
+      id: 1,
+      store: {
+        id: 1,
+        name: 'Steam',
+        slug: 'steam',
+        domain: 'store.steampowered.com',
+        games_count: 115878,
+        image_background:
+          'https://media.rawg.io/media/games/fc1/fc1307a2774506b5bd65d7e8424664a7.jpg'
       }
-    ],
-    genres: [
-      { id: 5, name: 'RPG', slug: 'role-playing-games-rpg' },
-      { id: 3, name: 'Adventure', slug: 'adventure' }
-    ],
-    publishers: [{ id: 1, name: 'CD Projekt', slug: 'cd-projekt' }],
-    developers: [{ id: 1, name: 'CD Projekt Red', slug: 'cd-projekt-red' }],
-    tags: [
-      { id: 5, name: 'Cyberpunk', slug: 'cyberpunk' },
-      { id: 6, name: 'Open World', slug: 'open-world' }
-    ],
-    esrb_rating: { id: 4, name: 'Mature', slug: 'mature' },
-    short_screenshots: []
-  },
-  {
-    id: 4,
-    name: 'Elden Ring',
-    slug: 'elden-ring',
-    background_image: 'https://placehold.co/600x400',
-    rating: 4.9,
-    rating_top: 5,
-    metacritic: 96,
-    playtime: 150,
-    released: '2022-02-25',
-    updated: '2023-12-14T10:00:00Z',
-    platforms: [
-      {
-        platform: {
-          id: 4,
-          name: 'PC',
-          slug: 'pc'
-        },
-        requirements: {}
-      },
-      {
-        platform: {
-          id: 187,
-          name: 'PlayStation 4',
-          slug: 'playstation4'
-        },
-        requirements: {}
-      }
-    ],
-    genres: [
-      { id: 5, name: 'RPG', slug: 'role-playing-games-rpg' },
-      { id: 3, name: 'Adventure', slug: 'adventure' }
-    ],
-    publishers: [{ id: 3, name: 'Bandai Namco', slug: 'bandai-namco' }],
-    developers: [{ id: 3, name: 'FromSoftware', slug: 'fromsoftware' }],
-    tags: [
-      { id: 7, name: 'Souls-like', slug: 'souls-like' },
-      { id: 8, name: 'Open World', slug: 'open-world' }
-    ],
-    esrb_rating: { id: 4, name: 'Mature', slug: 'mature' },
-    short_screenshots: []
-  }
-]
+    }
+  ],
+  clip: null
+}
 
 // Interface para o wrapper
 interface GridCardWrapperProps {
@@ -246,8 +201,8 @@ const GridCardWithFavorites = ({
 export const Default: Story = {
   render: args => <GridCardWithFavorites {...args} />,
   args: {
-    games: mockGames,
-    initialFavorites: [mockGames[0], mockGames[2]], // The Witcher 3 e Cyberpunk 2077
+    games: [mockGame], // Apenas The Witcher 3
+    initialFavorites: [mockGame], // The Witcher 3 favorito
     emptyMessage: 'Nenhum jogo encontrado.'
   }
 }
@@ -271,8 +226,8 @@ export const Empty: Story = {
 export const AllFavorited: Story = {
   render: args => <GridCardWithFavorites {...args} />,
   args: {
-    games: mockGames,
-    initialFavorites: mockGames, // Todos os jogos favoritos
+    games: [mockGame],
+    initialFavorites: [mockGame], // Todos os jogos favoritos
     emptyMessage: 'Nenhum jogo encontrado.'
   },
   parameters: {
@@ -287,7 +242,7 @@ export const AllFavorited: Story = {
 export const NoFavorites: Story = {
   render: args => <GridCardWithFavorites {...args} />,
   args: {
-    games: mockGames,
+    games: [mockGame],
     initialFavorites: [], // Nenhum jogo favorito
     emptyMessage: 'Nenhum jogo encontrado.'
   },
@@ -320,8 +275,8 @@ export const CustomEmptyMessage: Story = {
 export const SingleGame: Story = {
   render: args => <GridCardWithFavorites {...args} />,
   args: {
-    games: [mockGames[0]], // Apenas The Witcher 3
-    initialFavorites: [mockGames[0]], // The Witcher 3 favorito
+    games: [mockGame], // Apenas The Witcher 3
+    initialFavorites: [mockGame], // The Witcher 3 favorito
     emptyMessage: 'Nenhum jogo encontrado.'
   },
   parameters: {
@@ -336,8 +291,8 @@ export const SingleGame: Story = {
 export const MixedFavorites: Story = {
   render: args => <GridCardWithFavorites {...args} />,
   args: {
-    games: mockGames,
-    initialFavorites: [mockGames[1], mockGames[3]], // Red Dead 2 e Elden Ring
+    games: [mockGame],
+    initialFavorites: [mockGame], // Red Dead 2 e Elden Ring
     emptyMessage: 'Nenhum jogo encontrado.'
   },
   parameters: {
