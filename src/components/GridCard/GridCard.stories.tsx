@@ -1,7 +1,9 @@
+import { store } from '@/store'
 import type { Game } from '@/types/game'
 import GridCard from '@components/GridCard'
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { useState } from 'react'
+import React from 'react'
+import { Provider } from 'react-redux'
 
 const mockGames: Game[] = [
   {
@@ -132,16 +134,24 @@ const mockGames: Game[] = [
   },
   {
     id: 4,
-    name: 'God of War',
-    slug: 'god-of-war',
+    name: 'Elden Ring',
+    slug: 'elden-ring',
     background_image: 'https://placehold.co/600x400',
-    rating: 4.6,
+    rating: 4.9,
     rating_top: 5,
-    metacritic: 94,
-    playtime: 25,
-    released: '2018-04-20',
+    metacritic: 96,
+    playtime: 150,
+    released: '2022-02-25',
     updated: '2023-12-14T10:00:00Z',
     platforms: [
+      {
+        platform: {
+          id: 4,
+          name: 'PC',
+          slug: 'pc'
+        },
+        requirements: {}
+      },
       {
         platform: {
           id: 187,
@@ -152,37 +162,43 @@ const mockGames: Game[] = [
       }
     ],
     genres: [
-      { id: 3, name: 'Adventure', slug: 'adventure' },
-      { id: 4, name: 'Action', slug: 'action' }
+      { id: 5, name: 'RPG', slug: 'role-playing-games-rpg' },
+      { id: 3, name: 'Adventure', slug: 'adventure' }
     ],
-    publishers: [
-      {
-        id: 3,
-        name: 'Sony Interactive Entertainment',
-        slug: 'sony-interactive-entertainment'
-      }
-    ],
-    developers: [
-      { id: 3, name: 'Santa Monica Studio', slug: 'santa-monica-studio' }
-    ],
+    publishers: [{ id: 3, name: 'Bandai Namco', slug: 'bandai-namco' }],
+    developers: [{ id: 3, name: 'FromSoftware', slug: 'fromsoftware' }],
     tags: [
-      { id: 7, name: 'Mythology', slug: 'mythology' },
-      { id: 8, name: 'Story Rich', slug: 'story-rich' }
+      { id: 7, name: 'Souls-like', slug: 'souls-like' },
+      { id: 8, name: 'Open World', slug: 'open-world' }
     ],
     esrb_rating: { id: 4, name: 'Mature', slug: 'mature' },
     short_screenshots: []
   }
 ]
 
-const meta: Meta<typeof GridCard> = {
+// Interface para o wrapper
+interface GridCardWrapperProps {
+  games: Game[]
+  initialFavorites: Game[]
+  emptyMessage?: string
+}
+
+const meta: Meta<GridCardWrapperProps> = {
   title: 'Components/GridCard',
   component: GridCard,
+  decorators: [
+    Story => (
+      <Provider store={store}>
+        <Story />
+      </Provider>
+    )
+  ],
   parameters: {
     layout: 'padded',
     docs: {
       description: {
         component:
-          'Grid responsivo que exibe cards de jogos com funcionalidade de favoritos'
+          'Grid responsivo que exibe cards de jogos com funcionalidade de favoritos integrada ao Redux'
       }
     }
   },
@@ -191,13 +207,9 @@ const meta: Meta<typeof GridCard> = {
       control: false,
       description: 'Array de jogos para exibir'
     },
-    favorites: {
+    initialFavorites: {
       control: false,
-      description: 'Array de IDs dos jogos favoritos'
-    },
-    onFavoriteToggle: {
-      action: 'favorite toggled',
-      description: 'Função chamada quando um jogo é favoritado/desfavoritado'
+      description: 'Array de jogos para pré-carregar como favoritos'
     },
     emptyMessage: {
       control: 'text',
@@ -207,47 +219,44 @@ const meta: Meta<typeof GridCard> = {
 }
 
 export default meta
-type Story = StoryObj<typeof meta>
+type Story = StoryObj<GridCardWrapperProps>
 
-const GridCardWrapper = ({
+// Wrapper para pré-carregar favoritos no Redux store
+const GridCardWithFavorites = ({
   games,
-  favorites: initialFavorites,
+  initialFavorites,
   emptyMessage
-}: any) => {
-  const [favorites, setFavorites] = useState<number[]>(initialFavorites || [])
+}: GridCardWrapperProps) => {
+  // Pré-carregar favoritos no store para demonstração
+  React.useEffect(() => {
+    if (initialFavorites.length > 0) {
+      // Simular favoritos pré-carregados
+      initialFavorites.forEach(game => {
+        store.dispatch({
+          type: 'favorites/addToFavorites',
+          payload: game
+        })
+      })
+    }
+  }, [initialFavorites])
 
-  const handleFavoriteToggle = (gameId: number) => {
-    setFavorites(prev =>
-      prev.includes(gameId)
-        ? prev.filter(id => id !== gameId)
-        : [...prev, gameId]
-    )
-  }
-
-  return (
-    <GridCard
-      games={games}
-      favorites={favorites}
-      onFavoriteToggle={handleFavoriteToggle}
-      emptyMessage={emptyMessage}
-    />
-  )
+  return <GridCard games={games} emptyMessage={emptyMessage} />
 }
 
 export const Default: Story = {
-  render: args => <GridCardWrapper {...args} />,
+  render: args => <GridCardWithFavorites {...args} />,
   args: {
     games: mockGames,
-    favorites: [1, 3],
+    initialFavorites: [mockGames[0], mockGames[2]], // The Witcher 3 e Cyberpunk 2077
     emptyMessage: 'Nenhum jogo encontrado.'
   }
 }
 
 export const Empty: Story = {
-  render: args => <GridCardWrapper {...args} />,
+  render: args => <GridCardWithFavorites {...args} />,
   args: {
     games: [],
-    favorites: [],
+    initialFavorites: [],
     emptyMessage: 'Nenhum jogo encontrado.'
   },
   parameters: {
@@ -260,10 +269,10 @@ export const Empty: Story = {
 }
 
 export const AllFavorited: Story = {
-  render: args => <GridCardWrapper {...args} />,
+  render: args => <GridCardWithFavorites {...args} />,
   args: {
     games: mockGames,
-    favorites: [1, 2, 3, 4],
+    initialFavorites: mockGames, // Todos os jogos favoritos
     emptyMessage: 'Nenhum jogo encontrado.'
   },
   parameters: {
@@ -276,10 +285,10 @@ export const AllFavorited: Story = {
 }
 
 export const NoFavorites: Story = {
-  render: args => <GridCardWrapper {...args} />,
+  render: args => <GridCardWithFavorites {...args} />,
   args: {
     games: mockGames,
-    favorites: [],
+    initialFavorites: [], // Nenhum jogo favorito
     emptyMessage: 'Nenhum jogo encontrado.'
   },
   parameters: {
@@ -292,27 +301,27 @@ export const NoFavorites: Story = {
 }
 
 export const CustomEmptyMessage: Story = {
-  render: args => <GridCardWrapper {...args} />,
+  render: args => <GridCardWithFavorites {...args} />,
   args: {
     games: [],
-    favorites: [],
+    initialFavorites: [],
     emptyMessage:
-      'Ops! Não encontramos jogos que correspondam aos seus critérios de busca.'
+      'Ops! Não encontramos jogos para exibir. Tente ajustar os filtros.'
   },
   parameters: {
     docs: {
       description: {
-        story: 'Mensagem personalizada para estado vazio'
+        story: 'Mensagem personalizada quando não há jogos'
       }
     }
   }
 }
 
 export const SingleGame: Story = {
-  render: args => <GridCardWrapper {...args} />,
+  render: args => <GridCardWithFavorites {...args} />,
   args: {
-    games: [mockGames[0]],
-    favorites: [1],
+    games: [mockGames[0]], // Apenas The Witcher 3
+    initialFavorites: [mockGames[0]], // The Witcher 3 favorito
     emptyMessage: 'Nenhum jogo encontrado.'
   },
   parameters: {
@@ -324,17 +333,17 @@ export const SingleGame: Story = {
   }
 }
 
-export const ManyGames: Story = {
-  render: args => <GridCardWrapper {...args} />,
+export const MixedFavorites: Story = {
+  render: args => <GridCardWithFavorites {...args} />,
   args: {
-    games: [...mockGames, ...mockGames, ...mockGames], // 12 jogos
-    favorites: [1, 3, 5, 7, 9, 11],
+    games: mockGames,
+    initialFavorites: [mockGames[1], mockGames[3]], // Red Dead 2 e Elden Ring
     emptyMessage: 'Nenhum jogo encontrado.'
   },
   parameters: {
     docs: {
       description: {
-        story: 'Grid com muitos jogos para testar responsividade'
+        story: 'Alguns jogos marcados como favoritos'
       }
     }
   }

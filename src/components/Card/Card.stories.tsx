@@ -1,16 +1,25 @@
+import { store } from '@/store'
 import type { Game } from '@/types/game'
 import Card from '@components/Card'
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { Provider } from 'react-redux'
 
 const meta: Meta<typeof Card> = {
   title: 'Components/Card',
   component: Card,
+  decorators: [
+    Story => (
+      <Provider store={store}>
+        <Story />
+      </Provider>
+    )
+  ],
   parameters: {
     layout: 'centered',
     docs: {
       description: {
         component:
-          'Componente de card para exibir informações de jogos com imagem, rating, gêneros, plataformas e botão de favorito'
+          'Componente de card para exibir informações de jogos com imagem, rating, gêneros, plataformas e botão de favorito integrado ao Redux'
       }
     }
   },
@@ -18,14 +27,6 @@ const meta: Meta<typeof Card> = {
     game: {
       control: 'object',
       description: 'Dados do jogo'
-    },
-    isFavorite: {
-      control: 'boolean',
-      description: 'Se o jogo está favoritado'
-    },
-    onFavoriteToggle: {
-      action: 'favorite toggled',
-      description: 'Callback quando o favorito é alterado'
     }
   }
 }
@@ -102,34 +103,18 @@ const mockGameWithLowRating: Game = {
 
 export const Default: Story = {
   args: {
-    game: mockGame,
-    isFavorite: false
-  }
-}
-
-export const Favorited: Story = {
-  args: {
-    game: mockGame,
-    isFavorite: true
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Card com jogo favoritado'
-      }
-    }
+    game: mockGame
   }
 }
 
 export const WithoutMetacritic: Story = {
   args: {
-    game: mockGameWithoutMetacritic,
-    isFavorite: false
+    game: mockGameWithoutMetacritic
   },
   parameters: {
     docs: {
       description: {
-        story: 'Card de jogo sem score do Metacritic'
+        story: 'Card de jogo sem pontuação Metacritic'
       }
     }
   }
@@ -137,8 +122,7 @@ export const WithoutMetacritic: Story = {
 
 export const LowRating: Story = {
   args: {
-    game: mockGameWithLowRating,
-    isFavorite: false
+    game: mockGameWithLowRating
   },
   parameters: {
     docs: {
@@ -149,49 +133,43 @@ export const LowRating: Story = {
   }
 }
 
-export const MultipleCards: Story = {
-  render: () => (
-    <div
-      style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-        gap: '2rem',
-        maxWidth: '1200px',
-        width: '100%'
-      }}
-    >
-      <Card game={mockGame} isFavorite={false} onFavoriteToggle={() => {}} />
-      <Card
-        game={mockGameWithoutMetacritic}
-        isFavorite={true}
-        onFavoriteToggle={() => {}}
-      />
-      <Card
-        game={mockGameWithLowRating}
-        isFavorite={false}
-        onFavoriteToggle={() => {}}
-      />
-    </div>
-  ),
+export const Favorited: Story = {
+  render: args => {
+    // Pré-carregar como favorito
+    store.dispatch({
+      type: 'favorites/addToFavorites',
+      payload: args.game
+    })
+    return <Card {...args} />
+  },
+  args: {
+    game: mockGame
+  },
   parameters: {
-    layout: 'fullscreen',
     docs: {
       description: {
-        story: 'Múltiplos cards em grid responsivo'
+        story: 'Card de jogo marcado como favorito'
       }
     }
   }
 }
 
-export const Interactive: Story = {
+export const NotFavorited: Story = {
+  render: args => {
+    // Garantir que não está favorito
+    store.dispatch({
+      type: 'favorites/removeFromFavorites',
+      payload: args.game.id
+    })
+    return <Card {...args} />
+  },
   args: {
-    game: mockGame,
-    isFavorite: false
+    game: mockGame
   },
   parameters: {
     docs: {
       description: {
-        story: 'Card interativo - clique no botão de favorito para testar'
+        story: 'Card de jogo não marcado como favorito'
       }
     }
   }

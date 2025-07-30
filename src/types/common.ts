@@ -77,3 +77,19 @@ export enum RatingBadgeSize {
   MEDIUM = 'medium',
   LARGE = 'large'
 }
+
+export enum SortOption {
+  NAME = 'name',
+  RATING = 'rating',
+  RELEASE = 'release',
+  ADDED = 'added'
+}
+
+export const SORT_OPTIONS = [
+  { value: SortOption.NAME, label: 'Nome' },
+  { value: SortOption.RATING, label: 'Avaliação' },
+  { value: SortOption.RELEASE, label: 'Data de Lançamento' },
+  { value: SortOption.ADDED, label: 'Adicionados Recentemente' }
+] as const
+
+export const DEFAULT_SORT: SortOption = SortOption.ADDED

@@ -4,7 +4,7 @@ export const Info = styled.div`
   display: flex;
   gap: 1rem;
   margin-bottom: 1rem;
-  color: ${({ theme }) => theme.tertiary};
+  color: ${({ theme }) => theme.quaternary};
   font-size: 0.9rem;
 `
 

@@ -5,31 +5,46 @@ import {
   LoadingSpinnerSize,
   TextVariant
 } from '@/types/common'
+import type { Game } from '@/types/game'
 import LoadingSpinner from '@components/LoadingSpinner'
 import Pagination from '@components/Pagination'
 import SearchBar from '@components/SearchBar'
-import { useGames } from '@hooks/useGames'
-import { Text } from '../Text'
+import Text from '../Text'
 import * as S from './styles'
 
-const List = () => {
-  const {
-    games,
-    loading,
-    error,
-    currentPage,
-    totalPages,
-    searchTerm,
-    favorites,
-    handleSearch,
-    handleFavorite,
-    handlePageChange
-  } = useGames()
+type ListProps = {
+  games: Game[]
+  loading: boolean
+  error: string | null
+  currentPage: number
+  totalPages: number
+  searchTerm: string
+  onSearch: (value: string) => void
+  onPageChange: (page: number) => void
+  showSearch?: boolean
+  showPagination?: boolean
+  emptyMessage?: string
+  loadingMessage?: string
+}
 
+const List = ({
+  games,
+  loading,
+  error,
+  currentPage,
+  totalPages,
+  searchTerm,
+  onSearch,
+  onPageChange,
+  showSearch = true,
+  showPagination = true,
+  emptyMessage = 'Nenhum jogo encontrado.',
+  loadingMessage = LoadingMessage.GAMES
+}: ListProps) => {
   if (loading && games.length === 0) {
     return (
       <LoadingSpinner
-        message={LoadingMessage.GAMES}
+        message={loadingMessage}
         size={LoadingSpinnerSize.LARGE}
       />
     )
@@ -37,11 +52,13 @@ const List = () => {
 
   return (
     <S.Container>
-      <SearchBar
-        value={searchTerm}
-        onChange={handleSearch}
-        placeholder="Buscar jogos..."
-      />
+      {showSearch && (
+        <SearchBar
+          value={searchTerm}
+          onChange={onSearch}
+          placeholder="Buscar jogos..."
+        />
+      )}
 
       {error && (
         <S.ErrorMessage>
@@ -55,17 +72,15 @@ const List = () => {
         </S.ErrorMessage>
       )}
 
-      <GridCard
-        games={games}
-        favorites={favorites}
-        onFavoriteToggle={handleFavorite}
-      />
+      <GridCard games={games} emptyMessage={emptyMessage} />
 
-      <Pagination
-        currentPage={currentPage}
-        totalPages={totalPages}
-        onPageChange={handlePageChange}
-      />
+      {showPagination && totalPages > 1 && (
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={onPageChange}
+        />
+      )}
     </S.Container>
   )
 }

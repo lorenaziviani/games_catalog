@@ -18,14 +18,24 @@ export const Tag = styled.span<TagProps>`
     const isDark = isDarkMode(theme)
     switch ($variant) {
       case TagVariant.GENRE:
-        return isDark ? theme.secondary : theme.primary
+        return isDark ? theme.secondary : theme.quaternary
       case TagVariant.PLATFORM:
         return theme.tertiary
       default:
         return isDark ? theme.tertiary : theme.primary
     }
   }};
-  color: ${({ theme }) => theme.white};
+  color: ${({ $variant, theme }) => {
+    const isDark = isDarkMode(theme)
+    switch ($variant) {
+      case TagVariant.GENRE:
+        return isDark ? theme.white : theme.primary
+      case TagVariant.PLATFORM:
+        return theme.white
+      default:
+        return isDark ? theme.tertiary : theme.primary
+    }
+  }};
   padding: ${({ $size }) => getSizeTokens($size).padding};
   font-size: ${({ $size }) => getSizeTokens($size).fontSize};
   border-radius: ${({ $size }) => getSizeTokens($size).borderRadius};

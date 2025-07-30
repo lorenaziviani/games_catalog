@@ -23,10 +23,6 @@ export const gamesApi = {
 
       const data = await response.json()
 
-      if (env.ENABLE_DEBUG) {
-        console.log('RAWG API - Jogos populares:', data.count, 'jogos')
-      }
-
       return data
     } catch (error) {
       console.error('Erro na RAWG API:', error)
@@ -54,10 +50,6 @@ export const gamesApi = {
 
       const data = await response.json()
 
-      if (env.ENABLE_DEBUG) {
-        console.log('RAWG API - Busca:', query, data.count, 'resultados')
-      }
-
       return data
     } catch (error) {
       console.error('Erro na busca RAWG API:', error)
@@ -74,10 +66,6 @@ export const gamesApi = {
       }
 
       const data = await response.json()
-
-      if (env.ENABLE_DEBUG) {
-        console.log('RAWG API - Jogo:', data.name)
-      }
 
       return data
     } catch (error) {
@@ -107,10 +95,6 @@ export const gamesApi = {
 
       const data = await response.json()
 
-      if (env.ENABLE_DEBUG) {
-        console.log('RAWG API - Gênero:', genre, data.count, 'jogos')
-      }
-
       return data
     } catch (error) {
       console.error('Erro ao buscar por gênero:', error)
@@ -127,10 +111,6 @@ export const gamesApi = {
       }
 
       const data = await response.json()
-
-      if (env.ENABLE_DEBUG) {
-        console.log('RAWG API - Gêneros:', data.count, 'gêneros')
-      }
 
       return data
     } catch (error) {

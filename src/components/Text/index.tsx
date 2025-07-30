@@ -8,7 +8,7 @@ type TextProps = {
   $variant?: TextVariant
 } & FontSizeType
 
-export const Text = ({
+const Text = ({
   children,
   as = ElementType.P,
   $lgFontSize,
@@ -28,3 +28,5 @@ export const Text = ({
     </S.TextContent>
   )
 }
+
+export default Text
