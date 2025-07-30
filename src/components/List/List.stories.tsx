@@ -1,3 +1,4 @@
+import { store } from '@/store'
 import {
   ElementType,
   LoadingMessage,
@@ -11,7 +12,8 @@ import Pagination from '@components/Pagination'
 import SearchBar from '@components/SearchBar'
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { useState } from 'react'
-import { Text } from '../Text'
+import { Provider } from 'react-redux'
+import Text from '../Text'
 import * as S from './styles'
 
 const mockGames: Game[] = [
@@ -91,8 +93,7 @@ const ListStory = ({
   error,
   currentPage: initialCurrentPage,
   totalPages,
-  searchTerm,
-  favorites
+  searchTerm
 }: {
   games: Game[]
   loading: boolean
@@ -100,23 +101,33 @@ const ListStory = ({
   currentPage: number
   totalPages: number
   searchTerm: string
-  favorites: number[]
 }) => {
   const [currentPage, setCurrentPage] = useState(initialCurrentPage)
 
   const handleSearch = (value: string) => console.log('Search:', value)
-  const handleFavorite = (gameId: number) => console.log('Favorite:', gameId)
   const handlePageChange = (page: number) => {
-    console.log('Page changed to:', page)
     setCurrentPage(page)
+    console.log('Page changed:', page)
   }
 
-  if (loading && games.length === 0) {
+  if (loading) {
     return (
-      <LoadingSpinner
-        message={LoadingMessage.GAMES}
-        size={LoadingSpinnerSize.LARGE}
-      />
+      <S.Container>
+        <LoadingSpinner size={LoadingSpinnerSize.LARGE} />
+        <Text as={ElementType.P} $variant={TextVariant.TERTIARY}>
+          {LoadingMessage.GAMES}
+        </Text>
+      </S.Container>
+    )
+  }
+
+  if (error) {
+    return (
+      <S.Container>
+        <Text as={ElementType.P} $variant={TextVariant.PRIMARY}>
+          {error}
+        </Text>
+      </S.Container>
     )
   }
 
@@ -128,29 +139,15 @@ const ListStory = ({
         placeholder="Buscar jogos..."
       />
 
-      {error && (
-        <S.ErrorMessage>
-          <Text
-            as={ElementType.TITLE}
-            $variant={TextVariant.SECONDARY}
-            $lgFontSize={16}
-          >
-            {error}
-          </Text>
-        </S.ErrorMessage>
+      <GridCard games={games} emptyMessage="Nenhum jogo encontrado." />
+
+      {totalPages > 1 && (
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={handlePageChange}
+        />
       )}
-
-      <GridCard
-        games={games}
-        favorites={favorites}
-        onFavoriteToggle={handleFavorite}
-      />
-
-      <Pagination
-        currentPage={currentPage}
-        totalPages={totalPages}
-        onPageChange={handlePageChange}
-      />
     </S.Container>
   )
 }
@@ -158,13 +155,46 @@ const ListStory = ({
 const meta: Meta<typeof ListStory> = {
   title: 'Components/List',
   component: ListStory,
+  decorators: [
+    Story => (
+      <Provider store={store}>
+        <Story />
+      </Provider>
+    )
+  ],
   parameters: {
-    layout: 'fullscreen',
+    layout: 'padded',
     docs: {
       description: {
         component:
-          'Componente principal que integra busca, grid de jogos e paginação'
+          'Componente de lista que exibe jogos com busca, paginação e funcionalidade de favoritos integrada ao Redux'
       }
+    }
+  },
+  argTypes: {
+    games: {
+      control: false,
+      description: 'Array de jogos para exibir'
+    },
+    loading: {
+      control: 'boolean',
+      description: 'Estado de carregamento'
+    },
+    error: {
+      control: 'text',
+      description: 'Mensagem de erro'
+    },
+    currentPage: {
+      control: { type: 'number', min: 1 },
+      description: 'Página atual'
+    },
+    totalPages: {
+      control: { type: 'number', min: 1 },
+      description: 'Total de páginas'
+    },
+    searchTerm: {
+      control: 'text',
+      description: 'Termo de busca'
     }
   }
 }
@@ -179,15 +209,7 @@ export const Default: Story = {
     error: '',
     currentPage: 1,
     totalPages: 5,
-    searchTerm: '',
-    favorites: [1]
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Lista padrão com jogos carregados e alguns favoritos'
-      }
-    }
+    searchTerm: ''
   }
 }
 
@@ -198,15 +220,18 @@ export const Loading: Story = {
     error: '',
     currentPage: 1,
     totalPages: 1,
-    searchTerm: '',
-    favorites: []
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Estado de carregamento inicial'
-      }
-    }
+    searchTerm: ''
+  }
+}
+
+export const Error: Story = {
+  args: {
+    games: [],
+    loading: false,
+    error: 'Erro ao carregar os jogos. Tente novamente.',
+    currentPage: 1,
+    totalPages: 1,
+    searchTerm: ''
   }
 }
 
@@ -216,111 +241,29 @@ export const Empty: Story = {
     loading: false,
     error: '',
     currentPage: 1,
-    totalPages: 0,
-    searchTerm: '',
-    favorites: []
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Estado vazio quando não há jogos'
-      }
-    }
-  }
-}
-
-export const WithError: Story = {
-  args: {
-    games: [],
-    loading: false,
-    error: 'Erro ao carregar os jogos. Tente novamente.',
-    currentPage: 1,
     totalPages: 1,
-    searchTerm: '',
-    favorites: []
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Exibindo mensagem de erro'
-      }
-    }
+    searchTerm: ''
   }
 }
 
-export const WithSearch: Story = {
-  args: {
-    games: [mockGames[0]],
-    loading: false,
-    error: '',
-    currentPage: 1,
-    totalPages: 1,
-    searchTerm: 'witcher',
-    favorites: [1]
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Resultado de busca com termo "witcher"'
-      }
-    }
-  }
-}
-
-export const AllFavorited: Story = {
-  args: {
-    games: mockGames,
-    loading: false,
-    error: '',
-    currentPage: 1,
-    totalPages: 5,
-    searchTerm: '',
-    favorites: [1, 2]
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Todos os jogos marcados como favoritos'
-      }
-    }
-  }
-}
-
-export const NoFavorites: Story = {
-  args: {
-    games: mockGames,
-    loading: false,
-    error: '',
-    currentPage: 1,
-    totalPages: 5,
-    searchTerm: '',
-    favorites: []
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Nenhum jogo marcado como favorito'
-      }
-    }
-  }
-}
-
-export const PaginationExample: Story = {
+export const WithPagination: Story = {
   args: {
     games: mockGames,
     loading: false,
     error: '',
     currentPage: 3,
     totalPages: 10,
-    searchTerm: '',
-    favorites: [1]
-  },
-  parameters: {
-    docs: {
-      description: {
-        story:
-          'Paginação interativa - clique nos números para navegar entre as páginas'
-      }
-    }
+    searchTerm: ''
+  }
+}
+
+export const WithSearch: Story = {
+  args: {
+    games: mockGames,
+    loading: false,
+    error: '',
+    currentPage: 1,
+    totalPages: 1,
+    searchTerm: 'The Witcher'
   }
 }

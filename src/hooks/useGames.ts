@@ -1,5 +1,6 @@
 import { env, getCacheConfig, getRetryConfig } from '@/config/env'
 import type { Game } from '@/types/game'
+import { scrollToTop } from '@/utils/scrollUtils'
 import { gamesApi } from '@services/gamesApi'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useCallback, useState } from 'react'
@@ -103,6 +104,7 @@ export const useGames = (): useGamesReturn => {
 
   const handlePageChange = useCallback((page: number) => {
     setCurrentPage(page)
+    scrollToTop()
   }, [])
 
   const clearError = useCallback(() => {

@@ -1,18 +1,24 @@
+import { useFavorites } from '@/hooks/useFavorites'
 import { ElementType, TextVariant } from '@/types/common'
 import { useState } from 'react'
 import { BsJoystick } from 'react-icons/bs'
 import { FaBars, FaHeart, FaHome, FaTimes } from 'react-icons/fa'
 import { Link, useLocation } from 'react-router-dom'
-import { Text } from '../Text'
+import Text from '../Text'
 import * as S from './styles'
 
 const Header = () => {
   const location = useLocation()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const { favoritesCount } = useFavorites()
 
   const menuItems = [
     { path: '/', label: 'Início', icon: FaHome },
-    { path: '/favorites', label: 'Favoritos', icon: FaHeart }
+    {
+      path: '/favorites',
+      label: `Favoritos ${favoritesCount > 0 ? `(${favoritesCount})` : ''}`,
+      icon: FaHeart
+    }
   ]
 
   const toggleMenu = () => {

@@ -1,5 +1,5 @@
 import { ElementType, TextVariant } from '@/types/common'
-import { Text } from '../Text'
+import Text from '../Text'
 import * as S from './styles'
 
 interface PaginationProps {
@@ -17,12 +17,17 @@ const Pagination = ({
 }: PaginationProps) => {
   if (totalPages <= 1) return null
 
+  const handlePrevious = () => {
+    onPageChange(currentPage - 1)
+  }
+
+  const handleNext = () => {
+    onPageChange(currentPage + 1)
+  }
+
   return (
     <S.PaginationContainer>
-      <S.PageButton
-        onClick={() => onPageChange(currentPage - 1)}
-        disabled={currentPage === 1}
-      >
+      <S.PageButton onClick={handlePrevious} disabled={currentPage === 1}>
         Anterior
       </S.PageButton>
 
@@ -36,10 +41,7 @@ const Pagination = ({
         </Text>
       )}
 
-      <S.PageButton
-        onClick={() => onPageChange(currentPage + 1)}
-        disabled={currentPage === totalPages}
-      >
+      <S.PageButton onClick={handleNext} disabled={currentPage === totalPages}>
         Próxima
       </S.PageButton>
     </S.PaginationContainer>

@@ -1,7 +1,7 @@
 import { ElementType, RatingBadgeSize, TextVariant } from '@/types/common'
 import { FaStar } from 'react-icons/fa'
 import { useTheme } from 'styled-components'
-import { Text } from '../Text'
+import Text from '../Text'
 import * as S from './styles'
 
 interface RatingBadgeProps {

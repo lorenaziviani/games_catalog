@@ -142,6 +142,7 @@ O **Husky** é uma ferramenta que permite executar scripts Git hooks de forma f�
 heroes_catalog/
 ├── src/
 │   ├── components/          # Componentes reutilizáveis
+│   │   ├── Banner/         # Componente de banner com badge
 │   │   ├── Card/           # Card de jogo
 │   │   ├── FavoriteButton/ # Botão de favoritar
 │   │   ├── GameGrid/       # Grid de jogos
@@ -149,11 +150,14 @@ heroes_catalog/
 │   │   ├── Header/         # Cabeçalho
 │   │   ├── Image/          # Componente de imagem
 │   │   ├── Info/           # Informações
+│   │   ├── List/           # Lista reutilizável (home/favoritos)
 │   │   ├── LoadingSpinner/ # Spinner de carregamento
 │   │   ├── MetacriticScore/ # Score do Metacritic
 │   │   ├── Pagination/     # Paginação
 │   │   ├── RatingBadge/    # Badge de rating
 │   │   ├── SearchBar/      # Barra de busca
+│   │   ├── Sort/           # Componente de ordenação
+│   │   ├── Stats/          # Componente de estatísticas
 │   │   ├── Tag/            # Tag
 │   │   ├── TagsContainer/  # Container de tags
 │   │   ├── Text/           # Componente de texto
@@ -163,7 +167,9 @@ heroes_catalog/
 │   │   ├── api.ts          # Configuração de API
 │   │   └── env.ts          # Variáveis de ambiente
 │   ├── hooks/              # Custom hooks
-│   │   └── useGames.ts     # Hook para jogos
+│   │   ├── useFavorites.ts # Hook para favoritos
+│   │   ├── useGames.ts     # Hook para jogos
+│   │   └── useSort.ts      # Hook para ordenação
 │   ├── pages/              # Páginas
 │   │   ├── Favorites/      # Página de favoritos
 │   │   └── Home/           # Página inicial
@@ -171,6 +177,15 @@ heroes_catalog/
 │   │   └── index.tsx       # Configuração de rotas
 │   ├── services/           # Serviços
 │   │   └── gamesApi.ts     # API de jogos
+│   ├── store/              # Redux Store
+│   │   ├── favorites/      # Slice de favoritos
+│   │   │   ├── actions.ts  # Actions assíncronas
+│   │   │   ├── index.ts    # Exportações
+│   │   │   ├── reducer.ts  # Reducer síncrono
+│   │   │   ├── selectors.ts # Seletores memoizados
+│   │   │   ├── types.ts    # Tipos do slice
+│   │   │   └── utils.ts    # Utilitários do localStorage
+│   │   └── index.ts        # Configuração do store
 │   ├── styles/             # Estilos
 │   │   ├── breakpoint.ts   # Breakpoints responsivos
 │   │   ├── fontSize.ts     # Tamanhos de fonte
@@ -178,16 +193,19 @@ heroes_catalog/
 │   │   ├── size.ts         # Sistema de tamanhos
 │   │   └── theme.ts        # Temas
 │   ├── types/              # Tipos TypeScript
-│   │   ├── common.ts       # Tipos comuns
+│   │   ├── common.ts       # Tipos comuns (enums, constantes)
 │   │   ├── game.ts         # Tipos de jogo
 │   │   └── theme.d.ts      # Tipos de tema
 │   ├── utils/              # Utilitários
 │   │   ├── api.ts          # Utilitários de API
+│   │   ├── scrollUtils.ts  # Utilitários de scroll
 │   │   ├── test-utils.tsx  # Utilitários de teste
 │   │   └── themeUtils.ts   # Utilitários de tema
 │   ├── App.tsx             # Componente principal
 │   └── main.tsx            # Entry point
 ├── docs/                   # Documentação
+│   └── favorite-flow.drawio.png # Diagrama do fluxo de favoritos
+│   └── architecture.drawio.png # Diagrama de arquitetura
 ├── e2e/                    # Testes end-to-end
 ├── public/                 # Arquivos públicos
 └── tests-examples/         # Exemplos de testes
@@ -199,34 +217,96 @@ heroes_catalog/
 
 #### **Catálogo de Jogos**
 
-- Listagem de jogos com paginação
-- Busca em tempo real com debounce
-- Filtros por gênero e plataforma
-- Ordenação por rating, data, nome
-- Cards de jogo com informações detalhadas
-- Score do Metacritic
-- Tags de gênero e plataforma
+- **Listagem de Jogos**: Exibição de jogos populares da API RAWG
+- **Busca em Tempo Real**: Busca otimizada com debounce
+- **Paginação**: Navegação entre páginas com scroll automático
+- **Filtros Avançados**: Filtros por gênero, plataforma, rating
+- **Ordenação**: Ordenação por nome, rating, data de lançamento
+- **Detalhes do Jogo**: Informações completas de cada jogo
+- **Responsividade**: Design adaptativo para diferentes telas
 
-#### **Interface e UX**
+#### **Sistema de Favoritos Completo**
 
-- Tema claro/escuro
-- Design responsivo
-- Loading states
-- Error states
-- Empty states
-- Animações suaves
-- Componentes reutilizáveis
+O sistema de favoritos foi implementado com Redux Toolkit e localStorage para persistência de dados, oferecendo uma experiência completa de gerenciamento de jogos favoritos.
 
-#### **Funcionalidades Técnicas**
+##### **Funcionalidades Principais:**
 
-- React Query para gerenciamento de estado
-- TypeScript rigoroso
-- Styled Components
-- Storybook para documentação
-- ESLint + Prettier
-- Husky + Lint-staged
-- Variáveis de ambiente
-- Configuração de API segura
+- **Página de Favoritos Dedicada**: Interface completa para gerenciar favoritos
+- **Redux State Management**: Gerenciamento de estado centralizado com Redux Toolkit
+- **Persistência Local**: Dados salvos automaticamente no localStorage
+- **Paginação Inteligente**: Paginação local com scroll automático ao topo
+- **Sistema de Ordenação**: Ordenação por nome, avaliação, data de lançamento, data de adição
+- **Estatísticas em Tempo Real**: Contadores de total de jogos, avaliação média, gêneros únicos, plataformas únicas
+- **Funcionalidade "Limpar Todos"**: Botão para limpar todos os favoritos com confirmação
+- **Componentes Reutilizáveis**: Banner, Sort, Stats, List adaptados para favoritos
+
+##### **Componentes Específicos:**
+
+- **Banner Component**: Componente reutilizável com badge personalizável e conteúdo flexível
+- **Sort Component**: Sistema de ordenação com enum centralizado em `common.ts`
+- **Stats Component**: Exibição de estatísticas dos favoritos (total, média, gêneros, plataformas)
+- **List Component**: Lista reutilizável para home e favoritos com configurações específicas
+
+##### **Arquitetura do Sistema de Favoritos:**
+
+![Diagrama do Fluxo de Favoritos](./docs/favorite-flow.drawio.png)
+
+O diagrama ilustra o fluxo completo do sistema de favoritos, incluindo:
+
+1. **Favoritar um Jogo**: Interação do usuário → Hook → Redux Action → Reducer → localStorage
+2. **Carregar Favoritos**: App → Hook → Async Thunk → Reducer → localStorage → State
+3. **Filtrar Favoritos**: Selector Memoizado → Filtros específicos → Componente
+4. **Ordenar Favoritos**: Selector Memoizado → Ordenação → Componente
+
+##### **Tecnologias Utilizadas:**
+
+- **Redux Toolkit**: Gerenciamento de estado com createSlice, createAsyncThunk
+- **localStorage**: Persistência de dados no navegador
+- **TypeScript Enums**: Tipos centralizados em `common.ts` (SortOption, SORT_OPTIONS, DEFAULT_SORT)
+- **Custom Hooks**: useFavorites, useIsFavorite, useFavoritesStats, useSort
+- **Styled Components**: Design responsivo e tema dinâmico
+- **React Query**: Integração com cache para otimização
+
+##### **Configuração de Ambiente:**
+
+O sistema utiliza variáveis de ambiente para configuração flexível:
+
+```typescript
+// src/config/env.ts
+DEFAULT_PAGE_SIZE: getEnvVar('VITE_DEFAULT_PAGE_SIZE', 20, toNumber)
+```
+
+##### **Estrutura de Dados:**
+
+```typescript
+// src/store/favorites/types.ts
+interface FavoritesState {
+  favorites: Game[]
+  isLoading: boolean
+  error: string | null
+}
+```
+
+##### **Hooks Personalizados:**
+
+- **useFavorites**: Hook principal para gerenciar favoritos
+- **useIsFavorite**: Hook para verificar se um jogo é favorito
+- **useFavoritesStats**: Hook para calcular estatísticas
+- **useSort**: Hook para ordenação de jogos
+
+##### **Utilitários:**
+
+- **scrollToTop**: Utilitário para scroll automático ao topo
+- **favoritesStorage**: Utilitários para localStorage
+- **selectors**: Seletores memoizados para performance
+
+#### **Sistema de Design**
+
+- **Tema Claro/Escuro** - Sistema de tema dinâmico
+- **Design Tokens** - Tokens de design centralizados
+- **Design Responsivo** - Adaptação a diferentes telas
+- **Acessibilidade** - Recursos de acessibilidade
+- **Componentes Reutilizáveis** - Biblioteca de componentes
 
 ## 📋 TODO List - Funcionalidades Pendentes
 
@@ -255,16 +335,9 @@ heroes_catalog/
 
 ### **Sistema de Favoritos**
 
-- [ ] **Funcionalidade de Favoritar**
-  - [x] Botão de favoritar em cada card
-  - [ ] Animação de favoritar
-  - [ ] Contador de favoritos
 - [ ] **Página de Favoritos**
-  - [ ] Lista de jogos favoritados
-  - [ ] Ordenação de favoritos
   - [ ] Busca nos favoritos
 - [ ] **Persistência de Dados**
-  - [ ] LocalStorage para favoritos
   - [ ] Backup de favoritos
 - [ ] **Funcionalidades Avançadas**
   - [ ] Categorização de favoritos

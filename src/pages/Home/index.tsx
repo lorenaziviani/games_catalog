@@ -1,48 +1,68 @@
+import { DEFAULT_SORT, ElementType, TextVariant } from '@/types/common'
+import Banner from '@components/Banner'
 import List from '@components/List'
-import { MainContainer } from '@styles/global'
-import styled from 'styled-components'
-
-const HomeContainer = styled(MainContainer)`
-  padding: 2rem 2%;
-`
-
-const HeroSection = styled.div`
-  text-align: center;
-  margin-bottom: 3rem;
-`
-
-const Title = styled.h1`
-  font-size: 3rem;
-  color: ${({ theme }) => theme.primary};
-  margin-bottom: 1rem;
-
-  @media (max-width: 768px) {
-    font-size: 2rem;
-  }
-`
-
-const Subtitle = styled.p`
-  font-size: 1.2rem;
-  color: ${({ theme }) => theme.tertiary};
-  margin-bottom: 2rem;
-  max-width: 600px;
-  margin-left: auto;
-  margin-right: auto;
-`
+import Sort from '@components/Sort'
+import Text from '@components/Text'
+import { useGames } from '@hooks/useGames'
+import { useSort } from '@hooks/useSort'
+import { BiSolidJoystick } from 'react-icons/bi'
 
 const HomePage = () => {
-  return (
-    <HomeContainer>
-      <HeroSection>
-        <Title>Catálogo de Jogos</Title>
-        <Subtitle>
-          Explore o universo dos jogos e descubra seus favoritos. Navegue por
-          milhares de títulos, veja detalhes, avaliações e salve seus favoritos.
-        </Subtitle>
-      </HeroSection>
+  const {
+    games,
+    loading,
+    error,
+    currentPage,
+    totalPages,
+    searchTerm,
+    handleSearch,
+    handlePageChange
+  } = useGames()
 
-      <List />
-    </HomeContainer>
+  const { sortedGames, currentSort, handleSortChange } = useSort(
+    games,
+    DEFAULT_SORT
+  )
+
+  return (
+    <>
+      <Banner
+        badge={{
+          icon: BiSolidJoystick,
+          text: 'Catálogo Completo'
+        }}
+      >
+        <Text
+          as={ElementType.TITLE}
+          $variant={TextVariant.PRIMARY}
+          $lgFontSize={40}
+        >
+          Descubra Seus Jogos Favoritos
+        </Text>
+
+        <Text
+          as={ElementType.P}
+          $variant={TextVariant.TERTIARY}
+          $lgFontSize={20}
+        >
+          Explore milhares de títulos, veja detalhes, avaliações e salve seus
+          favoritos em um só lugar. Sua biblioteca de jogos personalizada.
+        </Text>
+      </Banner>
+
+      <Sort currentSort={currentSort} onSortChange={handleSortChange} />
+
+      <List
+        games={sortedGames}
+        loading={loading}
+        error={error}
+        currentPage={currentPage}
+        totalPages={totalPages}
+        searchTerm={searchTerm}
+        onSearch={handleSearch}
+        onPageChange={handlePageChange}
+      />
+    </>
   )
 }
 

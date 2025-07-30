@@ -4,7 +4,7 @@ import {
   MetacriticScoreSize,
   TextVariant
 } from '@/types/common'
-import { Text } from '../Text'
+import Text from '../Text'
 import * as S from './styles'
 
 interface MetacriticScoreProps {

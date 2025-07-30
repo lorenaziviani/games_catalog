@@ -1,6 +1,6 @@
 import { ElementType, TextVariant } from '@/types/common'
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Text } from './index'
+import Text from './index'
 
 const meta: Meta<typeof Text> = {
   title: 'Components/Text',

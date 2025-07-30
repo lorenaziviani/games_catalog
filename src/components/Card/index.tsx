@@ -1,3 +1,4 @@
+import { useIsFavorite } from '@/hooks/useFavorites'
 import { ElementType, TagVariant, TextVariant } from '@/types/common'
 import type { Game } from '@/types/game'
 import FavoriteButton from '@components/FavoriteButton'
@@ -6,19 +7,19 @@ import Info from '@components/Info'
 import MetacriticScore from '@components/MetacriticScore'
 import RatingBadge from '@components/RatingBadge'
 import TagsContainer from '@components/TagsContainer'
-import { Text } from '@components/Text'
-import { isDarkMode } from '@utils/themeUtils'
-import { useTheme } from 'styled-components'
+import Text from '@components/Text'
 import * as S from './styles'
 
 interface CardProps {
   game: Game
-  isFavorite: boolean
-  onFavoriteToggle: (gameId: number) => void
 }
 
-const Card = ({ game, isFavorite, onFavoriteToggle }: CardProps) => {
-  const theme = useTheme()
+const Card = ({ game }: CardProps) => {
+  const { isFavorite, toggleFavorite } = useIsFavorite(game.id)
+
+  const handleToggleFavorite = () => {
+    toggleFavorite(game)
+  }
 
   return (
     <S.Card>
@@ -26,7 +27,7 @@ const Card = ({ game, isFavorite, onFavoriteToggle }: CardProps) => {
         <Image src={game.background_image} alt={game.name} />
         <FavoriteButton
           isFavorite={isFavorite}
-          onToggle={() => onFavoriteToggle(game.id)}
+          onToggle={handleToggleFavorite}
         />
         <RatingBadge rating={game.rating} />
       </S.ImageContainer>
@@ -35,9 +36,7 @@ const Card = ({ game, isFavorite, onFavoriteToggle }: CardProps) => {
         <Text
           as={ElementType.TITLE}
           $lgFontSize={24}
-          $variant={
-            isDarkMode(theme) ? TextVariant.SECONDARY : TextVariant.PRIMARY
-          }
+          $variant={TextVariant.SECONDARY}
         >
           {game.name}
         </Text>

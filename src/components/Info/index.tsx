@@ -1,6 +1,6 @@
 import { ElementType, TextVariant } from '@/types/common'
 import { FaCalendar, FaGamepad } from 'react-icons/fa'
-import { Text } from '../Text'
+import Text from '../Text'
 import * as S from './styles'
 
 interface InfoProps {
@@ -20,7 +20,7 @@ const Info = ({ released, playtime, showPlaytime = true }: InfoProps) => {
         <FaCalendar />
         <Text
           as={ElementType.SPAN}
-          $variant={TextVariant.TERTIARY}
+          $variant={TextVariant.QUATERNARY}
           $lgFontSize={16}
         >
           {formatDate(released)}
@@ -31,7 +31,7 @@ const Info = ({ released, playtime, showPlaytime = true }: InfoProps) => {
           <FaGamepad />
           <Text
             as={ElementType.SPAN}
-            $variant={TextVariant.TERTIARY}
+            $variant={TextVariant.QUATERNARY}
             $lgFontSize={16}
           >
             {`${playtime}h`}
