@@ -121,7 +121,7 @@ describe('FilterSection Component', () => {
   })
 
   it('deve renderizar sem conteúdo', () => {
-    render(<FilterSection title="Título sem conteúdo"></FilterSection>)
+    render(<FilterSection title="Título sem conteúdo">{null}</FilterSection>)
 
     const container = screen.getByTestId('filter-section-container')
     const content = screen.getByTestId('filter-section-content')

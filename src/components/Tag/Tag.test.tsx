@@ -74,10 +74,10 @@ describe('Tag Component', () => {
       TagVariant.PLATFORM
     )
 
-    rerender(<Tag variant={TagVariant.DEVELOPER}>Ubisoft</Tag>)
+    rerender(<Tag variant={TagVariant.PLATFORM}>Ubisoft</Tag>)
     expect(screen.getByTestId('tag')).toHaveAttribute(
       'data-variant',
-      TagVariant.DEVELOPER
+      TagVariant.PLATFORM
     )
   })
 
