@@ -11,7 +11,7 @@ export { default as LoadingSpinner } from './LoadingSpinner'
 export { default as MetacriticScore } from './MetacriticScore'
 export { default as Pagination } from './Pagination'
 export { default as RatingBadge } from './RatingBadge'
-export { default as SearchBar } from './SearchBar'
+
 export { default as Sort } from './Sort'
 export { default as Stats } from './Stats'
 export { default as Tag } from './Tag'

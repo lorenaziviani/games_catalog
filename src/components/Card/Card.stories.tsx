@@ -98,27 +98,8 @@ const mockGame: Game = {
       },
       released_at: '2020-12-10',
       requirements_en: {
-        minimum: 'Minimum requirements...',
-        recommended: 'Recommended requirements...'
-      },
-      requirements_ru: null
-    },
-    {
-      platform: {
-        id: 187,
-        name: 'PlayStation 5',
-        slug: 'ps5',
-        image: null,
-        year_end: null,
-        year_start: null,
-        games_count: 1234,
-        image_background:
-          'https://media.rawg.io/media/games/021/021c4e21a1824d2526f925eff6324653.jpg'
-      },
-      released_at: '2020-12-10',
-      requirements_en: {
-        minimum: 'Minimum requirements...',
-        recommended: 'Recommended requirements...'
+        minimum: 'Windows 10',
+        recommended: 'Windows 10, 16GB RAM'
       },
       requirements_ru: null
     }
@@ -128,7 +109,7 @@ const mockGame: Game = {
       id: 1,
       name: 'Action',
       slug: 'action',
-      games_count: 150,
+      games_count: 100,
       image_background:
         'https://media.rawg.io/media/games/1f4/1f47a270b8f241e4676b14d39ec620f7.jpg'
     },
@@ -136,7 +117,7 @@ const mockGame: Game = {
       id: 2,
       name: 'Adventure',
       slug: 'adventure',
-      games_count: 120,
+      games_count: 200,
       image_background:
         'https://media.rawg.io/media/games/b6b/b6b20bfc4b34e312dbc8aac53c95a348.jpg'
     },
@@ -147,26 +128,6 @@ const mockGame: Game = {
       games_count: 80,
       image_background:
         'https://media.rawg.io/media/games/1f4/1f47a270b8f241e4676b14d39ec620f7.jpg'
-    }
-  ],
-  publishers: [
-    {
-      id: 1,
-      name: 'Nintendo',
-      slug: 'nintendo',
-      games_count: 150,
-      image_background:
-        'https://media.rawg.io/media/games/1f4/1f47a270b8f241e4676b14d39ec620f7.jpg'
-    }
-  ],
-  developers: [
-    {
-      id: 1,
-      name: 'Nintendo EPD',
-      slug: 'nintendo-epd',
-      games_count: 100,
-      image_background:
-        'https://media.rawg.io/media/games/b6b/b6b20bfc4b34e312dbc8aac53c95a348.jpg'
     }
   ],
   tags: [
@@ -190,15 +151,6 @@ const mockGame: Game = {
     }
   ],
   short_screenshots: [],
-  parent_platforms: [
-    {
-      platform: {
-        id: 1,
-        name: 'PC',
-        slug: 'pc'
-      }
-    }
-  ],
   stores: [
     {
       id: 1,
@@ -213,16 +165,6 @@ const mockGame: Game = {
       }
     }
   ],
-  creators: [
-    {
-      id: 1,
-      name: 'Nintendo',
-      slug: 'nintendo',
-      games_count: 150,
-      image_background:
-        'https://media.rawg.io/media/games/1f4/1f47a270b8f241e4676b14d39ec620f7.jpg'
-    }
-  ],
   clip: null
 }
 
@@ -233,8 +175,22 @@ const mockGameWithoutMetacritic: Game = {
   metacritic: 0,
   rating: 4.5,
   genres: [
-    { id: 4, name: 'Platformer', slug: 'platformer' },
-    { id: 5, name: 'Adventure', slug: 'adventure' }
+    {
+      id: 4,
+      name: 'Platformer',
+      slug: 'platformer',
+      games_count: 50,
+      image_background:
+        'https://media.rawg.io/media/games/1f4/1f47a270b8f241e4676b14d39ec620f7.jpg'
+    },
+    {
+      id: 5,
+      name: 'Adventure',
+      slug: 'adventure',
+      games_count: 75,
+      image_background:
+        'https://media.rawg.io/media/games/b6b/b6b20bfc4b34e312dbc8aac53c95a348.jpg'
+    }
   ]
 }
 
@@ -245,8 +201,22 @@ const mockGameWithLowRating: Game = {
   rating: 2.1,
   metacritic: 56,
   genres: [
-    { id: 6, name: 'RPG', slug: 'rpg' },
-    { id: 7, name: 'Action', slug: 'action' }
+    {
+      id: 6,
+      name: 'RPG',
+      slug: 'rpg',
+      games_count: 60,
+      image_background:
+        'https://media.rawg.io/media/games/1f4/1f47a270b8f241e4676b14d39ec620f7.jpg'
+    },
+    {
+      id: 7,
+      name: 'Action',
+      slug: 'action',
+      games_count: 90,
+      image_background:
+        'https://media.rawg.io/media/games/b6b/b6b20bfc4b34e312dbc8aac53c95a348.jpg'
+    }
   ]
 }
 

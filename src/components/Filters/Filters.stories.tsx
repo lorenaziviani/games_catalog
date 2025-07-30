@@ -1,4 +1,3 @@
-import { DEFAULT_FILTERS } from '@/types/filter'
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import Filters from './index'
 
@@ -47,10 +46,28 @@ const mockAvailableOptions = [
 
 export const Default: Story = {
   args: {
-    filters: DEFAULT_FILTERS,
-    onUpdateFilter: (type, value) =>
-      console.log('Filter updated:', { type, value }),
-    onResetFilters: () => console.log('Filters reset'),
+    filters: {
+      name: '',
+      genres: [],
+      platforms: [],
+      stores: [],
+      tags: [],
+      ordering: 'name',
+      dateRange: {
+        start: '',
+        end: ''
+      },
+      metacriticRange: {
+        min: 0,
+        max: 100
+      }
+    },
+    onUpdateFilter: (type, value) => {
+      console.log('Filter updated:', type, value)
+    },
+    onResetFilters: () => {
+      console.log('Filters reset')
+    },
     hasActiveFilters: false,
     activeFiltersCount: 0,
     availableGenres: mockAvailableOptions,
@@ -63,17 +80,29 @@ export const Default: Story = {
 export const WithActiveFilters: Story = {
   args: {
     filters: {
-      ...DEFAULT_FILTERS,
-      name: 'Zelda',
-      genres: ['action', 'adventure'],
-      platforms: ['pc'],
-      metacriticRange: { min: 70, max: 100 }
+      name: 'The Witcher',
+      genres: ['1', '2'],
+      platforms: ['1'],
+      stores: ['1'],
+      tags: ['1'],
+      ordering: 'name',
+      dateRange: {
+        start: '2020-01-01',
+        end: '2023-12-31'
+      },
+      metacriticRange: {
+        min: 80,
+        max: 100
+      }
     },
-    onUpdateFilter: (type, value) =>
-      console.log('Filter updated:', { type, value }),
-    onResetFilters: () => console.log('Filters reset'),
+    onUpdateFilter: (type, value) => {
+      console.log('Filter updated:', type, value)
+    },
+    onResetFilters: () => {
+      console.log('Filters reset')
+    },
     hasActiveFilters: true,
-    activeFiltersCount: 5,
+    activeFiltersCount: 6,
     availableGenres: mockAvailableOptions,
     availablePlatforms: mockAvailableOptions,
     availableStores: mockAvailableOptions,
@@ -83,10 +112,28 @@ export const WithActiveFilters: Story = {
 
 export const EmptyOptions: Story = {
   args: {
-    filters: DEFAULT_FILTERS,
-    onUpdateFilter: (type, value) =>
-      console.log('Filter updated:', { type, value }),
-    onResetFilters: () => console.log('Filters reset'),
+    filters: {
+      name: '',
+      genres: [],
+      platforms: [],
+      stores: [],
+      tags: [],
+      ordering: 'name',
+      dateRange: {
+        start: '',
+        end: ''
+      },
+      metacriticRange: {
+        min: 0,
+        max: 100
+      }
+    },
+    onUpdateFilter: (type, value) => {
+      console.log('Filter updated:', type, value)
+    },
+    onResetFilters: () => {
+      console.log('Filters reset')
+    },
     hasActiveFilters: false,
     activeFiltersCount: 0,
     availableGenres: [],
