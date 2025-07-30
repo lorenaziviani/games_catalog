@@ -55,21 +55,72 @@ const mockGames: Game[] = [
     updated: '2023-01-01',
     background_image: 'https://example.com/witcher3.jpg',
     genres: [
-      { id: 1, name: 'RPG', slug: 'rpg' },
-      { id: 2, name: 'Action', slug: 'action' },
-      { id: 3, name: 'Adventure', slug: 'adventure' }
+      {
+        id: 1,
+        name: 'RPG',
+        slug: 'rpg',
+        games_count: 100,
+        image_background:
+          'https://media.rawg.io/media/games/1f4/1f47a270b8f241e4676b14d39ec620f7.jpg'
+      },
+      {
+        id: 2,
+        name: 'Action',
+        slug: 'action',
+        games_count: 100,
+        image_background:
+          'https://media.rawg.io/media/games/1f4/1f47a270b8f241e4676b14d39ec620f7.jpg'
+      },
+      {
+        id: 3,
+        name: 'Adventure',
+        slug: 'adventure',
+        games_count: 100,
+        image_background:
+          'https://media.rawg.io/media/games/1f4/1f47a270b8f241e4676b14d39ec620f7.jpg'
+      }
     ],
     platforms: [
       {
-        platform: { id: 1, name: 'PC', slug: 'pc' },
+        platform: {
+          id: 1,
+          name: 'PC',
+          slug: 'pc',
+          image: null,
+          year_end: null,
+          year_start: null,
+          games_count: 1000,
+          image_background:
+            'https://media.rawg.io/media/games/021/021c4e21a1824d2526f925eff6324653.jpg'
+        },
         requirements: {}
       },
       {
-        platform: { id: 2, name: 'PlayStation 4', slug: 'ps4' },
+        platform: {
+          id: 2,
+          name: 'PlayStation 4',
+          slug: 'ps4',
+          image: null,
+          year_end: null,
+          year_start: null,
+          games_count: 1000,
+          image_background:
+            'https://media.rawg.io/media/games/021/021c4e21a1824d2526f925eff6324653.jpg'
+        },
         requirements: {}
       },
       {
-        platform: { id: 3, name: 'Xbox One', slug: 'xbox-one' },
+        platform: {
+          id: 3,
+          name: 'Xbox One',
+          slug: 'xbox-one',
+          image: null,
+          year_end: null,
+          year_start: null,
+          games_count: 1000,
+          image_background:
+            'https://media.rawg.io/media/games/021/021c4e21a1824d2526f925eff6324653.jpg'
+        },
         requirements: {}
       }
     ],
@@ -90,21 +141,72 @@ const mockGames: Game[] = [
     updated: '2023-01-01',
     background_image: 'https://example.com/rdr2.jpg',
     genres: [
-      { id: 2, name: 'Action', slug: 'action' },
-      { id: 3, name: 'Adventure', slug: 'adventure' },
-      { id: 4, name: 'Western', slug: 'western' }
+      {
+        id: 2,
+        name: 'Action',
+        slug: 'action',
+        games_count: 100,
+        image_background:
+          'https://media.rawg.io/media/games/1f4/1f47a270b8f241e4676b14d39ec620f7.jpg'
+      },
+      {
+        id: 3,
+        name: 'Adventure',
+        slug: 'adventure',
+        games_count: 100,
+        image_background:
+          'https://media.rawg.io/media/games/1f4/1f47a270b8f241e4676b14d39ec620f7.jpg'
+      },
+      {
+        id: 4,
+        name: 'Western',
+        slug: 'western',
+        games_count: 100,
+        image_background:
+          'https://media.rawg.io/media/games/1f4/1f47a270b8f241e4676b14d39ec620f7.jpg'
+      }
     ],
     platforms: [
       {
-        platform: { id: 1, name: 'PC', slug: 'pc' },
+        platform: {
+          id: 1,
+          name: 'PC',
+          slug: 'pc',
+          image: null,
+          year_end: null,
+          year_start: null,
+          games_count: 1000,
+          image_background:
+            'https://media.rawg.io/media/games/021/021c4e21a1824d2526f925eff6324653.jpg'
+        },
         requirements: {}
       },
       {
-        platform: { id: 2, name: 'PlayStation 4', slug: 'ps4' },
+        platform: {
+          id: 2,
+          name: 'PlayStation 4',
+          slug: 'ps4',
+          image: null,
+          year_end: null,
+          year_start: null,
+          games_count: 1000,
+          image_background:
+            'https://media.rawg.io/media/games/021/021c4e21a1824d2526f925eff6324653.jpg'
+        },
         requirements: {}
       },
       {
-        platform: { id: 3, name: 'Xbox One', slug: 'xbox-one' },
+        platform: {
+          id: 3,
+          name: 'Xbox One',
+          slug: 'xbox-one',
+          image: null,
+          year_end: null,
+          year_start: null,
+          games_count: 1000,
+          image_background:
+            'https://media.rawg.io/media/games/021/021c4e21a1824d2526f925eff6324653.jpg'
+        },
         requirements: {}
       }
     ],
@@ -125,16 +227,50 @@ const mockGames: Game[] = [
     updated: '2023-01-01',
     background_image: 'https://example.com/gow.jpg',
     genres: [
-      { id: 2, name: 'Action', slug: 'action' },
-      { id: 3, name: 'Adventure', slug: 'adventure' }
+      {
+        id: 2,
+        name: 'Action',
+        slug: 'action',
+        games_count: 100,
+        image_background:
+          'https://media.rawg.io/media/games/1f4/1f47a270b8f241e4676b14d39ec620f7.jpg'
+      },
+      {
+        id: 3,
+        name: 'Adventure',
+        slug: 'adventure',
+        games_count: 100,
+        image_background:
+          'https://media.rawg.io/media/games/1f4/1f47a270b8f241e4676b14d39ec620f7.jpg'
+      }
     ],
     platforms: [
       {
-        platform: { id: 2, name: 'PlayStation 4', slug: 'ps4' },
+        platform: {
+          id: 2,
+          name: 'PlayStation 4',
+          slug: 'ps4',
+          image: null,
+          year_end: null,
+          year_start: null,
+          games_count: 1000,
+          image_background:
+            'https://media.rawg.io/media/games/021/021c4e21a1824d2526f925eff6324653.jpg'
+        },
         requirements: {}
       },
       {
-        platform: { id: 1, name: 'PC', slug: 'pc' },
+        platform: {
+          id: 1,
+          name: 'PC',
+          slug: 'pc',
+          image: null,
+          year_end: null,
+          year_start: null,
+          games_count: 1000,
+          image_background:
+            'https://media.rawg.io/media/games/021/021c4e21a1824d2526f925eff6324653.jpg'
+        },
         requirements: {}
       }
     ],

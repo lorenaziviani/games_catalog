@@ -4,10 +4,10 @@ export const StatsContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 2rem;
   padding: 1rem;
   background-color: ${({ theme }) => theme.tertiary};
-  border-radius: 8px;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   flex-wrap: wrap;
   gap: 1rem;
@@ -36,20 +36,37 @@ export const StatItem = styled.div`
   }
 `
 
+export const ActionContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  background-color: ${({ theme }) => theme.primary};
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2rem;
+  padding: 0.5rem 0;
+`
+
 export const ActionButton = styled.button`
-  padding: 0.5rem 1rem;
+  display: inline-block;
   background: ${({ theme }) => theme.secondary};
   color: ${({ theme }) => theme.primary};
-  border: none;
-  border-radius: 4px;
+  padding: 0.5rem 1rem;
+  border-radius: 25px;
+  font-size: 1.5rem;
+  font-weight: 600;
+  display: inline-grid;
+  grid-auto-flow: column;
+  gap: 0.5rem;
   cursor: pointer;
-  transition: all 0.2s ease;
-  font-size: 0.9rem;
+  border: none;
 
   &:hover {
-    background: ${({ theme }) => theme.secondary};
-    opacity: 0.8;
-    transform: translateY(-2px);
+    background: ${({ theme }) => theme.quinary};
+    color: ${({ theme }) => theme.white};
+    cursor: pointer;
   }
 
   &:disabled {

@@ -5,40 +5,79 @@ export interface Game {
   background_image: string
   rating: number
   rating_top: number
-  metacritic: number
+  metacritic: number | null
   playtime: number
   released: string
   updated: string
+  tba: boolean
+  added: number
+  added_by_status: {
+    yet: number
+    owned: number
+    beaten: number
+    toplay: number
+    dropped: number
+    playing: number
+  }
+  ratings: Array<{
+    id: number
+    title: string
+    count: number
+    percent: number
+  }>
+  ratings_count: number
+  reviews_text_count: number
+  suggestions_count: number
+  user_game: string | null
+  reviews_count: number
+  saturated_color: string
+  dominant_color: string
   platforms: {
     platform: {
       id: number
       name: string
       slug: string
+      image: string | null
+      year_end: number | null
+      year_start: number | null
+      games_count: number
+      image_background: string
     }
-    requirements: {
+    released_at: string
+    requirements_en: {
       minimum?: string
       recommended?: string
     }
+    requirements_ru: {
+      minimum?: string
+      recommended?: string
+    } | null
   }[]
   genres: {
     id: number
     name: string
     slug: string
+    games_count: number
+    image_background: string
   }[]
-  publishers: {
+  stores: {
     id: number
-    name: string
-    slug: string
-  }[]
-  developers: {
-    id: number
-    name: string
-    slug: string
+    store: {
+      id: number
+      name: string
+      slug: string
+      domain: string
+      games_count: number
+      image_background: string
+    }
   }[]
   tags: {
     id: number
     name: string
     slug: string
+    language: string
+    games_count: number
+    image_background: string
   }[]
   esrb_rating?: {
     id: number
@@ -49,6 +88,7 @@ export interface Game {
     id: number
     image: string
   }[]
+  clip: string | null
 }
 
 export interface GamesResponse {
@@ -110,9 +150,49 @@ export interface Genre {
   id: number
   name: string
   slug: string
+  games_count: number
 }
 
 export interface GenresResponse {
   count: number
   results: Genre[]
+}
+
+export interface Platform {
+  id: number
+  name: string
+  slug: string
+  games_count: number
+}
+
+export interface PlatformsResponse {
+  count: number
+  results: Platform[]
+}
+
+export interface Store {
+  id: number
+  name: string
+  slug: string
+  domain: string
+  games_count: number
+  image_background: string
+}
+
+export interface StoresResponse {
+  count: number
+  results: Store[]
+}
+
+export interface Tag {
+  id: number
+  name: string
+  slug: string
+  games_count: number
+  image_background: string
+}
+
+export interface TagsResponse {
+  count: number
+  results: Tag[]
 }

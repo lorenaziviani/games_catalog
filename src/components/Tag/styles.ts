@@ -1,11 +1,7 @@
-import { TagVariant } from '@/types/common'
-import { mobile, tablet } from '@styles/breakpoint'
-import {
-  getSizeTokens,
-  responsiveSizes,
-  type ComponentSize
-} from '@styles/size'
-import { isDarkMode } from '@utils/themeUtils'
+import { mobile, tablet } from '@/styles/breakpoint'
+import { getSizeTokens, responsiveSizes } from '@/styles/size'
+import { ComponentSize, TagVariant } from '@/types/common'
+import { getThemeColor } from '@utils/themeUtils'
 import styled from 'styled-components'
 
 interface TagProps {
@@ -15,25 +11,23 @@ interface TagProps {
 
 export const Tag = styled.span<TagProps>`
   background-color: ${({ $variant, theme }) => {
-    const isDark = isDarkMode(theme)
     switch ($variant) {
       case TagVariant.GENRE:
-        return isDark ? theme.secondary : theme.quaternary
+        return getThemeColor(theme, theme.quaternary, theme.secondary)
       case TagVariant.PLATFORM:
         return theme.tertiary
       default:
-        return isDark ? theme.tertiary : theme.primary
+        return getThemeColor(theme, theme.primary, theme.tertiary)
     }
   }};
   color: ${({ $variant, theme }) => {
-    const isDark = isDarkMode(theme)
     switch ($variant) {
       case TagVariant.GENRE:
-        return isDark ? theme.white : theme.primary
+        return getThemeColor(theme, theme.primary, theme.white)
       case TagVariant.PLATFORM:
         return theme.white
       default:
-        return isDark ? theme.tertiary : theme.primary
+        return getThemeColor(theme, theme.primary, theme.tertiary)
     }
   }};
   padding: ${({ $size }) => getSizeTokens($size).padding};

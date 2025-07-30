@@ -1,5 +1,6 @@
 import { DEFAULT_SORT, ElementType, TextVariant } from '@/types/common'
 import Banner from '@components/Banner'
+import Filters from '@components/Filters'
 import List from '@components/List'
 import Sort from '@components/Sort'
 import Text from '@components/Text'
@@ -14,9 +15,16 @@ const HomePage = () => {
     error,
     currentPage,
     totalPages,
-    searchTerm,
-    handleSearch,
-    handlePageChange
+    handlePageChange,
+    filters,
+    availableGenres,
+    availablePlatforms,
+    availableStores,
+    availableTags,
+    handleFilterChange,
+    handleResetFilters,
+    hasActiveFilters,
+    activeFiltersCount
   } = useGames()
 
   const { sortedGames, currentSort, handleSortChange } = useSort(
@@ -50,6 +58,18 @@ const HomePage = () => {
         </Text>
       </Banner>
 
+      <Filters
+        filters={filters}
+        onUpdateFilter={handleFilterChange}
+        onResetFilters={handleResetFilters}
+        hasActiveFilters={hasActiveFilters}
+        activeFiltersCount={activeFiltersCount}
+        availableGenres={availableGenres}
+        availablePlatforms={availablePlatforms}
+        availableStores={availableStores}
+        availableTags={availableTags}
+      />
+
       <Sort currentSort={currentSort} onSortChange={handleSortChange} />
 
       <List
@@ -58,8 +78,6 @@ const HomePage = () => {
         error={error}
         currentPage={currentPage}
         totalPages={totalPages}
-        searchTerm={searchTerm}
-        onSearch={handleSearch}
         onPageChange={handlePageChange}
       />
     </>

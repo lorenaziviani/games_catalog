@@ -22,7 +22,13 @@ const mockGames: Game[] = [
         platform: {
           id: 4,
           name: 'PC',
-          slug: 'pc'
+          slug: 'pc',
+          image: null,
+          year_end: null,
+          year_start: null,
+          games_count: 1000,
+          image_background:
+            'https://media.rawg.io/media/games/021/021c4e21a1824d2526f925eff6324653.jpg'
         },
         requirements: {}
       },
@@ -30,22 +36,81 @@ const mockGames: Game[] = [
         platform: {
           id: 187,
           name: 'PlayStation 4',
-          slug: 'playstation4'
+          slug: 'playstation4',
+          image: null,
+          year_end: null,
+          year_start: null,
+          games_count: 1000,
+          image_background:
+            'https://media.rawg.io/media/games/021/021c4e21a1824d2526f925eff6324653.jpg'
         },
         requirements: {}
       }
     ],
     genres: [
-      { id: 5, name: 'RPG', slug: 'role-playing-games-rpg' },
-      { id: 3, name: 'Adventure', slug: 'adventure' }
+      {
+        id: 5,
+        name: 'RPG',
+        slug: 'role-playing-games-rpg',
+        games_count: 100,
+        image_background:
+          'https://media.rawg.io/media/games/1f4/1f47a270b8f241e4676b14d39ec620f7.jpg'
+      },
+      {
+        id: 3,
+        name: 'Adventure',
+        slug: 'adventure',
+        games_count: 100,
+        image_background:
+          'https://media.rawg.io/media/games/1f4/1f47a270b8f241e4676b14d39ec620f7.jpg'
+      }
     ],
-    publishers: [{ id: 1, name: 'CD Projekt', slug: 'cd-projekt' }],
-    developers: [{ id: 1, name: 'CD Projekt Red', slug: 'cd-projekt-red' }],
+    publishers: [
+      {
+        id: 1,
+        name: 'CD Projekt',
+        slug: 'cd-projekt',
+        games_count: 100,
+        image_background:
+          'https://media.rawg.io/media/games/1f4/1f47a270b8f241e4676b14d39ec620f7.jpg'
+      }
+    ],
+    developers: [
+      {
+        id: 1,
+        name: 'CD Projekt Red',
+        slug: 'cd-projekt-red',
+        games_count: 100,
+        image_background:
+          'https://media.rawg.io/media/games/1f4/1f47a270b8f241e4676b14d39ec620f7.jpg'
+      }
+    ],
     tags: [
-      { id: 1, name: 'Open World', slug: 'open-world' },
-      { id: 2, name: 'Story Rich', slug: 'story-rich' }
+      {
+        id: 1,
+        name: 'Open World',
+        slug: 'open-world',
+        games_count: 100,
+        image_background:
+          'https://media.rawg.io/media/games/1f4/1f47a270b8f241e4676b14d39ec620f7.jpg'
+      },
+      {
+        id: 2,
+        name: 'Story Rich',
+        slug: 'story-rich',
+        games_count: 100,
+        image_background:
+          'https://media.rawg.io/media/games/1f4/1f47a270b8f241e4676b14d39ec620f7.jpg'
+      }
     ],
-    esrb_rating: { id: 4, name: 'Mature', slug: 'mature' },
+    esrb_rating: {
+      id: 4,
+      name: 'Mature',
+      slug: 'mature',
+      games_count: 100,
+      image_background:
+        'https://media.rawg.io/media/games/1f4/1f47a270b8f241e4676b14d39ec620f7.jpg'
+    },
     short_screenshots: []
   },
   {
@@ -64,7 +129,13 @@ const mockGames: Game[] = [
         platform: {
           id: 4,
           name: 'PC',
-          slug: 'pc'
+          slug: 'pc',
+          image: null,
+          year_end: null,
+          year_start: null,
+          games_count: 1000,
+          image_background:
+            'https://media.rawg.io/media/games/021/021c4e21a1824d2526f925eff6324653.jpg'
         },
         requirements: {}
       },
@@ -72,22 +143,81 @@ const mockGames: Game[] = [
         platform: {
           id: 187,
           name: 'PlayStation 4',
-          slug: 'playstation4'
+          slug: 'playstation4',
+          image: null,
+          year_end: null,
+          year_start: null,
+          games_count: 1000,
+          image_background:
+            'https://media.rawg.io/media/games/021/021c4e21a1824d2526f925eff6324653.jpg'
         },
         requirements: {}
       }
     ],
     genres: [
-      { id: 3, name: 'Adventure', slug: 'adventure' },
-      { id: 5, name: 'RPG', slug: 'role-playing-games-rpg' }
+      {
+        id: 3,
+        name: 'Adventure',
+        slug: 'adventure',
+        games_count: 100,
+        image_background:
+          'https://media.rawg.io/media/games/1f4/1f47a270b8f241e4676b14d39ec620f7.jpg'
+      },
+      {
+        id: 5,
+        name: 'RPG',
+        slug: 'role-playing-games-rpg',
+        games_count: 100,
+        image_background:
+          'https://media.rawg.io/media/games/1f4/1f47a270b8f241e4676b14d39ec620f7.jpg'
+      }
     ],
-    publishers: [{ id: 2, name: 'Rockstar Games', slug: 'rockstar-games' }],
-    developers: [{ id: 2, name: 'Rockstar Games', slug: 'rockstar-games' }],
+    publishers: [
+      {
+        id: 2,
+        name: 'Rockstar Games',
+        slug: 'rockstar-games',
+        games_count: 100,
+        image_background:
+          'https://media.rawg.io/media/games/1f4/1f47a270b8f241e4676b14d39ec620f7.jpg'
+      }
+    ],
+    developers: [
+      {
+        id: 2,
+        name: 'Rockstar Games',
+        slug: 'rockstar-games',
+        games_count: 100,
+        image_background:
+          'https://media.rawg.io/media/games/1f4/1f47a270b8f241e4676b14d39ec620f7.jpg'
+      }
+    ],
     tags: [
-      { id: 3, name: 'Western', slug: 'western' },
-      { id: 4, name: 'Open World', slug: 'open-world' }
+      {
+        id: 3,
+        name: 'Western',
+        slug: 'western',
+        games_count: 100,
+        image_background:
+          'https://media.rawg.io/media/games/1f4/1f47a270b8f241e4676b14d39ec620f7.jpg'
+      },
+      {
+        id: 4,
+        name: 'Open World',
+        slug: 'open-world',
+        games_count: 100,
+        image_background:
+          'https://media.rawg.io/media/games/1f4/1f47a270b8f241e4676b14d39ec620f7.jpg'
+      }
     ],
-    esrb_rating: { id: 4, name: 'Mature', slug: 'mature' },
+    esrb_rating: {
+      id: 4,
+      name: 'Mature',
+      slug: 'mature',
+      games_count: 100,
+      image_background:
+        'https://media.rawg.io/media/games/1f4/1f47a270b8f241e4676b14d39ec620f7.jpg'
+    },
     short_screenshots: []
   },
   {
@@ -106,7 +236,13 @@ const mockGames: Game[] = [
         platform: {
           id: 4,
           name: 'PC',
-          slug: 'pc'
+          slug: 'pc',
+          image: null,
+          year_end: null,
+          year_start: null,
+          games_count: 1000,
+          image_background:
+            'https://media.rawg.io/media/games/021/021c4e21a1824d2526f925eff6324653.jpg'
         },
         requirements: {}
       },
@@ -114,22 +250,81 @@ const mockGames: Game[] = [
         platform: {
           id: 187,
           name: 'PlayStation 4',
-          slug: 'playstation4'
+          slug: 'playstation4',
+          image: null,
+          year_end: null,
+          year_start: null,
+          games_count: 1000,
+          image_background:
+            'https://media.rawg.io/media/games/021/021c4e21a1824d2526f925eff6324653.jpg'
         },
         requirements: {}
       }
     ],
     genres: [
-      { id: 5, name: 'RPG', slug: 'role-playing-games-rpg' },
-      { id: 3, name: 'Adventure', slug: 'adventure' }
+      {
+        id: 5,
+        name: 'RPG',
+        slug: 'role-playing-games-rpg',
+        games_count: 100,
+        image_background:
+          'https://media.rawg.io/media/games/1f4/1f47a270b8f241e4676b14d39ec620f7.jpg'
+      },
+      {
+        id: 3,
+        name: 'Adventure',
+        slug: 'adventure',
+        games_count: 100,
+        image_background:
+          'https://media.rawg.io/media/games/1f4/1f47a270b8f241e4676b14d39ec620f7.jpg'
+      }
     ],
-    publishers: [{ id: 1, name: 'CD Projekt', slug: 'cd-projekt' }],
-    developers: [{ id: 1, name: 'CD Projekt Red', slug: 'cd-projekt-red' }],
+    publishers: [
+      {
+        id: 1,
+        name: 'CD Projekt',
+        slug: 'cd-projekt',
+        games_count: 100,
+        image_background:
+          'https://media.rawg.io/media/games/1f4/1f47a270b8f241e4676b14d39ec620f7.jpg'
+      }
+    ],
+    developers: [
+      {
+        id: 1,
+        name: 'CD Projekt Red',
+        slug: 'cd-projekt-red',
+        games_count: 100,
+        image_background:
+          'https://media.rawg.io/media/games/1f4/1f47a270b8f241e4676b14d39ec620f7.jpg'
+      }
+    ],
     tags: [
-      { id: 5, name: 'Cyberpunk', slug: 'cyberpunk' },
-      { id: 6, name: 'Open World', slug: 'open-world' }
+      {
+        id: 5,
+        name: 'Cyberpunk',
+        slug: 'cyberpunk',
+        games_count: 100,
+        image_background:
+          'https://media.rawg.io/media/games/1f4/1f47a270b8f241e4676b14d39ec620f7.jpg'
+      },
+      {
+        id: 6,
+        name: 'Open World',
+        slug: 'open-world',
+        games_count: 100,
+        image_background:
+          'https://media.rawg.io/media/games/1f4/1f47a270b8f241e4676b14d39ec620f7.jpg'
+      }
     ],
-    esrb_rating: { id: 4, name: 'Mature', slug: 'mature' },
+    esrb_rating: {
+      id: 4,
+      name: 'Mature',
+      slug: 'mature',
+      games_count: 100,
+      image_background:
+        'https://media.rawg.io/media/games/1f4/1f47a270b8f241e4676b14d39ec620f7.jpg'
+    },
     short_screenshots: []
   },
   {
@@ -148,7 +343,13 @@ const mockGames: Game[] = [
         platform: {
           id: 4,
           name: 'PC',
-          slug: 'pc'
+          slug: 'pc',
+          image: null,
+          year_end: null,
+          year_start: null,
+          games_count: 1000,
+          image_background:
+            'https://media.rawg.io/media/games/021/021c4e21a1824d2526f925eff6324653.jpg'
         },
         requirements: {}
       },
@@ -156,22 +357,81 @@ const mockGames: Game[] = [
         platform: {
           id: 187,
           name: 'PlayStation 4',
-          slug: 'playstation4'
+          slug: 'playstation4',
+          image: null,
+          year_end: null,
+          year_start: null,
+          games_count: 1000,
+          image_background:
+            'https://media.rawg.io/media/games/021/021c4e21a1824d2526f925eff6324653.jpg'
         },
         requirements: {}
       }
     ],
     genres: [
-      { id: 5, name: 'RPG', slug: 'role-playing-games-rpg' },
-      { id: 3, name: 'Adventure', slug: 'adventure' }
+      {
+        id: 5,
+        name: 'RPG',
+        slug: 'role-playing-games-rpg',
+        games_count: 100,
+        image_background:
+          'https://media.rawg.io/media/games/1f4/1f47a270b8f241e4676b14d39ec620f7.jpg'
+      },
+      {
+        id: 3,
+        name: 'Adventure',
+        slug: 'adventure',
+        games_count: 100,
+        image_background:
+          'https://media.rawg.io/media/games/1f4/1f47a270b8f241e4676b14d39ec620f7.jpg'
+      }
     ],
-    publishers: [{ id: 3, name: 'Bandai Namco', slug: 'bandai-namco' }],
-    developers: [{ id: 3, name: 'FromSoftware', slug: 'fromsoftware' }],
+    publishers: [
+      {
+        id: 3,
+        name: 'Bandai Namco',
+        slug: 'bandai-namco',
+        games_count: 100,
+        image_background:
+          'https://media.rawg.io/media/games/1f4/1f47a270b8f241e4676b14d39ec620f7.jpg'
+      }
+    ],
+    developers: [
+      {
+        id: 3,
+        name: 'FromSoftware',
+        slug: 'fromsoftware',
+        games_count: 100,
+        image_background:
+          'https://media.rawg.io/media/games/1f4/1f47a270b8f241e4676b14d39ec620f7.jpg'
+      }
+    ],
     tags: [
-      { id: 7, name: 'Souls-like', slug: 'souls-like' },
-      { id: 8, name: 'Open World', slug: 'open-world' }
+      {
+        id: 7,
+        name: 'Souls-like',
+        slug: 'souls-like',
+        games_count: 100,
+        image_background:
+          'https://media.rawg.io/media/games/1f4/1f47a270b8f241e4676b14d39ec620f7.jpg'
+      },
+      {
+        id: 8,
+        name: 'Open World',
+        slug: 'open-world',
+        games_count: 100,
+        image_background:
+          'https://media.rawg.io/media/games/1f4/1f47a270b8f241e4676b14d39ec620f7.jpg'
+      }
     ],
-    esrb_rating: { id: 4, name: 'Mature', slug: 'mature' },
+    esrb_rating: {
+      id: 4,
+      name: 'Mature',
+      slug: 'mature',
+      games_count: 100,
+      image_background:
+        'https://media.rawg.io/media/games/1f4/1f47a270b8f241e4676b14d39ec620f7.jpg'
+    },
     short_screenshots: []
   }
 ]
