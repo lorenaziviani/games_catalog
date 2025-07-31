@@ -1,6 +1,6 @@
 import { ElementType, TextVariant } from '@/types/common'
 import { useState } from 'react'
-import Text from '../Text'
+import Text from '@/components/common/ui/Text'
 import * as S from './styles'
 
 interface ImageProps {

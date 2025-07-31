@@ -1,5 +1,5 @@
 import type { DefaultTheme } from 'styled-components'
-import { TextVariant, ThemeMode } from '../types/common'
+import { TextVariant, ThemeMode } from '@/types/common'
 
 export const isDarkMode = (theme: DefaultTheme): boolean => {
   return theme.mode === ThemeMode.DARK

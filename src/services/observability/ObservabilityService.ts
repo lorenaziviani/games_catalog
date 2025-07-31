@@ -1,4 +1,4 @@
-import type { IObservabilityService } from '../interfaces/IObservabilityService'
+import type { IObservabilityService } from '@/services/interfaces/IObservabilityService'
 import type { ObservabilityConfig, ObservabilityProvider } from './types'
 
 export class ObservabilityService implements IObservabilityService {

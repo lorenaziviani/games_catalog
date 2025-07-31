@@ -1,15 +1,18 @@
-import { getRawgApiUrl } from '../config/api'
-import { env } from '../config/env'
+import { getRawgApiUrl } from '@/config/api'
+import { env } from '@/config/env'
+import type {
+  FilterParams,
+  IGameService
+} from '@/services/interfaces/IGameService'
+import type { IObservabilityService } from '@/services/interfaces/IObservabilityService'
 import {
   API_ENDPOINTS,
   API_ERROR_MESSAGES,
   API_ORDERING,
   API_QUERY_PARAMS
-} from '../types/common'
-import type { GameDetails, GamesResponse } from '../types/game'
-import { fetchWithHeaders } from '../utils/api'
-import type { FilterParams, IGameService } from './interfaces/IGameService'
-import type { IObservabilityService } from './interfaces/IObservabilityService'
+} from '@/types/common'
+import type { GameDetails, GamesResponse } from '@/types/game'
+import { fetchWithHeaders } from '@/utils/api'
 
 export class GameService implements IGameService {
   constructor(private observabilityService: IObservabilityService) {}

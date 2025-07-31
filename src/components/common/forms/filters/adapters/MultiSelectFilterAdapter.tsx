@@ -1,6 +1,6 @@
 import React from 'react'
-import MultiSelectFilter from '../MultiSelectFilter'
-import type { FilterComponentProps } from '../types'
+import MultiSelectFilter from '@/components/common/forms/filters/MultiSelectFilter'
+import type { FilterComponentProps } from '@/components/common/forms/filters/types'
 
 const MultiSelectFilterAdapter: React.FC<FilterComponentProps> = ({
   value,

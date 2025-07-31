@@ -1,6 +1,6 @@
 import React from 'react'
-import RangeSlider from '../RangeSlider'
-import type { FilterComponentProps } from '../types'
+import RangeSlider from '@/components/common/forms/filters/RangeSlider'
+import type { FilterComponentProps } from '@/components/common/forms/filters/types'
 
 const RangeSliderAdapter: React.FC<FilterComponentProps> = ({
   value,

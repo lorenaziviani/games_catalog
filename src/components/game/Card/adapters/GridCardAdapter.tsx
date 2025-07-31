@@ -1,6 +1,6 @@
 import React from 'react'
-import GridCard from '../../GridCard'
-import type { CardRendererProps } from '../types'
+import GridCard from '@/components/game/GridCard'
+import type { CardRendererProps } from '@/components/game/Card/types'
 
 const GridCardAdapter: React.FC<CardRendererProps> = ({
   game,

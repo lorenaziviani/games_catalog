@@ -1,6 +1,6 @@
 import { FILTER_FIELDS } from '@/types/common'
+import type { GameItem } from '@/types/filter'
 import type { Game } from '@/types/game'
-import type { GameItem } from '../../types/filter'
 import type { IFavoritesRepository } from './interfaces/IFavoritesRepository'
 
 export class FavoritesService {

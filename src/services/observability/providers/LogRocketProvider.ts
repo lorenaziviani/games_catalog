@@ -1,5 +1,5 @@
 import LogRocket from 'logrocket'
-import type { ObservabilityProvider } from '../types'
+import type { ObservabilityProvider } from '@/services/observability/types'
 
 const LOGROCKET_APP_ID = import.meta.env.VITE_LOGROCKET_APP_ID || ''
 

@@ -1,7 +1,7 @@
 import { AccessibilityMode, FontSize, ThemeMode } from '@/types/common'
 import React, { useState } from 'react'
 import { IoAccessibility, IoEye, IoEyeOff } from 'react-icons/io5'
-import { useAccessibility } from '../../../../hooks/useAccessibility'
+import { useAccessibility } from '@/hooks/useAccessibility'
 import * as S from './styles'
 
 type AccessibilityButtonProps = {

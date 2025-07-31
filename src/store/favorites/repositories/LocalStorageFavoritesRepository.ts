@@ -1,6 +1,6 @@
 import type { Game } from '@/types/game'
-import type { IFavoritesRepository } from '../interfaces/IFavoritesRepository'
-import type { StoredFavorites } from '../types'
+import type { IFavoritesRepository } from '@/store/favorites/interfaces/IFavoritesRepository'
+import type { StoredFavorites } from '@/store/favorites/types'
 
 export class LocalStorageFavoritesRepository implements IFavoritesRepository {
   private readonly storageKey = 'favorites'

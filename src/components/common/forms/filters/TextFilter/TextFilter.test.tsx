@@ -1,7 +1,7 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { ThemeProvider } from 'styled-components'
-import { LightTheme } from '../../../../../styles/theme'
+import { LightTheme } from '@/styles/theme'
 import TextFilter from './index.tsx'
 
 jest.mock('./styles', () => ({

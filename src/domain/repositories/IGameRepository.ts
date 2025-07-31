@@ -1,5 +1,5 @@
-import { GameCollection } from '../aggregates/GameCollection'
-import { Game } from '../entities/Game'
+import { GameCollection } from '@/domain/aggregates/GameCollection'
+import { Game } from '@/domain/entities/Game'
 
 export interface GameSearchCriteria {
   page?: number

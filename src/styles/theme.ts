@@ -1,5 +1,5 @@
 import type { DefaultTheme } from 'styled-components'
-import { ThemeMode } from '../types/common'
+import { ThemeMode } from '@/types/common'
 
 export const LightTheme: DefaultTheme = {
   mode: ThemeMode.LIGHT,

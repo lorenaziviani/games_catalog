@@ -1,5 +1,5 @@
 import React from 'react'
-import { captureError } from '../services/observability/index'
+import { captureError } from '@/services/observability/index'
 
 interface ErrorBoundaryProps {
   children: React.ReactNode

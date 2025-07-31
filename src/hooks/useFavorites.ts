@@ -1,10 +1,8 @@
 import { serviceContainer } from '@/services/ServiceContainer'
 import type { AppDispatch, RootState } from '@/store'
 import {
-  addToFavorites,
   clearFavorites,
   loadFavoritesFromStorage,
-  removeFromFavorites,
   selectError,
   selectFavorites,
   selectFavoritesCount,
@@ -29,27 +27,6 @@ export const useFavorites = () => {
     dispatch(loadFavoritesFromStorage())
   }, [dispatch])
 
-  const addFavorite = useCallback(
-    (game: Game) => {
-      dispatch(addToFavorites(game))
-    },
-    [dispatch]
-  )
-
-  const removeFavorite = useCallback(
-    (gameId: number) => {
-      dispatch(removeFromFavorites(gameId))
-    },
-    [dispatch]
-  )
-
-  const toggleFavoriteGame = useCallback(
-    (game: Game) => {
-      dispatch(toggleFavorite(game))
-    },
-    [dispatch]
-  )
-
   const clearAllFavorites = useCallback(() => {
     dispatch(clearFavorites())
   }, [dispatch])
@@ -67,9 +44,6 @@ export const useFavorites = () => {
     favoritesCount,
     isLoading,
     error,
-    addFavorite,
-    removeFavorite,
-    toggleFavoriteGame,
     clearAllFavorites,
     isFavorite,
     filterDataFromFavorites

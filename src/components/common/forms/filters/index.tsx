@@ -124,24 +124,15 @@ const Filters = ({
         value: filters.dateRange
       },
       {
-        title: 'Score Metacritic (0-100)',
-        type: 'metacriticRange',
-        value: filters.metacriticRange,
-        minValue: 0,
-        maxValue: 100,
-        step: 1,
-        unit: ''
-      }
-    ]
-
-    const conditionalFilters: FilterSectionConfig[] = [
-      {
         title: 'Gêneros',
         type: 'genres',
         value: filters.genres,
         options: availableGenres,
         placeholder: 'Selecione os gêneros...'
-      },
+      }
+    ]
+
+    const conditionalFilters: FilterSectionConfig[] = [
       {
         title: 'Plataformas',
         type: 'platforms',
@@ -162,6 +153,15 @@ const Filters = ({
         value: filters.tags,
         options: availableTags,
         placeholder: 'Selecione as tags...'
+      },
+      {
+        title: 'Score Metacritic (0-100)',
+        type: 'metacriticRange',
+        value: filters.metacriticRange,
+        minValue: 0,
+        maxValue: 100,
+        step: 1,
+        unit: ''
       }
     ]
 

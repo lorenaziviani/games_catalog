@@ -1,8 +1,8 @@
-import type { IFavoritesRepository } from '../../domain/repositories/IFavoritesRepository'
-import type { IGameRepository } from '../../domain/repositories/IGameRepository'
-import { GameDomainService } from '../../domain/services/GameDomainService'
-import { FavoritesRepository } from '../repositories/FavoritesRepository'
-import { GameRepository } from '../repositories/GameRepository'
+import type { IFavoritesRepository } from '@/domain/repositories/IFavoritesRepository'
+import type { IGameRepository } from '@/domain/repositories/IGameRepository'
+import { GameDomainService } from '@/domain/services/GameDomainService'
+import { FavoritesRepository } from '@/infrastructure/repositories/FavoritesRepository'
+import { GameRepository } from '@/infrastructure/repositories/GameRepository'
 
 class DDDContainer {
   private static instance: DDDContainer

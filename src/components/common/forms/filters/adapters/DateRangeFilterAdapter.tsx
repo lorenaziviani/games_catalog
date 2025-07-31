@@ -1,6 +1,6 @@
 import React from 'react'
-import DateRangeFilter from '../DateRangeFilter'
-import type { FilterComponentProps } from '../types'
+import DateRangeFilter from '@/components/common/forms/filters/DateRangeFilter'
+import type { FilterComponentProps } from '@/components/common/forms/filters/types'
 
 const DateRangeFilterAdapter: React.FC<FilterComponentProps> = ({
   value,

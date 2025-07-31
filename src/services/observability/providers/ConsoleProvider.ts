@@ -1,4 +1,4 @@
-import type { ObservabilityProvider } from '../types'
+import type { ObservabilityProvider } from '@/services/observability/types'
 
 export class ConsoleProvider implements ObservabilityProvider {
   initialize(): void {

@@ -1,4 +1,4 @@
-import { Game } from '../entities/Game'
+import { Game } from '@/domain/entities/Game'
 
 export class GameCollection {
   private readonly _games: Game[]
