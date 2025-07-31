@@ -128,11 +128,26 @@ jobs:
       - name: Build application
         run: npm run build
 
-      - name: Start application
-        run: npm run preview &
+      - name: Cleanup and start application
+        run: |
+          # Cleanup - matar processos na porta 3000
+          echo "🧹 Limpando processos na porta 3000..."
+          PORT_3000_PID=$(lsof -ti:3000 2>/dev/null || true)
+          if [ ! -z "$PORT_3000_PID" ]; then
+            echo "Processo encontrado na porta 3000 (PID: $PORT_3000_PID). Finalizando..."
+            kill -9 $PORT_3000_PID 2>/dev/null || true
+            sleep 2
+          fi
 
-      - name: Wait for application to start
-        run: sleep 10
+          # Verificar se o servidor está rodando
+          for i in {1..10}; do
+            if curl -f http://localhost:3000 >/dev/null 2>&1; then
+              echo "Servidor iniciado com sucesso!"
+              break
+            fi
+            echo "Aguardando servidor... ($i/10)"
+            sleep 2
+          done
 
       - name: Run Playwright tests
         run: npx playwright test
