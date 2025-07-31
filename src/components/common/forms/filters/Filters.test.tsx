@@ -1,6 +1,6 @@
 import type { FilterState } from '@/types/filter'
 import { fireEvent, render, screen } from '@testing-library/react'
-import Filters from './index'
+import Filters from './index.tsx'
 
 jest.mock('styled-components', () => ({
   ...jest.requireActual('styled-components'),
@@ -22,7 +22,7 @@ jest.mock('react-icons/io', () => ({
   IoIosArrowUp: () => <span data-testid="arrow-up">⬆️</span>
 }))
 
-jest.mock('../Text', () => {
+jest.mock('../../ui/Text', () => {
   return function MockText({ children }: { children: React.ReactNode }) {
     return <span data-testid="text">{children}</span>
   }

@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { useState } from 'react'
-import RangeSlider from './index'
+import RangeSlider from './index.tsx'
 
 const RangeSliderWrapper = ({
   min,

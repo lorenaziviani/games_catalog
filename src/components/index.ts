@@ -10,7 +10,7 @@ export { default as Banner } from './common/layout/Banner'
 export { default as Header } from './common/layout/Header'
 
 // Common Forms Components
-export { default as Filters } from './common/forms/Filters'
+export { default as Filters } from './common/forms/filters'
 export { default as Sort } from './common/forms/Sort'
 
 // Game Domain Components

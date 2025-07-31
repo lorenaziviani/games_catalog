@@ -13,7 +13,7 @@ jest.mock('../GridCard', () => {
   }
 })
 
-jest.mock('../LoadingSpinner', () => {
+jest.mock('../../common/ui/LoadingSpinner', () => {
   return function MockLoadingSpinner({ message }: { message: string }) {
     return (
       <div data-testid="loading-spinner" data-message={message}>
@@ -23,7 +23,7 @@ jest.mock('../LoadingSpinner', () => {
   }
 })
 
-jest.mock('../Pagination', () => {
+jest.mock('../../features/navigation/Pagination', () => {
   return function MockPagination({
     currentPage,
     totalPages
@@ -44,7 +44,7 @@ jest.mock('../Pagination', () => {
   }
 })
 
-jest.mock('../Text', () => {
+jest.mock('../../common/ui/Text', () => {
   return function MockText({ children }: { children: React.ReactNode }) {
     return <span data-testid="text">{children}</span>
   }

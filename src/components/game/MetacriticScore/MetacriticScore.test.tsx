@@ -2,7 +2,7 @@ import { MetacriticLabel, MetacriticScoreSize } from '@/types/common'
 import { render, screen } from '@testing-library/react'
 import MetacriticScore from './index'
 
-jest.mock('../Text', () => {
+jest.mock('../../common/ui/Text', () => {
   return function MockText({ children }: { children: React.ReactNode }) {
     return <span data-testid="metacritic-text">{children}</span>
   }

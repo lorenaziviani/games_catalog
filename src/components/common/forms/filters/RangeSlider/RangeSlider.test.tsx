@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react'
-import RangeSlider from './index'
+import RangeSlider from './index.tsx'
 
 jest.mock('./styles', () => ({
   Container: ({ children }: { children: React.ReactNode }) => (

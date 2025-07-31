@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { useState } from 'react'
-import MultiSelectFilter from './index'
+import MultiSelectFilter from './index.tsx'
 
 const MultiSelectFilterWrapper = ({
   options,

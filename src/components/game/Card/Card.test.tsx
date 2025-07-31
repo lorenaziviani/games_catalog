@@ -7,7 +7,7 @@ import { Provider } from 'react-redux'
 import { ThemeProvider } from 'styled-components'
 import Card from './index'
 
-jest.mock('../FavoriteButton', () => ({
+jest.mock('../../features/favorites/FavoriteButton', () => ({
   __esModule: true,
   default: ({ isFavorite, onToggle }: any) => (
     <button
@@ -22,12 +22,12 @@ jest.mock('../FavoriteButton', () => ({
   )
 }))
 
-jest.mock('../Text', () => ({
+jest.mock('../../common/ui/Text', () => ({
   __esModule: true,
   default: ({ children }: any) => <span>{children}</span>
 }))
 
-jest.mock('../Image', () => ({
+jest.mock('../../common/ui/Image', () => ({
   __esModule: true,
   default: ({ src, alt }: any) => (
     <img src={src} alt={alt} data-testid="game-image" />
@@ -44,7 +44,7 @@ jest.mock('../Info', () => ({
   )
 }))
 
-jest.mock('../TagsContainer', () => ({
+jest.mock('../../common/ui/TagsContainer', () => ({
   __esModule: true,
   default: ({ items }: { items?: Array<{ id: number; name: string }> }) => (
     <div data-testid="tags-container">

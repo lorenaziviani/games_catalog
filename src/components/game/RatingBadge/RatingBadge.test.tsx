@@ -16,7 +16,7 @@ jest.mock('styled-components', () => ({
   })
 }))
 
-jest.mock('../Text', () => {
+jest.mock('../../common/ui/Text', () => {
   return function MockText({ children }: { children: React.ReactNode }) {
     return <span data-testid="rating-text">{children}</span>
   }

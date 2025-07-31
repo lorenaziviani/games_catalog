@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import Filters from './index'
+import Filters from './index.tsx'
 
 const meta: Meta<typeof Filters> = {
   title: 'Filters/Filters',

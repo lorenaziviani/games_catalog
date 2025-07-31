@@ -1,5 +1,5 @@
 import { fireEvent, render, screen } from '@testing-library/react'
-import MultiSelectFilter from './index'
+import MultiSelectFilter from './index.tsx'
 
 jest.mock('styled-components', () => ({
   ...jest.requireActual('styled-components'),
@@ -8,7 +8,7 @@ jest.mock('styled-components', () => ({
   })
 }))
 
-jest.mock('../../../utils/themeUtils', () => ({
+jest.mock('../../../../../utils/themeUtils', () => ({
   isDarkMode: () => false
 }))
 

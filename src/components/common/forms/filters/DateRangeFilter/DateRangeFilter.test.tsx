@@ -1,5 +1,5 @@
 import { fireEvent, render, screen } from '@testing-library/react'
-import DateRangeFilter from './index'
+import DateRangeFilter from './index.tsx'
 
 jest.mock('./styles', () => ({
   Container: ({ children }: { children: React.ReactNode }) => (

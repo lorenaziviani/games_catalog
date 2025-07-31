@@ -1,5 +1,5 @@
 import { DEFAULT_SORT, ElementType, TextVariant } from '@/types/common'
-import Filters from '@components/common/forms/Filters'
+import Filters from '@components/common/forms/filters'
 import Sort from '@components/common/forms/Sort'
 import Banner from '@components/common/layout/Banner'
 import Text from '@components/common/ui/Text'

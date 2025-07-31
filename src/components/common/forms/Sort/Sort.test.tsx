@@ -29,13 +29,13 @@ jest.mock('@/utils/themeUtils', () => ({
   isDarkMode: () => false
 }))
 
-jest.mock('../Text', () => {
+jest.mock('../../ui/Text', () => {
   return function MockText({ children }: { children: React.ReactNode }) {
     return <span>{children}</span>
   }
 })
 
-jest.mock('../Filters/MultiSelectFilter', () => {
+jest.mock('../filters/MultiSelectFilter', () => {
   return function MockMultiSelectFilter({
     selectedValues,
     onChange,

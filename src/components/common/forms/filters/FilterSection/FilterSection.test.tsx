@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react'
-import FilterSection from './index'
+import FilterSection from './index.tsx'
 
 jest.mock('styled-components', () => ({
   ...jest.requireActual('styled-components'),
@@ -8,11 +8,11 @@ jest.mock('styled-components', () => ({
   })
 }))
 
-jest.mock('../../../utils/themeUtils', () => ({
+jest.mock('../../../../../utils/themeUtils', () => ({
   isDarkMode: () => false
 }))
 
-jest.mock('../../Text', () => {
+jest.mock('../../../ui/Text', () => {
   return function MockText({ children }: { children: React.ReactNode }) {
     return <span data-testid="text">{children}</span>
   }

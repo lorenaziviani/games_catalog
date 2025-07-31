@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { useState } from 'react'
-import DateRangeFilter from './index'
+import DateRangeFilter from './index.tsx'
 
 const DateRangeFilterWrapper = ({ startDate, endDate, onChange }: any) => {
   const [localStartDate, setLocalStartDate] = useState(startDate)

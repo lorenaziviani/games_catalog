@@ -6,7 +6,7 @@ jest.mock('react-icons/fa6', () => ({
   FaTrashCan: () => <span data-testid="trash-icon">🗑️</span>
 }))
 
-jest.mock('../Text', () => {
+jest.mock('../../common/ui/Text', () => {
   return function MockText({ children }: { children: React.ReactNode }) {
     return <span data-testid="text">{children}</span>
   }

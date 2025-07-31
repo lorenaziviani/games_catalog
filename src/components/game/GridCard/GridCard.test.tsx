@@ -12,7 +12,7 @@ jest.mock('../Card', () => {
   }
 })
 
-jest.mock('../Text', () => {
+jest.mock('../../common/ui/Text', () => {
   return function MockText({ children }: { children: React.ReactNode }) {
     return <span data-testid="text">{children}</span>
   }
