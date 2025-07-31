@@ -22,7 +22,7 @@ jobs:
             const commitSha = context.sha;
             const branch = context.ref.replace('refs/heads/', '');
             const repo = context.repo;
-            
+
             try {
               // Tenta criar um comentário no commit
               await github.rest.repos.createCommitComment({
@@ -45,4 +45,4 @@ jobs:
             } catch (error) {
               console.log('Could not create commit comment:', error.message);
               console.log('This is normal for some repository configurations');
-            } 
+            }

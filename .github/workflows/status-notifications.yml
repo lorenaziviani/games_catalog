@@ -26,14 +26,14 @@ jobs:
             const headSha = workflowRun.head_sha;
             const conclusion = workflowRun.conclusion;
             const workflowName = workflowRun.name;
-            
+
             console.log('Updating commit status for:', headSha);
             console.log('Workflow:', workflowName);
             console.log('Conclusion:', conclusion);
-            
+
             let status = 'success';
             let description = 'All checks passed';
-            
+
             if (conclusion === 'failure') {
               status = 'failure';
               description = 'Some checks failed';
@@ -41,7 +41,7 @@ jobs:
               status = 'cancelled';
               description = 'Workflow was cancelled';
             }
-            
+
             try {
               await github.rest.repos.createCommitStatus({
                 owner: context.repo.owner,
@@ -56,4 +56,4 @@ jobs:
               console.log('Status updated successfully');
             } catch (error) {
               console.log('Error updating status:', error.message);
-            } 
+            }
