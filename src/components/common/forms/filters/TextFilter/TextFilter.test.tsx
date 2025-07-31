@@ -81,7 +81,12 @@ describe('TextFilter', () => {
       const input = screen.getByTestId('text-filter-input')
       await user.type(input, 'teste')
 
-      expect(mockOnChange).toHaveBeenCalledWith('teste')
+      expect(mockOnChange).toHaveBeenCalledTimes(5)
+      expect(mockOnChange).toHaveBeenNthCalledWith(1, 't')
+      expect(mockOnChange).toHaveBeenNthCalledWith(2, 'te')
+      expect(mockOnChange).toHaveBeenNthCalledWith(3, 'tes')
+      expect(mockOnChange).toHaveBeenNthCalledWith(4, 'test')
+      expect(mockOnChange).toHaveBeenNthCalledWith(5, 'teste')
     })
 
     it('deve chamar onChange com valor vazio quando o usuário limpa o input', async () => {
@@ -126,6 +131,7 @@ describe('TextFilter', () => {
       const input = screen.getByTestId('text-filter-input')
       await user.type(input, 'jogo@#$%123')
 
+      expect(mockOnChange).toHaveBeenCalledTimes(11)
       expect(mockOnChange).toHaveBeenLastCalledWith('jogo@#$%123')
     })
 
@@ -138,6 +144,7 @@ describe('TextFilter', () => {
       const input = screen.getByTestId('text-filter-input')
       await user.type(input, '  texto com espaços  ')
 
+      expect(mockOnChange).toHaveBeenCalledTimes(21)
       expect(mockOnChange).toHaveBeenLastCalledWith('  texto com espaços  ')
     })
   })
@@ -181,6 +188,7 @@ describe('TextFilter', () => {
       const input = screen.getByTestId('text-filter-input')
       await user.type(input, longText)
 
+      expect(mockOnChange).toHaveBeenCalledTimes(1000)
       expect(mockOnChange).toHaveBeenLastCalledWith(longText)
     })
 
@@ -263,7 +271,8 @@ describe('TextFilter', () => {
       await user.click(input)
       await user.keyboard('teste')
 
-      expect(mockOnChange).toHaveBeenCalledWith('teste')
+      expect(mockOnChange).toHaveBeenCalledTimes(5)
+      expect(mockOnChange).toHaveBeenLastCalledWith('teste')
     })
 
     it('deve manter o foco durante a digitação', async () => {
@@ -288,6 +297,7 @@ describe('TextFilter', () => {
       await user.click(input)
       await user.keyboard('teste{Backspace}')
 
+      expect(mockOnChange).toHaveBeenCalledTimes(6)
       expect(mockOnChange).toHaveBeenLastCalledWith('test')
     })
   })
@@ -320,7 +330,7 @@ describe('TextFilter', () => {
 
       const input = screen.getByTestId('text-filter-input')
       expect(input).toBeInTheDocument()
-      expect(input).toHaveValue('valor 0')
+      expect(input).toHaveValue('valor 9')
     })
 
     it('deve lidar com digitação rápida', async () => {
@@ -333,6 +343,7 @@ describe('TextFilter', () => {
 
       await user.type(input, 'teste')
 
+      expect(mockOnChange).toHaveBeenCalledTimes(5)
       expect(mockOnChange).toHaveBeenLastCalledWith('teste')
     })
   })
@@ -373,6 +384,7 @@ describe('TextFilter', () => {
       const input = screen.getByTestId('text-filter-input')
       await user.type(input, 'café mañana ñoño')
 
+      expect(mockOnChange).toHaveBeenCalledTimes(16)
       expect(mockOnChange).toHaveBeenLastCalledWith('café mañana ñoño')
     })
 
@@ -385,6 +397,7 @@ describe('TextFilter', () => {
       const input = screen.getByTestId('text-filter-input')
       await user.type(input, '🎮 jogo 🎯')
 
+      expect(mockOnChange).toHaveBeenCalledTimes(10)
       expect(mockOnChange).toHaveBeenLastCalledWith('🎮 jogo 🎯')
     })
 
@@ -397,6 +410,7 @@ describe('TextFilter', () => {
       const input = screen.getByTestId('text-filter-input')
       await user.type(input, '123456789')
 
+      expect(mockOnChange).toHaveBeenCalledTimes(9)
       expect(mockOnChange).toHaveBeenLastCalledWith('123456789')
     })
 
@@ -409,6 +423,7 @@ describe('TextFilter', () => {
       const input = screen.getByTestId('text-filter-input')
       await user.type(input, '!@#$%^&*()_+-=')
 
+      expect(mockOnChange).toHaveBeenCalledTimes(14)
       expect(mockOnChange).toHaveBeenLastCalledWith('!@#$%^&*()_+-=')
     })
   })
@@ -510,7 +525,7 @@ describe('TextFilter', () => {
 
       const input = screen.getByTestId('text-filter-input')
       expect(input).toBeInTheDocument()
-      expect(input).toHaveValue('valor 0')
+      expect(input).toHaveValue('valor 4')
     })
   })
 

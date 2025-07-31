@@ -37,6 +37,89 @@ jest.mock('@/domain/services/GameDomainService', () => {
 
 import { dddContainer } from './DDDContainer'
 
+// Mock das implementações dos repositórios
+jest.mock('@/infrastructure/repositories/GameRepository', () => ({
+  GameRepository: jest.fn().mockImplementation(() => ({
+    findPopularGames: jest.fn(),
+    searchGames: jest.fn(),
+    findGamesByCriteria: jest.fn(),
+    findGameById: jest.fn(),
+    findGamesByGenre: jest.fn(),
+    findGamesByGenres: jest.fn(),
+    findGamesByPlatforms: jest.fn(),
+    findGamesByStores: jest.fn(),
+    findGamesByTags: jest.fn(),
+    findTopRatedGames: jest.fn(),
+    findRecentlyReleasedGames: jest.fn(),
+    findGamesWithHighMetacriticScore: jest.fn(),
+    getGameStatistics: jest.fn()
+  }))
+}))
+
+jest.mock('@/infrastructure/repositories/FavoritesRepository', () => ({
+  FavoritesRepository: jest.fn().mockImplementation(() => ({
+    addToFavorites: jest.fn(),
+    removeFromFavorites: jest.fn(),
+    clearAllFavorites: jest.fn(),
+    findAllFavorites: jest.fn(),
+    findFavoriteById: jest.fn(),
+    isFavorite: jest.fn(),
+    findFavoritesByGenres: jest.fn(),
+    findFavoritesByPlatforms: jest.fn(),
+    findFavoritesByStores: jest.fn(),
+    findFavoritesByTags: jest.fn(),
+    searchFavorites: jest.fn(),
+    findTopRatedFavorites: jest.fn(),
+    findRecentlyAddedFavorites: jest.fn(),
+    getFavoritesStatistics: jest.fn(),
+    getAvailableGenres: jest.fn(),
+    getAvailablePlatforms: jest.fn(),
+    getAvailableStores: jest.fn(),
+    getAvailableTags: jest.fn()
+  }))
+}))
+
+jest.mock('@/domain/services/GameDomainService', () => ({
+  GameDomainService: jest.fn().mockImplementation(() => ({
+    searchGamesWithFavorites: jest.fn(),
+    getPopularGamesWithFavorites: jest.fn(),
+    getRecommendedGames: jest.fn(),
+    getUserGamingProfile: jest.fn(),
+    compareGames: jest.fn(),
+    getGamingInsights: jest.fn()
+  }))
+}))
+
+// Mock do ServiceContainer
+jest.mock('@/services/ServiceContainer', () => ({
+  serviceContainer: {
+    getGameService: jest.fn(() => ({
+      getPopularGames: jest.fn(),
+      searchGames: jest.fn(),
+      getGamesWithFilters: jest.fn(),
+      getGameById: jest.fn(),
+      getGamesByGenre: jest.fn(),
+      getGamesByGenres: jest.fn(),
+      getGamesByPlatforms: jest.fn(),
+      getGamesByStores: jest.fn(),
+      getGamesByTags: jest.fn(),
+      getTopRatedGames: jest.fn(),
+      getRecentlyReleasedGames: jest.fn(),
+      getGamesWithHighMetacriticScore: jest.fn(),
+      getGameStatistics: jest.fn()
+    }))
+  }
+}))
+
+// Mock do favoritesStorage
+jest.mock('@/store/favorites/utils', () => ({
+  favoritesStorage: {
+    save: jest.fn(),
+    load: jest.fn(),
+    clear: jest.fn()
+  }
+}))
+
 const DDDContainer = (dddContainer as any).constructor
 
 describe('DDDContainer', () => {
@@ -89,6 +172,7 @@ describe('DDDContainer', () => {
       expect(typeof repository.findPopularGames).toBe('function')
       expect(typeof repository.findGameById).toBe('function')
       expect(typeof repository.searchGames).toBe('function')
+      expect(typeof repository.findGamesByCriteria).toBe('function')
     })
 
     it('deve retornar FavoritesRepository quando solicitado', () => {
@@ -101,6 +185,7 @@ describe('DDDContainer', () => {
       expect(typeof repository.addToFavorites).toBe('function')
       expect(typeof repository.removeFromFavorites).toBe('function')
       expect(typeof repository.isFavorite).toBe('function')
+      expect(typeof repository.searchFavorites).toBe('function')
     })
 
     it('deve lançar erro quando repositório não existe', () => {
@@ -138,6 +223,7 @@ describe('DDDContainer', () => {
       expect(typeof repository.findPopularGames).toBe('function')
       expect(typeof repository.findGameById).toBe('function')
       expect(typeof repository.searchGames).toBe('function')
+      expect(typeof repository.findGamesByCriteria).toBe('function')
     })
 
     it('deve retornar FavoritesRepository através de getFavoritesRepository()', () => {
@@ -148,6 +234,7 @@ describe('DDDContainer', () => {
       expect(typeof repository.addToFavorites).toBe('function')
       expect(typeof repository.removeFromFavorites).toBe('function')
       expect(typeof repository.isFavorite).toBe('function')
+      expect(typeof repository.searchFavorites).toBe('function')
     })
 
     it('deve retornar GameDomainService através de getGameDomainService()', () => {

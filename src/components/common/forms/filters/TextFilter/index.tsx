@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import * as S from './styles'
 
 interface TextFilterProps {
@@ -17,6 +17,13 @@ const TextFilter = ({ value, onChange, placeholder }: TextFilterProps) => {
     typeof value === 'string' ? value : ''
   )
 
+  // Atualiza o inputValue quando o value externo muda
+  useEffect(() => {
+    if (typeof value === 'string') {
+      setInputValue(value)
+    }
+  }, [value])
+
   const handleInputChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const newValue = e.target.value
@@ -29,7 +36,7 @@ const TextFilter = ({ value, onChange, placeholder }: TextFilterProps) => {
   return (
     <S.Input
       type="text"
-      value={typeof value === 'string' ? value : inputValue}
+      value={inputValue}
       onChange={handleInputChange}
       placeholder={placeholder}
       data-testid="text-filter-input"
