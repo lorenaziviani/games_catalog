@@ -33,9 +33,5 @@ export const configService = {
 
   isProduction() {
     return env.APP_ENV === EnvironmentsType.PRODUCTION
-  },
-
-  isTest() {
-    return env.APP_ENV === EnvironmentsType.TEST
   }
 }

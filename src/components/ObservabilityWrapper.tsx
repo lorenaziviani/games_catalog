@@ -1,6 +1,9 @@
+import {
+  initializeLogRocket,
+  useAnalytics
+} from '@services/observability/index'
 import React, { useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
-import { initializeLogRocket, useAnalytics } from '../services/observability'
 import { ErrorBoundary } from './ErrorBoundary'
 
 interface ObservabilityWrapperProps {
