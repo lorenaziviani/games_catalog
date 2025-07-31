@@ -18,47 +18,84 @@ jobs:
     if: ${{ github.event.workflow_run.conclusion != 'skipped' }}
 
     steps:
+      - name: Debug Context
+        uses: actions/github-script@v7
+        with:
+          script: |
+            console.log('=== Debug Context ===');
+            console.log('Event name:', context.eventName);
+            console.log('Workflow run name:', '${{ github.event.workflow_run.name }}');
+            console.log('Workflow run conclusion:', '${{ github.event.workflow_run.conclusion }}');
+            console.log('Head branch:', '${{ github.event.workflow_run.head_branch }}');
+            console.log('Head SHA:', '${{ github.event.workflow_run.head_sha }}');
+            console.log('Context issue:', context.issue);
+            console.log('Context payload:', JSON.stringify(context.payload, null, 2));
+            console.log('===================');
+
       - name: Notify on Failure
         if: ${{ github.event.workflow_run.conclusion == 'failure' }}
         uses: actions/github-script@v7
         with:
           script: |
-            const { data: comments } = await github.rest.issues.listComments({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: context.issue.number
-            });
+            // Verifica se estamos em um contexto de issue ou pull request
+            const issueNumber = context.issue?.number;
+            const pullNumber = context.payload.pull_request?.number;
 
-            const botComment = comments.find(comment =>
-              comment.user.type === 'Bot' &&
-              comment.body.includes('CI/CD Status')
-            );
+            console.log('Checking notification context...');
+            console.log('Issue number:', issueNumber);
+            console.log('Pull request number:', pullNumber);
 
-            const message = `🚨 **CI/CD Pipeline Failed**
+            if (issueNumber || pullNumber) {
+              // Se temos uma issue ou PR, envia comentário
+              const targetNumber = issueNumber || pullNumber;
+              console.log('Sending notification to issue/PR:', targetNumber);
 
-            **Workflow**: ${{ github.event.workflow_run.name }}
-            **Branch**: ${{ github.event.workflow_run.head_branch }}
-            **Commit**: ${{ github.event.workflow_run.head_sha }}
-            **Run ID**: ${{ github.event.workflow_run.id }}
-
-            [View Details](${{ github.event.workflow_run.html_url }})
-
-            Please check the logs and fix the issues before merging.`;
-
-            if (botComment) {
-              await github.rest.issues.updateComment({
+              const { data: comments } = await github.rest.issues.listComments({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                comment_id: botComment.id,
-                body: message
+                issue_number: targetNumber
               });
+
+              const botComment = comments.find(comment =>
+                comment.user.type === 'Bot' &&
+                comment.body.includes('CI/CD Status')
+              );
+
+              const message = `🚨 **CI/CD Pipeline Failed**
+
+              **Workflow**: ${{ github.event.workflow_run.name }}
+              **Branch**: ${{ github.event.workflow_run.head_branch }}
+              **Commit**: ${{ github.event.workflow_run.head_sha }}
+              **Run ID**: ${{ github.event.workflow_run.id }}
+
+              [View Details](${{ github.event.workflow_run.html_url }})
+
+              Please check the logs and fix the issues before merging.`;
+
+              if (botComment) {
+                await github.rest.issues.updateComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  comment_id: botComment.id,
+                  body: message
+                });
+                console.log('Updated existing bot comment');
+              } else {
+                await github.rest.issues.createComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: targetNumber,
+                  body: message
+                });
+                console.log('Created new comment');
+              }
             } else {
-              await github.rest.issues.createComment({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                issue_number: context.issue.number,
-                body: message
-              });
+              // Se não temos issue/PR, apenas loga o erro
+              console.log('No issue or pull request context found. Workflow failed but no notification target available.');
+              console.log('Workflow:', '${{ github.event.workflow_run.name }}');
+              console.log('Branch:', '${{ github.event.workflow_run.head_branch }}');
+              console.log('Commit:', '${{ github.event.workflow_run.head_sha }}');
+              console.log('This is normal for direct commits to main/master branches.');
             }
 
       - name: Notify on Success
@@ -66,17 +103,39 @@ jobs:
         uses: actions/github-script@v7
         with:
           script: |
-            const message = `✅ **CI/CD Pipeline Success**
+            // Verifica se estamos em um contexto de issue ou pull request
+            const issueNumber = context.issue?.number;
+            const pullNumber = context.payload.pull_request?.number;
 
-            **Workflow**: ${{ github.event.workflow_run.name }}
-            **Branch**: ${{ github.event.workflow_run.head_branch }}
-            **Commit**: ${{ github.event.workflow_run.head_sha }}
+            console.log('Checking notification context...');
+            console.log('Issue number:', issueNumber);
+            console.log('Pull request number:', pullNumber);
 
-            [View Details](${{ github.event.workflow_run.html_url }})`;
+            if (issueNumber || pullNumber) {
+              // Se temos uma issue ou PR, envia comentário
+              const targetNumber = issueNumber || pullNumber;
+              console.log('Sending notification to issue/PR:', targetNumber);
 
-            await github.rest.issues.createComment({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: context.issue.number,
-              body: message
-            });
+              const message = `✅ **CI/CD Pipeline Success**
+
+              **Workflow**: ${{ github.event.workflow_run.name }}
+              **Branch**: ${{ github.event.workflow_run.head_branch }}
+              **Commit**: ${{ github.event.workflow_run.head_sha }}
+
+              [View Details](${{ github.event.workflow_run.html_url }})`;
+
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: targetNumber,
+                body: message
+              });
+              console.log('Created success comment');
+            } else {
+              // Se não temos issue/PR, apenas loga o sucesso
+              console.log('No issue or pull request context found. Workflow succeeded but no notification target available.');
+              console.log('Workflow:', '${{ github.event.workflow_run.name }}');
+              console.log('Branch:', '${{ github.event.workflow_run.head_branch }}');
+              console.log('Commit:', '${{ github.event.workflow_run.head_sha }}');
+              console.log('This is normal for direct commits to main/master branches.');
+            }
