@@ -21,6 +21,7 @@ type ListProps = {
   showPagination?: boolean
   emptyMessage?: string
   loadingMessage?: string
+  onGameClick?: (game: Game) => void
 }
 
 const List = ({
@@ -32,7 +33,8 @@ const List = ({
   onPageChange,
   showPagination = true,
   emptyMessage = 'Nenhum jogo encontrado.',
-  loadingMessage = LoadingMessage.GAMES
+  loadingMessage = LoadingMessage.GAMES,
+  onGameClick
 }: ListProps) => {
   if (loading && games.length === 0) {
     return (
@@ -57,7 +59,11 @@ const List = ({
         </S.ErrorMessage>
       )}
 
-      <GridCard games={games} emptyMessage={emptyMessage} />
+      <GridCard
+        games={games}
+        emptyMessage={emptyMessage}
+        onGameClick={onGameClick}
+      />
 
       {showPagination && totalPages > 1 && (
         <Pagination

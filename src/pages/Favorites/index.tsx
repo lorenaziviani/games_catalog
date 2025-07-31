@@ -5,7 +5,7 @@ import Filters from '@components/common/forms/filters'
 import Sort from '@components/common/forms/Sort'
 import Banner from '@components/common/layout/Banner'
 import Text from '@components/common/ui/Text'
-import List from '@components/game/List'
+import GameListWithModal from '@components/game/GameListWithModal'
 import Stats from '@components/game/Stats'
 import { useFavorites } from '@hooks/useFavorites'
 import { useFilters } from '@hooks/useFilters'
@@ -111,7 +111,7 @@ const FavoritesPage = () => {
 
       <Sort currentSort={currentSort} onSortChange={handleSortChange} />
 
-      <List
+      <GameListWithModal
         games={paginatedFavorites}
         loading={false}
         error={null}

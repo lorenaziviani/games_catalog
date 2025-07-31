@@ -12,17 +12,22 @@ import * as S from './styles'
 
 interface CardProps {
   game: Game
+  onGameClick?: (game: Game) => void
 }
 
-const Card = ({ game }: CardProps) => {
+const Card = ({ game, onGameClick }: CardProps) => {
   const { isFavorite, toggleFavorite } = useIsFavorite(game.id)
 
   const handleToggleFavorite = () => {
     toggleFavorite(game)
   }
 
+  const handleCardClick = () => {
+    onGameClick?.(game)
+  }
+
   return (
-    <S.Card>
+    <S.Card onClick={handleCardClick}>
       <S.ImageContainer>
         <Image src={game.background_image} alt={game.name} />
         <FavoriteButton
