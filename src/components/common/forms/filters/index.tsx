@@ -6,12 +6,10 @@ import { useCallback, useState } from 'react'
 import { FiRefreshCw } from 'react-icons/fi'
 import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io'
 import { useTheme } from 'styled-components'
-import DateRangeFilter from './DateRangeFilter'
+import DynamicFilter from './DynamicFilter'
 import FilterSection from './FilterSection'
-import MultiSelectFilter from './MultiSelectFilter'
-import RangeSlider from './RangeSlider'
+import './registerFilters'
 import * as S from './styles'
-import TextFilter from './TextFilter'
 
 interface FiltersProps {
   filters: FilterState
@@ -89,7 +87,8 @@ const Filters = ({
           <S.FiltersGrid>
             {/* Busca por Nome */}
             <FilterSection title="Nome do Jogo">
-              <TextFilter
+              <DynamicFilter
+                type="name"
                 value={filters.name}
                 onChange={(value: string) => onUpdateFilter('name', value)}
                 placeholder="Digite o nome do jogo..."
@@ -99,10 +98,11 @@ const Filters = ({
             {/* Gêneros */}
             {availableGenres.length > 0 && (
               <FilterSection title="Gêneros">
-                <MultiSelectFilter
+                <DynamicFilter
+                  type="genres"
+                  value={filters.genres}
+                  onChange={(value: any) => onUpdateFilter('genres', value)}
                   options={availableGenres}
-                  selectedValues={filters.genres}
-                  onChange={value => onUpdateFilter('genres', value)}
                   placeholder="Selecione os gêneros..."
                 />
               </FilterSection>
@@ -111,10 +111,11 @@ const Filters = ({
             {/* Plataformas */}
             {availablePlatforms.length > 0 && (
               <FilterSection title="Plataformas">
-                <MultiSelectFilter
+                <DynamicFilter
+                  type="platforms"
+                  value={filters.platforms}
+                  onChange={(value: any) => onUpdateFilter('platforms', value)}
                   options={availablePlatforms}
-                  selectedValues={filters.platforms}
-                  onChange={value => onUpdateFilter('platforms', value)}
                   placeholder="Selecione as plataformas..."
                 />
               </FilterSection>
@@ -123,10 +124,11 @@ const Filters = ({
             {/* Lojas */}
             {availableStores.length > 0 && (
               <FilterSection title="Lojas">
-                <MultiSelectFilter
+                <DynamicFilter
+                  type="stores"
+                  value={filters.stores}
+                  onChange={(value: any) => onUpdateFilter('stores', value)}
                   options={availableStores}
-                  selectedValues={filters.stores}
-                  onChange={value => onUpdateFilter('stores', value)}
                   placeholder="Selecione as lojas..."
                 />
               </FilterSection>
@@ -135,10 +137,11 @@ const Filters = ({
             {/* Tags */}
             {availableTags.length > 0 && (
               <FilterSection title="Tags">
-                <MultiSelectFilter
+                <DynamicFilter
+                  type="tags"
+                  value={filters.tags}
+                  onChange={(value: any) => onUpdateFilter('tags', value)}
                   options={availableTags}
-                  selectedValues={filters.tags}
-                  onChange={value => onUpdateFilter('tags', value)}
                   placeholder="Selecione as tags..."
                 />
               </FilterSection>
@@ -146,27 +149,24 @@ const Filters = ({
 
             {/* Data de Lançamento */}
             <FilterSection title="Data de Lançamento">
-              <DateRangeFilter
-                startDate={filters.dateRange.start}
-                endDate={filters.dateRange.end}
-                onChange={(start, end) =>
-                  onUpdateFilter('dateRange', { start, end })
-                }
+              <DynamicFilter
+                type="dateRange"
+                value={filters.dateRange}
+                onChange={(value: any) => onUpdateFilter('dateRange', value)}
               />
             </FilterSection>
 
             {/* Metacritic Score */}
             <FilterSection title="Score Metacritic (0-100)">
-              <RangeSlider
-                min={filters.metacriticRange.min}
-                max={filters.metacriticRange.max}
+              <DynamicFilter
+                type="metacriticRange"
+                value={filters.metacriticRange}
+                onChange={(value: any) =>
+                  onUpdateFilter('metacriticRange', value)
+                }
                 minValue={0}
                 maxValue={100}
                 step={1}
-                onChange={(min, max) =>
-                  onUpdateFilter('metacriticRange', { min, max })
-                }
-                label="Selecione a faixa de score"
                 unit=""
               />
             </FilterSection>

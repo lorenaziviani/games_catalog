@@ -1,60 +1,76 @@
 import type { Game } from '@/types/game'
+import { LocalStorageProvider } from './storage/LocalStorageProvider'
+import { StorageService } from './storage/StorageService'
+import type { StorageConfig } from './storage/types'
 import type { StoredFavorites } from './types'
 
 export const FAVORITES_STORAGE_KEY = 'favorites'
 export const FAVORITES_VERSION = '1.0.0'
 
+const storageConfig: StorageConfig = {
+  provider: new LocalStorageProvider('heroes_catalog'),
+  prefix: 'favorites'
+}
+
+const storageService = new StorageService(storageConfig)
+
 export const favoritesStorage = {
-  save: (favorites: Game[]): void => {
+  save: async (favorites: Game[]): Promise<void> => {
     try {
       const data: StoredFavorites = {
         items: favorites,
         lastUpdated: Date.now()
       }
-      localStorage.setItem(FAVORITES_STORAGE_KEY, JSON.stringify(data))
+      await storageService.save(FAVORITES_STORAGE_KEY, data)
     } catch (error) {
-      console.error('Erro ao salvar favoritos no localStorage:', error)
+      console.error('Erro ao salvar favoritos:', error)
       throw new Error('Erro ao salvar favoritos')
     }
   },
 
-  load: (): Game[] => {
+  load: async (): Promise<Game[]> => {
     try {
-      const stored = localStorage.getItem(FAVORITES_STORAGE_KEY)
-      if (!stored) return []
+      const data: StoredFavorites = await storageService.load(
+        FAVORITES_STORAGE_KEY
+      )
 
-      const data: StoredFavorites = JSON.parse(stored)
-
-      if (!Array.isArray(data.items)) {
-        console.warn('Dados inválidos no localStorage, limpando...')
-        localStorage.removeItem(FAVORITES_STORAGE_KEY)
+      if (!data || !Array.isArray(data.items)) {
+        console.warn('Dados inválidos no storage, limpando...')
+        await storageService.remove(FAVORITES_STORAGE_KEY)
         return []
       }
 
       return data.items
     } catch (error) {
-      console.error('Erro ao carregar favoritos do localStorage:', error)
-      localStorage.removeItem(FAVORITES_STORAGE_KEY)
+      console.error('Erro ao carregar favoritos:', error)
+      await storageService.remove(FAVORITES_STORAGE_KEY)
       return []
     }
   },
 
-  clear: (): void => {
+  clear: async (): Promise<void> => {
     try {
-      localStorage.removeItem(FAVORITES_STORAGE_KEY)
+      await storageService.remove(FAVORITES_STORAGE_KEY)
     } catch (error) {
-      console.error('Erro ao limpar favoritos do localStorage:', error)
+      console.error('Erro ao limpar favoritos:', error)
     }
   },
 
-  isAvailable: (): boolean => {
+  isAvailable: async (): Promise<boolean> => {
     try {
-      const test = 'test'
-      localStorage.setItem(test, test)
-      localStorage.removeItem(test)
+      await storageService.save('test', 'test')
+      await storageService.remove('test')
       return true
     } catch {
       return false
     }
+  },
+
+  setStorageProvider: (provider: any) => {
+    storageService.setProvider(provider)
+  },
+
+  migrateData: async (newProvider: any, keys: string[]) => {
+    await storageService.migrateToProvider(newProvider, keys)
   }
 }
