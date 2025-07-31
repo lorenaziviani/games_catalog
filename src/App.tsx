@@ -4,6 +4,7 @@ import { BrowserRouter } from 'react-router-dom'
 import { ThemeProvider } from 'styled-components'
 import Header from './components/common/layout/Header'
 import ThemeButton from './components/features/theme/ThemeButton'
+import ObservabilityWrapperWithErrorBoundary from './components/ObservabilityWrapper'
 import RoutesApp from './routes'
 import { store } from './store'
 import * as S from './styles'
@@ -18,13 +19,15 @@ function App() {
       <BrowserRouter>
         <ThemeProvider theme={isDarkMode ? DarkTheme : LightTheme}>
           <GlobalStyle />
-          <Header />
-          <S.AppContainer>
-            <S.ThemeButtonWrapper>
-              <ThemeButton onClick={() => setIsDarkMode(!isDarkMode)} />
-            </S.ThemeButtonWrapper>
-            <RoutesApp />
-          </S.AppContainer>
+          <ObservabilityWrapperWithErrorBoundary>
+            <Header />
+            <S.AppContainer>
+              <S.ThemeButtonWrapper>
+                <ThemeButton onClick={() => setIsDarkMode(!isDarkMode)} />
+              </S.ThemeButtonWrapper>
+              <RoutesApp />
+            </S.AppContainer>
+          </ObservabilityWrapperWithErrorBoundary>
         </ThemeProvider>
       </BrowserRouter>
     </Provider>

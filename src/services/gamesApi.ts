@@ -15,6 +15,7 @@ import type {
   TagsResponse
 } from '../types/game'
 import { fetchWithHeaders } from '../utils/api'
+import { captureApiError, captureApiPerformance } from './observability'
 
 interface FilterParams {
   page?: number
@@ -34,6 +35,9 @@ export const gamesApi = {
     page = 1,
     pageSize = env.DEFAULT_PAGE_SIZE
   ): Promise<GamesResponse> {
+    const startTime = performance.now()
+    const endpoint = `${API_ENDPOINTS.GAMES}`
+
     try {
       const params = new URLSearchParams({
         [API_QUERY_PARAMS.PAGE]: page.toString(),
@@ -45,17 +49,28 @@ export const gamesApi = {
       })
 
       const response = await fetchWithHeaders(
-        getRawgApiUrl(`${API_ENDPOINTS.GAMES}?${params}`)
+        getRawgApiUrl(`${endpoint}?${params}`)
       )
 
+      const duration = performance.now() - startTime
+
       if (!response.ok) {
+        captureApiError(
+          endpoint,
+          response.status,
+          `${API_ERROR_MESSAGES.DEFAULT} ${response.status}`
+        )
         throw new Error(`${API_ERROR_MESSAGES.DEFAULT} ${response.status}`)
       }
 
+      captureApiPerformance(endpoint, duration, response.status)
       const data = await response.json()
 
       return data
     } catch (error) {
+      const duration = performance.now() - startTime
+      captureApiError(endpoint, 0, error)
+      captureApiPerformance(endpoint, duration, 0)
       console.error(API_ERROR_MESSAGES.POPULAR_GAMES, error)
       throw error
     }
