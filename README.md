@@ -89,6 +89,17 @@ O **Games Catalog** é uma aplicação React TypeScript de nível empresarial qu
 - **Deploy Automatizado** - Deploy automático
 - **Performance Monitoring** - Monitoramento de performance
 
+### **Observabilidade e Monitoramento**
+
+- **LogRocket Integration** - Captura de erros, performance e analytics
+- **Error Tracking** - Stack traces detalhados e relatórios
+- **Performance Monitoring** - Métricas de Core Web Vitals
+- **User Analytics** - Tracking de eventos e comportamento
+- **API Monitoring** - Monitoramento de chamadas de API
+- **Real-time Alerts** - Alertas em tempo real
+
+![Observabilidade](./docs/logRocket.png)
+
 ## 🚀 CI/CD Pipeline
 
 ### **Pipeline Completo**
@@ -466,29 +477,6 @@ interface FavoritesState {
   - [ ] Zoom em imagens
   - [ ] Lightbox para visualização
 
-### **Observabilidade**
-
-- [ ] **Logging e Monitoramento**
-  - [ ] Logs de performance
-  - [ ] Logs de erros
-  - [ ] Métricas de uso
-  - [ ] Analytics de usuário
-- [ ] **Performance Monitoring**
-  - [ ] Tempo de carregamento
-  - [ ] Métricas de Core Web Vitals
-  - [ ] Monitoramento de API calls
-  - [ ] Alertas de performance
-- [ ] **Error Tracking**
-  - [ ] Captura de erros JavaScript
-  - [ ] Stack traces detalhados
-  - [ ] Relatórios de erro
-  - [ ] Integração com Sentry
-- [ ] **User Analytics**
-  - [ ] Tracking de eventos
-  - [ ] Heatmaps de uso
-  - [ ] Funnels de conversão
-  - [ ] Relatórios de comportamento
-
 ### **Acessibilidade**
 
 - [ ] **Navegação por Teclado**
@@ -511,52 +499,6 @@ interface FavoritesState {
   - [ ] Texto redimensionável
   - [ ] Layout flexível
   - [ ] Touch targets adequados
-
-### **Testes Unitários**
-
-- [ ] **Componentes**
-  - [ ] Testes de renderização
-  - [ ] Testes de props
-  - [ ] Testes de eventos
-  - [ ] Testes de estado
-- [ ] **Hooks**
-  - [ ] Testes de useGames
-  - [ ] Testes de custom hooks
-  - [ ] Testes de side effects
-  - [ ] Testes de async logic
-- [ ] **Utilitários**
-  - [ ] Testes de funções puras
-  - [ ] Testes de formatação
-  - [ ] Testes de validação
-  - [ ] Testes de helpers
-- [ ] **Cobertura**
-  - [ ] Meta de 80% de cobertura
-  - [ ] Relatórios de cobertura
-  - [ ] Badges de status
-  - [ ] CI/CD integration
-
-### **Testes de Integração**
-
-- [ ] **API Integration**
-  - [ ] Testes de chamadas de API
-  - [ ] Testes de cache
-  - [ ] Testes de error handling
-  - [ ] Testes de loading states
-- [ ] **User Flows**
-  - [ ] Fluxo de busca
-  - [ ] Fluxo de favoritar
-  - [ ] Fluxo de paginação
-  - [ ] Fluxo de filtros
-- [ ] **State Management**
-  - [ ] Testes de React Query
-  - [ ] Testes de cache invalidation
-  - [ ] Testes de optimistic updates
-  - [ ] Testes de background refetch
-- [ ] **Cross-Component**
-  - [ ] Testes de comunicação entre componentes
-  - [ ] Testes de prop drilling
-  - [ ] Testes de context providers
-  - [ ] Testes de event bubbling
 
 ## Como Executar
 
