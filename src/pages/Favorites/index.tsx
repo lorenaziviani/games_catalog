@@ -1,5 +1,12 @@
 import { env } from '@/config/env'
 import { DEFAULT_SORT, ElementType, TextVariant } from '@/types/common'
+import {
+  extractGameGenresIds,
+  extractGamePlatformsIds,
+  extractGameStoresIds,
+  extractGameTagsIds,
+  isGameMatchingFilterIds
+} from '@/utils/gameUtils'
 import { scrollToTop } from '@/utils/scrollUtils'
 import Filters from '@components/common/forms/filters'
 import Sort from '@components/common/forms/Sort'
@@ -29,47 +36,40 @@ const FavoritesPage = () => {
     handleResetFilters
   } = useFilters()
 
+  const isGameNameMatchingFilter = (game: any) => {
+    if (!filters.name) return true
+    return game.name.toLowerCase().includes(filters.name.toLowerCase())
+  }
+
+  const isGameGenresMatchingFilter = (game: any) => {
+    const gameGenresIds = extractGameGenresIds(game)
+    return isGameMatchingFilterIds(gameGenresIds, filters.genres)
+  }
+
+  const isGamePlatformsMatchingFilter = (game: any) => {
+    const gamePlatformsIds = extractGamePlatformsIds(game)
+    return isGameMatchingFilterIds(gamePlatformsIds, filters.platforms)
+  }
+
+  const isGameStoresMatchingFilter = (game: any) => {
+    const gameStoresIds = extractGameStoresIds(game)
+    return isGameMatchingFilterIds(gameStoresIds, filters.stores)
+  }
+
+  const isGameTagsMatchingFilter = (game: any) => {
+    const gameTagsIds = extractGameTagsIds(game)
+    return isGameMatchingFilterIds(gameTagsIds, filters.tags)
+  }
+
   const filteredGames = useMemo(() => {
     return favorites.filter(game => {
-      if (
-        filters.name &&
-        !game.name.toLowerCase().includes(filters.name.toLowerCase())
-      ) {
-        return false
-      }
-
-      if (filters.genres.length > 0) {
-        const gameGenres = game.genres?.map(g => g.id.toString()) || []
-        if (!filters.genres.some(genre => gameGenres.includes(genre))) {
-          return false
-        }
-      }
-
-      if (filters.platforms.length > 0) {
-        const gamePlatforms =
-          game.platforms?.map(p => p.platform.id.toString()) || []
-        if (
-          !filters.platforms.some(platform => gamePlatforms.includes(platform))
-        ) {
-          return false
-        }
-      }
-
-      if (filters.stores.length > 0) {
-        const gameStores = game.stores?.map(s => s.store.id.toString()) || []
-        if (!filters.stores.some(store => gameStores.includes(store))) {
-          return false
-        }
-      }
-
-      if (filters.tags.length > 0) {
-        const gameTags = game.tags?.map(t => t.id.toString()) || []
-        if (!filters.tags.some(tag => gameTags.includes(tag))) {
-          return false
-        }
-      }
-
-      return true
+      return (
+        isGameNameMatchingFilter(game) &&
+        isGameGenresMatchingFilter(game) &&
+        isGamePlatformsMatchingFilter(game) &&
+        isGameStoresMatchingFilter(game) &&
+        isGameTagsMatchingFilter(game)
+      )
     })
   }, [favorites, filters])
 
@@ -86,64 +86,56 @@ const FavoritesPage = () => {
 
   const totalPages = Math.ceil(sortedGames.length / env.DEFAULT_PAGE_SIZE)
 
-  const handlePageChange = (page: number) => {
+  const navigateToPage = (page: number) => {
     setCurrentPage(page)
     setTimeout(() => {
       scrollToTop()
     }, 0)
   }
 
-  const handleClearAll = () => {
+  const clearAllFavoritesAndResetPage = () => {
     clearAllFavorites()
     setCurrentPage(1)
   }
 
-  const onFilterChange = (type: any, value: any) => {
+  const updateFilterAndResetPage = (type: any, value: any) => {
     handleFilterChange(type, value)
     setCurrentPage(1)
   }
 
-  const onResetFilters = () => {
+  const resetFiltersAndResetPage = () => {
     handleResetFilters()
     setCurrentPage(1)
   }
 
-  return (
-    <>
-      <Banner
-        badge={{
-          icon: FaHeart,
-          text: 'Meus Favoritos'
-        }}
+  const renderBanner = () => (
+    <Banner
+      badge={{
+        icon: FaHeart,
+        text: 'Meus Favoritos'
+      }}
+    >
+      <Text
+        as={ElementType.TITLE}
+        $variant={TextVariant.PRIMARY}
+        $lgFontSize={40}
       >
-        <Text
-          as={ElementType.TITLE}
-          $variant={TextVariant.PRIMARY}
-          $lgFontSize={40}
-        >
-          Sua Biblioteca de Jogos
-        </Text>
+        Sua Biblioteca de Jogos
+      </Text>
 
-        <Text
-          as={ElementType.P}
-          $variant={TextVariant.TERTIARY}
-          $lgFontSize={20}
-        >
-          Gerencie seus jogos favoritos, organize por gênero e descubra novos
-          títulos baseados no que você ama.
-        </Text>
-      </Banner>
+      <Text as={ElementType.P} $variant={TextVariant.TERTIARY} $lgFontSize={20}>
+        Gerencie seus jogos favoritos, organize por gênero e descubra novos
+        títulos baseados no que você ama.
+      </Text>
+    </Banner>
+  )
 
-      <Stats
-        games={favorites}
-        onClearAll={handleClearAll}
-        showClearButton={true}
-      />
-
+  const renderFiltersAndSort = () => (
+    <>
       <Filters
         filters={filters}
-        onUpdateFilter={onFilterChange}
-        onResetFilters={onResetFilters}
+        onUpdateFilter={updateFilterAndResetPage}
+        onResetFilters={resetFiltersAndResetPage}
         hasActiveFilters={hasActiveFilters}
         activeFiltersCount={activeFiltersCount}
         availableGenres={genres}
@@ -153,6 +145,26 @@ const FavoritesPage = () => {
       />
 
       <Sort currentSort={currentSort} onSortChange={handleSortChange} />
+    </>
+  )
+
+  const getEmptyMessage = () => {
+    return hasActiveFilters
+      ? 'Nenhum jogo encontrado com os filtros aplicados.'
+      : 'Você ainda não tem jogos favoritos.'
+  }
+
+  return (
+    <>
+      {renderBanner()}
+
+      <Stats
+        games={favorites}
+        onClearAll={clearAllFavoritesAndResetPage}
+        showClearButton={true}
+      />
+
+      {renderFiltersAndSort()}
 
       <GameListWithModal
         games={paginatedFavorites}
@@ -160,13 +172,9 @@ const FavoritesPage = () => {
         error={null}
         currentPage={currentPage}
         totalPages={totalPages}
-        onPageChange={handlePageChange}
+        onPageChange={navigateToPage}
         showPagination={true}
-        emptyMessage={
-          hasActiveFilters
-            ? 'Nenhum jogo encontrado com os filtros aplicados.'
-            : 'Você ainda não tem jogos favoritos.'
-        }
+        emptyMessage={getEmptyMessage()}
       />
     </>
   )
