@@ -18,8 +18,20 @@ export interface FilterConfig {
 }
 
 export interface FilterComponentProps {
-  value: string | number | string[]
-  onChange: (value: string | number | string[]) => void
+  value:
+    | string
+    | number
+    | string[]
+    | { start: string; end: string }
+    | { min: number; max: number }
+  onChange: (
+    value:
+      | string
+      | number
+      | string[]
+      | { start: string; end: string }
+      | { min: number; max: number }
+  ) => void
   placeholder?: string
   options?: FilterOption[]
   minValue?: number

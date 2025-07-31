@@ -4,6 +4,7 @@ import { useCallback, useState } from 'react'
 
 type FilterValue =
   | string
+  | number
   | string[]
   | { start: string; end: string }
   | { min: number; max: number }

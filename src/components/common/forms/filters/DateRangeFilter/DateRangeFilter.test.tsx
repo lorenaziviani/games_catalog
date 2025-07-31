@@ -238,7 +238,9 @@ describe('DateRangeFilter Component', () => {
           <DateRangeFilter
             startDate="2023-01-01"
             endDate="2023-12-31"
-            onChange={undefined as (start: string, end: string) => void}
+            onChange={
+              undefined as unknown as (start: string, end: string) => void
+            }
           />
         )
       }).not.toThrow()

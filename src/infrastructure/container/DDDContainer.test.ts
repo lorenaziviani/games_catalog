@@ -83,21 +83,23 @@ describe('DDDContainer', () => {
 
   describe('getRepository', () => {
     it('deve retornar GameRepository quando solicitado', () => {
-      const repository = dddContainer.getRepository('GameRepository')
+      const repository = dddContainer.getRepository('GameRepository') as any
 
       expect(repository).toBeDefined()
-      expect(typeof repository.getGames).toBe('function')
-      expect(typeof repository.getGameById).toBe('function')
+      expect(typeof repository.findPopularGames).toBe('function')
+      expect(typeof repository.findGameById).toBe('function')
       expect(typeof repository.searchGames).toBe('function')
     })
 
     it('deve retornar FavoritesRepository quando solicitado', () => {
-      const repository = dddContainer.getRepository('FavoritesRepository')
+      const repository = dddContainer.getRepository(
+        'FavoritesRepository'
+      ) as any
 
       expect(repository).toBeDefined()
-      expect(typeof repository.getFavorites).toBe('function')
-      expect(typeof repository.addFavorite).toBe('function')
-      expect(typeof repository.removeFavorite).toBe('function')
+      expect(typeof repository.findAllFavorites).toBe('function')
+      expect(typeof repository.addToFavorites).toBe('function')
+      expect(typeof repository.removeFromFavorites).toBe('function')
       expect(typeof repository.isFavorite).toBe('function')
     })
 
@@ -110,16 +112,15 @@ describe('DDDContainer', () => {
 
   describe('getService', () => {
     it('deve retornar GameDomainService quando solicitado', () => {
-      const service = dddContainer.getService('GameDomainService')
+      const service = dddContainer.getService('GameDomainService') as any
 
       expect(service).toBeDefined()
-      expect(typeof service.getGames).toBe('function')
-      expect(typeof service.getGameById).toBe('function')
-      expect(typeof service.searchGames).toBe('function')
-      expect(typeof service.getFavorites).toBe('function')
-      expect(typeof service.addFavorite).toBe('function')
-      expect(typeof service.removeFavorite).toBe('function')
-      expect(typeof service.isFavorite).toBe('function')
+      expect(typeof service.searchGamesWithFavorites).toBe('function')
+      expect(typeof service.getPopularGamesWithFavorites).toBe('function')
+      expect(typeof service.getRecommendedGames).toBe('function')
+      expect(typeof service.getUserGamingProfile).toBe('function')
+      expect(typeof service.compareGames).toBe('function')
+      expect(typeof service.getGamingInsights).toBe('function')
     })
 
     it('deve lançar erro quando serviço não existe', () => {
@@ -134,8 +135,8 @@ describe('DDDContainer', () => {
       const repository = dddContainer.getGameRepository()
 
       expect(repository).toBeDefined()
-      expect(typeof repository.getGames).toBe('function')
-      expect(typeof repository.getGameById).toBe('function')
+      expect(typeof repository.findPopularGames).toBe('function')
+      expect(typeof repository.findGameById).toBe('function')
       expect(typeof repository.searchGames).toBe('function')
     })
 
@@ -143,9 +144,9 @@ describe('DDDContainer', () => {
       const repository = dddContainer.getFavoritesRepository()
 
       expect(repository).toBeDefined()
-      expect(typeof repository.getFavorites).toBe('function')
-      expect(typeof repository.addFavorite).toBe('function')
-      expect(typeof repository.removeFavorite).toBe('function')
+      expect(typeof repository.findAllFavorites).toBe('function')
+      expect(typeof repository.addToFavorites).toBe('function')
+      expect(typeof repository.removeFromFavorites).toBe('function')
       expect(typeof repository.isFavorite).toBe('function')
     })
 
@@ -153,13 +154,12 @@ describe('DDDContainer', () => {
       const service = dddContainer.getGameDomainService()
 
       expect(service).toBeDefined()
-      expect(typeof service.getGames).toBe('function')
-      expect(typeof service.getGameById).toBe('function')
-      expect(typeof service.searchGames).toBe('function')
-      expect(typeof service.getFavorites).toBe('function')
-      expect(typeof service.addFavorite).toBe('function')
-      expect(typeof service.removeFavorite).toBe('function')
-      expect(typeof service.isFavorite).toBe('function')
+      expect(typeof service.searchGamesWithFavorites).toBe('function')
+      expect(typeof service.getPopularGamesWithFavorites).toBe('function')
+      expect(typeof service.getRecommendedGames).toBe('function')
+      expect(typeof service.getUserGamingProfile).toBe('function')
+      expect(typeof service.compareGames).toBe('function')
+      expect(typeof service.getGamingInsights).toBe('function')
     })
   })
 

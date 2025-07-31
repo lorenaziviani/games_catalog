@@ -1,6 +1,7 @@
 import { env } from '@/config/env'
 import { DEFAULT_SORT, ElementType, TextVariant } from '@/types/common'
 import type { Game } from '@/types/game'
+import type { FilterType } from '@/types/filter'
 import {
   extractGameGenresIds,
   extractGamePlatformsIds,
@@ -18,7 +19,7 @@ import Stats from '@components/game/Stats'
 import { useFavorites } from '@hooks/useFavorites'
 import { useFilters } from '@hooks/useFilters'
 import { useSort } from '@hooks/useSort'
-import { useMemo, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { FaHeart } from 'react-icons/fa'
 
 const FavoritesPage = () => {
@@ -121,8 +122,8 @@ const FavoritesPage = () => {
     setCurrentPage(1)
   }
 
-  const updateFilterAndResetPage = (type: string, value: unknown) => {
-    handleFilterChange(type, value)
+  const updateFilterAndResetPage = (type: FilterType, value: unknown) => {
+    handleFilterChange(type, value as string | number | string[])
     setCurrentPage(1)
   }
 

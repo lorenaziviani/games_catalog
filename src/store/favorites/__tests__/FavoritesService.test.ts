@@ -161,7 +161,8 @@ const mockGames: Game[] = [
           image_background: 'https://example.com/platform-bg.jpg'
         },
         released_at: '2023-02-01',
-        requirements_en: null,
+
+        requirements_en: null as any,
         requirements_ru: null
       }
     ],
@@ -342,10 +343,14 @@ describe('FavoritesService', () => {
       const gamesWithoutFilterData: Game[] = [
         {
           ...mockGames[0],
-          genres: undefined,
-          platforms: undefined,
-          stores: undefined,
-          tags: undefined
+
+          genres: undefined as any,
+
+          platforms: undefined as any,
+
+          stores: undefined as any,
+
+          tags: undefined as any
         }
       ]
 

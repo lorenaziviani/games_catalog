@@ -205,7 +205,7 @@ describe('TextFilter', () => {
         renderWithTheme(
           <TextFilter
             value=""
-            onChange={undefined as (value: string) => void}
+            onChange={undefined as unknown as (value: string) => void}
           />
         )
       }).not.toThrow()
@@ -214,7 +214,10 @@ describe('TextFilter', () => {
     it('deve lidar com valor undefined', () => {
       expect(() => {
         renderWithTheme(
-          <TextFilter value={undefined as string} onChange={jest.fn()} />
+          <TextFilter
+            value={undefined as unknown as string}
+            onChange={jest.fn()}
+          />
         )
       }).not.toThrow()
     })
@@ -222,7 +225,7 @@ describe('TextFilter', () => {
     it('deve lidar com valor null', () => {
       expect(() => {
         renderWithTheme(
-          <TextFilter value={null as string} onChange={jest.fn()} />
+          <TextFilter value={null as unknown as string} onChange={jest.fn()} />
         )
       }).not.toThrow()
     })

@@ -133,7 +133,7 @@ describe('Tag Component', () => {
   })
 
   it('deve renderizar com conteúdo vazio', () => {
-    render(<Tag></Tag>)
+    render(<Tag>{''}</Tag>)
 
     const tag = screen.getByTestId('tag')
     expect(tag).toBeInTheDocument()

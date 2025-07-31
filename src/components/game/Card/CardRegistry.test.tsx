@@ -1,6 +1,6 @@
 import React from 'react'
 import { CardRegistry } from './CardRegistry'
-import type { CardRenderer } from './types'
+import type { CardRenderer, CardRendererProps } from './types'
 
 const MockComponent1 = () => <div>Componente 1</div>
 const MockComponent2 = () => <div>Componente 2</div>
@@ -236,7 +236,7 @@ describe('CardRegistry', () => {
     it('deve lidar com componentes null', () => {
       const renderer: CardRenderer = {
         type: 'test',
-        component: null as unknown as React.ComponentType<unknown>
+        component: null as unknown as React.ComponentType<CardRendererProps>
       }
 
       registry.registerRenderer(renderer)
@@ -249,7 +249,8 @@ describe('CardRegistry', () => {
     it('deve lidar com componentes undefined', () => {
       const renderer: CardRenderer = {
         type: 'test',
-        component: undefined as unknown as React.ComponentType<unknown>
+        component:
+          undefined as unknown as React.ComponentType<CardRendererProps>
       }
 
       registry.registerRenderer(renderer)
@@ -314,10 +315,12 @@ describe('CardRegistry', () => {
 
   describe('Integração', () => {
     it('deve funcionar com diferentes tipos de componentes', () => {
-      const FunctionComponent = () => <div>Function</div>
-      const ClassComponent = class extends React.Component {
+      const FunctionComponent = ({ game }: CardRendererProps) => (
+        <div>Function: {game.name}</div>
+      )
+      const ClassComponent = class extends React.Component<CardRendererProps> {
         render() {
-          return <div>Class</div>
+          return <div>Class: {this.props.game.name}</div>
         }
       }
 

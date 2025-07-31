@@ -67,7 +67,7 @@ describe('FavoritesRepository', () => {
     platforms: [{ id: 1, name: 'PC' }],
     stores: [{ id: 1, name: 'Steam' }],
     tags: [{ id: 1, name: 'Multiplayer' }]
-  }
+  } as any
 
   const mockGame = new Game(mockGameData as any)
 

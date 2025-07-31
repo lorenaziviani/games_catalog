@@ -15,11 +15,11 @@ jest.mock('@/config/env', () => ({
   getCacheConfig: jest.fn(() => ({
     duration: 300000,
     maxSize: 100
-  })),
+  })) as jest.MockedFunction<() => { duration: number; maxSize: number }>,
   getRetryConfig: jest.fn(() => ({
     attempts: 3,
     delay: 1000
-  }))
+  })) as jest.MockedFunction<() => { attempts: number; delay: number }>
 }))
 
 describe('configService', () => {
@@ -60,7 +60,7 @@ describe('configService', () => {
     })
 
     it('deve chamar getCacheConfig do env', () => {
-      getCacheConfig.mockClear()
+      ;(getCacheConfig as any).mockClear()
       configService.getCacheConfig()
       expect(getCacheConfig).toHaveBeenCalled()
     })
@@ -77,7 +77,7 @@ describe('configService', () => {
     })
 
     it('deve chamar getRetryConfig do env', () => {
-      getRetryConfig.mockClear()
+      ;(getRetryConfig as any).mockClear()
       configService.getRetryConfig()
       expect(getRetryConfig).toHaveBeenCalled()
     })
@@ -162,8 +162,8 @@ describe('configService', () => {
       const originalApiKey = env.RAWG_API_KEY
       const originalPageSize = env.DEFAULT_PAGE_SIZE
 
-      env.RAWG_API_KEY = undefined
-      env.DEFAULT_PAGE_SIZE = undefined
+      ;(env as any).RAWG_API_KEY = undefined
+      ;(env as any).DEFAULT_PAGE_SIZE = undefined
 
       const config = configService.getApiConfig()
 
@@ -178,8 +178,8 @@ describe('configService', () => {
       const originalPageSize = env.DEFAULT_PAGE_SIZE
       const originalMaxPageSize = env.MAX_PAGE_SIZE
 
-      env.DEFAULT_PAGE_SIZE = '25'
-      env.MAX_PAGE_SIZE = '100'
+      ;(env as any).DEFAULT_PAGE_SIZE = '25'
+      ;(env as any).MAX_PAGE_SIZE = '100'
 
       const config = configService.getApiConfig()
 

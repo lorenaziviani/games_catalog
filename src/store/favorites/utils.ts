@@ -30,9 +30,9 @@ export const favoritesStorage = {
 
   load: async (): Promise<Game[]> => {
     try {
-      const data: StoredFavorites = await storageService.load(
+      const data = (await storageService.load(
         FAVORITES_STORAGE_KEY
-      )
+      )) as StoredFavorites
 
       if (!data || !Array.isArray(data.items)) {
         console.warn('Dados inválidos no storage, limpando...')

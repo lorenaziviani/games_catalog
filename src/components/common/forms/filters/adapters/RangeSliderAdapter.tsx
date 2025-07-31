@@ -1,6 +1,6 @@
-import React from 'react'
 import RangeSlider from '@/components/common/forms/filters/RangeSlider'
 import type { FilterComponentProps } from '@/components/common/forms/filters/types'
+import React from 'react'
 
 const RangeSliderAdapter: React.FC<FilterComponentProps> = ({
   value,
@@ -10,8 +10,14 @@ const RangeSliderAdapter: React.FC<FilterComponentProps> = ({
   step = 1,
   unit = ''
 }) => {
-  const min = value?.min || minValue
-  const max = value?.max || maxValue
+  const min =
+    typeof value === 'object' && 'min' in value
+      ? (value as { min: number; max: number }).min
+      : minValue
+  const max =
+    typeof value === 'object' && 'max' in value
+      ? (value as { min: number; max: number }).max
+      : maxValue
 
   const handleChange = (min: number, max: number) => {
     onChange({ min, max })

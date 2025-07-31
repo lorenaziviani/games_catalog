@@ -5,8 +5,20 @@ import type { FilterComponentProps } from './types'
 
 interface DynamicFilterProps {
   type: FilterType
-  value: string | number | string[]
-  onChange: (value: string | number | string[]) => void
+  value:
+    | string
+    | number
+    | string[]
+    | { start: string; end: string }
+    | { min: number; max: number }
+  onChange: (
+    value:
+      | string
+      | number
+      | string[]
+      | { start: string; end: string }
+      | { min: number; max: number }
+  ) => void
   placeholder?: string
   options?: Array<{ value: string; label: string }>
   minValue?: number

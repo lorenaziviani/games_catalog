@@ -474,7 +474,9 @@ describe('RangeSlider Component', () => {
             minValue={0}
             maxValue={100}
             step={1}
-            onChange={undefined as (min: number, max: number) => void}
+            onChange={
+              undefined as unknown as (min: number, max: number) => void
+            }
           />
         )
       }).not.toThrow()

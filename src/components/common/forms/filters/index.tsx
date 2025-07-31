@@ -14,7 +14,15 @@ import * as S from './styles'
 
 interface FiltersProps {
   filters: FilterState
-  onUpdateFilter: (type: FilterType, value: string | number | string[]) => void
+  onUpdateFilter: (
+    type: FilterType,
+    value:
+      | string
+      | number
+      | string[]
+      | { start: string; end: string }
+      | { min: number; max: number }
+  ) => void
   onResetFilters: () => void
   hasActiveFilters: boolean
   activeFiltersCount: number
@@ -27,7 +35,12 @@ interface FiltersProps {
 interface FilterSectionConfig {
   title: string
   type: FilterType
-  value: string | number | string[]
+  value:
+    | string
+    | number
+    | string[]
+    | { start: string; end: string }
+    | { min: number; max: number }
   options?: Array<{ value: string; label: string }>
   placeholder?: string
   minValue?: number
@@ -100,9 +113,14 @@ const Filters = ({
       <DynamicFilter
         type={config.type}
         value={config.value}
-        onChange={(value: string | number | string[]) =>
-          onUpdateFilter(config.type, value)
-        }
+        onChange={(
+          value:
+            | string
+            | number
+            | string[]
+            | { start: string; end: string }
+            | { min: number; max: number }
+        ) => onUpdateFilter(config.type, value)}
         options={config.options}
         placeholder={config.placeholder}
         minValue={config.minValue}

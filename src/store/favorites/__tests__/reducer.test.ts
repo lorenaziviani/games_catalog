@@ -7,6 +7,12 @@ import favoritesReducer, {
   removeFromFavorites,
   toggleFavorite
 } from '../reducer'
+import type { FavoritesState } from '../types'
+
+// Define o tipo do RootState para o teste
+interface RootState {
+  favorites: FavoritesState
+}
 
 jest.mock('../utils', () => ({
   favoritesStorage: {
@@ -125,7 +131,7 @@ describe('favoritesReducer', () => {
     slug: 'test-game-2'
   }
 
-  let store: ReturnType<typeof configureStore>
+  let store: ReturnType<typeof configureStore<RootState>>
 
   beforeEach(() => {
     store = configureStore({

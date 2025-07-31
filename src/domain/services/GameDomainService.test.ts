@@ -63,7 +63,7 @@ jest.mock('@/domain/aggregates/GameCollection', () => ({
           .mockReturnValue({ '4-5': 3, '3-4': 2 }),
         getHighlyRatedGames: jest
           .fn()
-          .mockReturnValue(games.filter(g => g.rating >= 4.0)),
+          .mockReturnValue(games.filter((g: any) => g.rating >= 4.0)),
         getRecentlyReleasedGames: jest.fn().mockReturnValue(games.slice(0, 3)),
         getUniqueGenres: jest.fn().mockReturnValue(['Action', 'RPG']),
         getUniquePlatforms: jest.fn().mockReturnValue(['PC', 'PS5']),
@@ -87,35 +87,72 @@ describe('GameDomainService', () => {
   const mockGameData = {
     id: 1,
     name: 'Test Game',
+    slug: 'test-game',
+    background_image: 'https://example.com/image.jpg',
     rating: 4.5,
+    rating_top: 5,
     metacritic: 85,
     playtime: 20,
     released: '2023-01-01',
+    updated: '2023-01-01',
+    tba: false,
+    added: 100,
+    added_by_status: {
+      yet: 0,
+      owned: 50,
+      beaten: 30,
+      toplay: 10,
+      dropped: 5,
+      playing: 5
+    },
+    ratings: [],
+    ratings_count: 100,
+    reviews_text_count: 50,
+    suggestions_count: 10,
+    user_game: null,
+    reviews_count: 50,
+    saturated_color: '#000000',
+    dominant_color: '#ffffff',
+    platforms: [
+      {
+        platform: {
+          id: 1,
+          name: 'PC',
+          slug: 'pc',
+          image: null,
+          year_end: null,
+          year_start: 1990,
+          games_count: 1000,
+          image_background: 'https://example.com/pc.jpg'
+        },
+        released_at: '2023-01-01',
+        requirements_en: {
+          minimum: 'Windows 10',
+          recommended: 'Windows 11'
+        },
+        requirements_ru: null
+      }
+    ],
     genres: [
       {
         id: 1,
         name: 'Action',
         slug: 'action',
         games_count: 100,
-        image_background: 'url'
-      }
-    ],
-    platforms: [
-      {
-        id: 1,
-        name: 'PC',
-        slug: 'pc',
-        games_count: 100,
-        image_background: 'url'
+        image_background: 'https://example.com/action.jpg'
       }
     ],
     stores: [
       {
         id: 1,
-        name: 'Steam',
-        slug: 'steam',
-        games_count: 100,
-        image_background: 'url'
+        store: {
+          id: 1,
+          name: 'Steam',
+          slug: 'steam',
+          domain: 'store.steampowered.com',
+          games_count: 50000,
+          image_background: 'https://example.com/steam.jpg'
+        }
       }
     ],
     tags: [
@@ -123,10 +160,14 @@ describe('GameDomainService', () => {
         id: 1,
         name: 'Multiplayer',
         slug: 'multiplayer',
-        games_count: 100,
-        image_background: 'url'
+        language: 'eng',
+        games_count: 1000,
+        image_background: 'https://example.com/multiplayer.jpg'
       }
-    ]
+    ],
+    esrb_rating: undefined,
+    short_screenshots: [],
+    clip: null
   }
 
   beforeEach(() => {
@@ -245,9 +286,29 @@ describe('GameDomainService', () => {
           new Game({
             ...mockGameData,
             id: 1,
-            genres: [{ id: 1, name: 'Action' }]
+            genres: [
+              {
+                id: 1,
+                name: 'Action',
+                slug: 'action',
+                games_count: 100,
+                image_background: 'https://example.com/action.jpg'
+              }
+            ]
           }),
-          new Game({ ...mockGameData, id: 2, genres: [{ id: 2, name: 'RPG' }] })
+          new Game({
+            ...mockGameData,
+            id: 2,
+            genres: [
+              {
+                id: 2,
+                name: 'RPG',
+                slug: 'rpg',
+                games_count: 50,
+                image_background: 'https://example.com/rpg.jpg'
+              }
+            ]
+          })
         ],
         2
       )
@@ -489,8 +550,35 @@ describe('GameDomainService', () => {
         ...mockGameData,
         rating: 4.5,
         metacritic: 85,
-        genres: [{ id: 1, name: 'Action' }],
-        platforms: [{ id: 1, name: 'PC' }]
+        genres: [
+          {
+            id: 1,
+            name: 'Action',
+            slug: 'action',
+            games_count: 100,
+            image_background: 'https://example.com/action.jpg'
+          }
+        ],
+        platforms: [
+          {
+            platform: {
+              id: 1,
+              name: 'PC',
+              slug: 'pc',
+              image: null,
+              year_end: null,
+              year_start: null,
+              games_count: 100,
+              image_background: 'https://example.com/pc.jpg'
+            },
+            released_at: '2023-01-01',
+            requirements_en: {
+              minimum: 'Minimum requirements',
+              recommended: 'Recommended requirements'
+            },
+            requirements_ru: null
+          }
+        ]
       })
 
       const userGenres = ['Action', 'RPG']

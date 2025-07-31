@@ -463,7 +463,7 @@ describe('MultiSelectFilter Component', () => {
           <MultiSelectFilter
             options={mockOptions}
             selectedValues={[]}
-            onChange={undefined as (values: string[]) => void}
+            onChange={undefined as unknown as (values: string[]) => void}
           />
         )
       }).not.toThrow()

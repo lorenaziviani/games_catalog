@@ -58,7 +58,7 @@ const meta: Meta<typeof TextFilter> = {
 }
 
 export default meta
-type Story = StoryObj<typeof meta>
+type Story = StoryObj<typeof TextFilterWrapper>
 
 export const Default: Story = {
   render: args => <TextFilterWrapper {...args} />,
