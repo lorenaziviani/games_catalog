@@ -34,3 +34,37 @@ export const DarkTheme: DefaultTheme = {
     bad: '#F44336'
   }
 }
+
+export const ColorblindTheme: DefaultTheme = {
+  mode: ThemeMode.COLORBLIND,
+  primary: '#022fa3',
+  secondary: '#fefefe',
+  tertiary: '#615a48',
+  quaternary: '#8c8889',
+  quinary: '#7083cf',
+  white: '#ffffff',
+  rating: {
+    excellent: '#ab9f38',
+    good: '#0054fc',
+    average: '#fff83b',
+    poor: '#a39302',
+    bad: '#615a48'
+  }
+}
+
+export const HighContrastTheme: DefaultTheme = {
+  mode: ThemeMode.DARK,
+  primary: '#ffff00',
+  secondary: '#000000',
+  tertiary: '#00ffff',
+  quaternary: '#000000',
+  quinary: '#ff0000',
+  white: '#ffffff',
+  rating: {
+    excellent: '#00ff00',
+    good: '#00ffff',
+    average: '#ffff00',
+    poor: '#ff8000',
+    bad: '#ff0000'
+  }
+}

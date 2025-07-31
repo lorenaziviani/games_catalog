@@ -1,5 +1,6 @@
 import { useFavorites } from '@/hooks/useFavorites'
-import { ElementType, TextVariant } from '@/types/common'
+import { ElementType, TextVariant, ThemeMode } from '@/types/common'
+import AccessibilityButton from '@components/common/ui/AccessibilityButton'
 import Text from '@components/common/ui/Text'
 import { useState } from 'react'
 import { BsJoystick } from 'react-icons/bs'
@@ -7,7 +8,11 @@ import { FaBars, FaHeart, FaHome, FaTimes } from 'react-icons/fa'
 import { Link, useLocation } from 'react-router-dom'
 import * as S from './styles'
 
-const Header = () => {
+type HeaderProps = {
+  setTheme?: (theme: ThemeMode) => void
+}
+
+const Header = ({ setTheme }: HeaderProps) => {
   const location = useLocation()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const { favoritesCount } = useFavorites()
@@ -56,6 +61,10 @@ const Header = () => {
               </S.NavItem>
             )
           })}
+
+          <S.NavItem $isActive={false}>
+            <AccessibilityButton setTheme={setTheme || (() => {})} />
+          </S.NavItem>
         </S.Nav>
       </S.HeaderMainContainer>
     </S.HeaderContainer>

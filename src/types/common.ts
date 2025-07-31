@@ -26,7 +26,9 @@ export enum ComponentSize {
 
 export enum ThemeMode {
   LIGHT = 'light',
-  DARK = 'dark'
+  DARK = 'dark',
+  COLORBLIND = 'colorblind',
+  HIGH_CONTRAST = 'highContrast'
 }
 
 export enum ElementType {
@@ -186,3 +188,37 @@ export const SORT_OPTIONS = [
 ] as const
 
 export const DEFAULT_SORT: SortOption = SortOption.ADDED
+
+export enum AccessibilityMode {
+  NORMAL = 'normal',
+  COLORBLIND = 'colorblind',
+  HIGH_CONTRAST = 'highContrast'
+}
+
+export enum FontSize {
+  NORMAL = 'normal',
+  LARGE = 'large',
+  EXTRA_LARGE = 'extra-large'
+}
+
+export interface AccessibilitySettings {
+  mode: AccessibilityMode
+  fontSize: FontSize
+  reducedMotion: boolean
+}
+
+export const ACCESSIBILITY_STORAGE_KEY = 'accessibility-settings'
+
+export const ACCESSIBILITY_DEFAULTS: AccessibilitySettings = {
+  mode: AccessibilityMode.NORMAL,
+  fontSize: FontSize.NORMAL,
+  reducedMotion: false
+} as const
+
+export const ACCESSIBILITY_CLASSES = {
+  COLORBLIND_MODE: 'colorblind-mode',
+  HIGH_CONTRAST_MODE: 'high-contrast-mode',
+  LARGE_TEXT: 'large-text',
+  EXTRA_LARGE_TEXT: 'extra-large-text',
+  REDUCED_MOTION: 'reduced-motion'
+} as const

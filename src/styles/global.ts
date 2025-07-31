@@ -15,6 +15,88 @@ export const GlobalStyle = createGlobalStyle`
     color: ${({ theme }) => theme.primary};
     background-color: ${({ theme }) => theme.secondary};
   }
+
+  /* Accessibility Styles */
+
+  /* Large Text */
+  .large-text {
+    font-size: 18px !important;
+  }
+
+  .large-text h1 { font-size: 2.5rem !important; }
+  .large-text h2 { font-size: 2rem !important; }
+  .large-text h3 { font-size: 1.75rem !important; }
+  .large-text h4 { font-size: 1.5rem !important; }
+  .large-text h5 { font-size: 1.25rem !important; }
+  .large-text h6 { font-size: 1.125rem !important; }
+
+  /* Extra Large Text */
+  .extra-large-text {
+    font-size: 20px !important;
+  }
+
+  .extra-large-text h1 { font-size: 3rem !important; }
+  .extra-large-text h2 { font-size: 2.5rem !important; }
+  .extra-large-text h3 { font-size: 2rem !important; }
+  .extra-large-text h4 { font-size: 1.75rem !important; }
+  .extra-large-text h5 { font-size: 1.5rem !important; }
+  .extra-large-text h6 { font-size: 1.25rem !important; }
+
+  /* Reduced Motion */
+  .reduced-motion * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .reduced-motion *,
+  .reduced-motion *::before,
+  .reduced-motion *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  /* Large Text */
+  .large-text {
+    font-size: 18px !important;
+  }
+
+  .large-text h1 { font-size: 2.5rem !important; }
+  .large-text h2 { font-size: 2rem !important; }
+  .large-text h3 { font-size: 1.75rem !important; }
+  .large-text h4 { font-size: 1.5rem !important; }
+  .large-text h5 { font-size: 1.25rem !important; }
+  .large-text h6 { font-size: 1.125rem !important; }
+
+  /* Extra Large Text */
+  .extra-large-text {
+    font-size: 20px !important;
+  }
+
+  .extra-large-text h1 { font-size: 3rem !important; }
+  .extra-large-text h2 { font-size: 2.5rem !important; }
+  .extra-large-text h3 { font-size: 2rem !important; }
+  .extra-large-text h4 { font-size: 1.75rem !important; }
+  .extra-large-text h5 { font-size: 1.5rem !important; }
+  .extra-large-text h6 { font-size: 1.25rem !important; }
+
+  /* Reduced Motion */
+  .reduced-motion * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .reduced-motion *,
+  .reduced-motion *::before,
+  .reduced-motion *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 `
 export default GlobalStyle
 export const MainContainer = styled.div`

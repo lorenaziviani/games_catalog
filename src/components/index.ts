@@ -1,4 +1,5 @@
 // Common UI Components
+export { default as AccessibilityButton } from './common/ui/AccessibilityButton'
 export { default as Image } from './common/ui/Image'
 export { default as LoadingSpinner } from './common/ui/LoadingSpinner'
 export { default as Tag } from './common/ui/Tag'
