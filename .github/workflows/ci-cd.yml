@@ -139,14 +139,6 @@ jobs:
             sleep 2
           fi
 
-          # Iniciar aplicação
-          echo "Iniciando aplicação..."
-          npm run preview &
-
-          # Aguardar e verificar se iniciou
-          echo "Aguardando servidor iniciar..."
-          sleep 5
-
           # Verificar se o servidor está rodando
           for i in {1..10}; do
             if curl -f http://localhost:3000 >/dev/null 2>&1; then
