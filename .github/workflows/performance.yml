@@ -59,14 +59,17 @@ jobs:
       - name: Build application
         run: npm run build
 
-      - name: Start application
-        run: npm run preview &
-
-      - name: Wait for application to start
-        run: sleep 10
+      - name: Start application and wait
+        run: |
+          npm run preview &
+          echo "Waiting for server to start..."
+          sleep 15
+          echo "Checking if server is running..."
+          curl -f http://localhost:4173 || exit 1
+          echo "Server is running!"
 
       - name: Run Lighthouse CI
         run: |
-          npx @lhci/cli@0.12.x autorun
+          npx @lhci/cli@0.12.x autorun --config=lighthouserc.cjs
         env:
           LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}

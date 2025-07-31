@@ -58,26 +58,26 @@ jobs:
         with:
           script: |
             const fs = require('fs');
-            let comment = '## 🔍 Dependency Analysis\n\n';
-            
+            let comment = '## Dependency Analysis\n\n';
+
             try {
               const tree = fs.readFileSync('dependency-tree.txt', 'utf8');
-              comment += '### 📦 Dependency Tree\n';
+              comment += '### Dependency Tree\n';
               comment += '```\n' + tree + '\n```\n\n';
             } catch (error) {
-              comment += '❌ Could not read dependency tree\n\n';
+              comment += 'Could not read dependency tree\n\n';
             }
-            
-            comment += '### ✅ Security Check\n';
+
+            comment += '### Security Check\n';
             comment += 'Security audit completed successfully.\n\n';
-            comment += '### 📊 Summary\n';
-            comment += '- ✅ Dependencies analyzed\n';
-            comment += '- ✅ Security vulnerabilities checked\n';
-            comment += '- ✅ Outdated packages identified\n';
-            
+            comment += '### Summary\n';
+            comment += '- Dependencies analyzed\n';
+            comment += '- Security vulnerabilities checked\n';
+            comment += '- Outdated packages identified\n';
+
             github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
               body: comment
-            }); 
+            });
