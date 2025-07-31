@@ -6,7 +6,7 @@ import Text from '../../ui/Text'
 import Banner from './index'
 
 const meta: Meta<typeof Banner> = {
-  title: 'Components/Banner',
+  title: 'Common/Layout/Banner',
   component: Banner,
   parameters: {
     layout: 'padded',

@@ -9,8 +9,7 @@ const mockGame: Game = {
   id: 1,
   name: 'The Legend of Zelda: Breath of the Wild',
   slug: 'the-legend-of-zelda-breath-of-the-wild',
-  background_image:
-    'https://media.rawg.io/media/games/7cf/7cfc9220b401b7a300e409e539c9b5e8.jpg',
+  background_image: 'https://placehold.co/600x400',
   rating: 4.5,
   rating_top: 5,
   metacritic: 97,
@@ -64,8 +63,7 @@ const mockGame: Game = {
         year_end: null,
         year_start: null,
         games_count: 552949,
-        image_background:
-          'https://media.rawg.io/media/games/021/021c4e21a1824d2526f925eff6324653.jpg'
+        image_background: 'https://placehold.co/600x400'
       },
       released_at: '2020-12-10',
       requirements_en: {
@@ -81,16 +79,14 @@ const mockGame: Game = {
       name: 'Action',
       slug: 'action',
       games_count: 100,
-      image_background:
-        'https://media.rawg.io/media/games/1f4/1f47a270b8f241e4676b14d39ec620f7.jpg'
+      image_background: 'https://placehold.co/600x400'
     },
     {
       id: 2,
       name: 'Adventure',
       slug: 'adventure',
       games_count: 200,
-      image_background:
-        'https://media.rawg.io/media/games/b6b/b6b20bfc4b34e312dbc8aac53c95a348.jpg'
+      image_background: 'https://placehold.co/600x400'
     }
   ],
   tags: [
@@ -100,8 +96,7 @@ const mockGame: Game = {
       slug: 'open-world',
       language: 'eng',
       games_count: 150,
-      image_background:
-        'https://media.rawg.io/media/games/1f4/1f47a270b8f241e4676b14d39ec620f7.jpg'
+      image_background: 'https://placehold.co/600x400'
     },
     {
       id: 2,
@@ -109,8 +104,7 @@ const mockGame: Game = {
       slug: 'exploration',
       language: 'eng',
       games_count: 120,
-      image_background:
-        'https://media.rawg.io/media/games/b6b/b6b20bfc4b34e312dbc8aac53c95a348.jpg'
+      image_background: 'https://placehold.co/600x400'
     }
   ],
   short_screenshots: [],
@@ -123,8 +117,7 @@ const mockGame: Game = {
         slug: 'steam',
         domain: 'store.steampowered.com',
         games_count: 115878,
-        image_background:
-          'https://media.rawg.io/media/games/fc1/fc1307a2774506b5bd65d7e8424664a7.jpg'
+        image_background: 'https://placehold.co/600x400'
       }
     }
   ],
@@ -139,7 +132,7 @@ interface GridCardWrapperProps {
 }
 
 const meta: Meta<GridCardWrapperProps> = {
-  title: 'Components/GridCard',
+  title: 'Game/GridCard',
   component: GridCard,
   decorators: [
     Story => (

@@ -22,7 +22,7 @@ const DateRangeFilterWrapper = ({ startDate, endDate, onChange }: any) => {
 }
 
 const meta: Meta<typeof DateRangeFilter> = {
-  title: 'Components/Filters/DateRangeFilter',
+  title: 'Common/Forms/Filters/DateRangeFilter',
   component: DateRangeFilter,
   parameters: {
     layout: 'centered',

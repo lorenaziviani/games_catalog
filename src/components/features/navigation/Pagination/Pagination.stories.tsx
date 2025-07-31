@@ -1,10 +1,10 @@
+import { LightTheme } from '@/styles/theme'
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { LightTheme } from '@styles/theme'
 import { ThemeProvider } from 'styled-components'
 import Pagination from './index'
 
 const meta: Meta<typeof Pagination> = {
-  title: 'Components/Pagination',
+  title: 'Features/Navigation/Pagination',
   component: Pagination,
   parameters: {
     layout: 'centered'

@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import TagsContainer from './index'
 
 const meta: Meta<typeof TagsContainer> = {
-  title: 'Components/TagsContainer',
+  title: 'Common/UI/TagsContainer',
   component: TagsContainer,
   parameters: {
     layout: 'centered',

@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import Sort from './index'
 
 const meta: Meta<typeof Sort> = {
-  title: 'Components/Sort',
+  title: 'Common/Forms/Sort',
   component: Sort,
   parameters: {
     layout: 'padded',

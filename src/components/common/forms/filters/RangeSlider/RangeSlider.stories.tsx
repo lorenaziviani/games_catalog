@@ -36,7 +36,7 @@ const RangeSliderWrapper = ({
 }
 
 const meta: Meta<typeof RangeSlider> = {
-  title: 'Components/Filters/RangeSlider',
+  title: 'Common/Forms/Filters/RangeSlider',
   component: RangeSlider,
   parameters: {
     layout: 'centered',

@@ -26,7 +26,7 @@ const MultiSelectFilterWrapper = ({
 }
 
 const meta: Meta<typeof MultiSelectFilter> = {
-  title: 'Components/Filters/MultiSelectFilter',
+  title: 'Common/Forms/Filters/MultiSelectFilter',
   component: MultiSelectFilter,
   parameters: {
     layout: 'centered',

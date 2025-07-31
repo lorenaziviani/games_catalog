@@ -4,7 +4,7 @@ import { useState } from 'react'
 import FavoriteButton from './index'
 
 const meta: Meta<typeof FavoriteButton> = {
-  title: 'Components/FavoriteButton',
+  title: 'Features/Favorites/FavoriteButton',
   component: FavoriteButton,
   parameters: {
     layout: 'centered',

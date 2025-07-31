@@ -20,7 +20,7 @@ const TextFilterWrapper = ({ value, onChange, placeholder }: any) => {
 }
 
 const meta: Meta<typeof TextFilter> = {
-  title: 'Components/Filters/TextFilter',
+  title: 'Common/Forms/Filters/TextFilter',
   component: TextFilter,
   parameters: {
     layout: 'centered',
