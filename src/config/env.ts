@@ -1,10 +1,11 @@
+import { EnvironmentsType, type Environment } from '@/types/common'
+
 interface EnvConfig {
   RAWG_API_KEY: string
   RAWG_API_BASE_URL: string
   APP_NAME: string
   APP_VERSION: string
-  APP_ENV: 'development' | 'production' | 'test'
-  ENABLE_ANALYTICS: boolean
+  APP_ENV: Environment
   ENABLE_DEBUG: boolean
   ENABLE_DEVTOOLS: boolean
   CACHE_DURATION: number
@@ -13,8 +14,6 @@ interface EnvConfig {
   RETRY_DELAY: number
   DEFAULT_PAGE_SIZE: number
   MAX_PAGE_SIZE: number
-  ERROR_MESSAGE_TIMEOUT: number
-  TOAST_DURATION: number
 }
 
 const getEnvVar = <T>(
@@ -61,15 +60,14 @@ export const env: EnvConfig = {
   // App Configuration
   APP_NAME: getEnvVar('VITE_APP_NAME', 'Games Catalog'),
   APP_VERSION: getEnvVar('VITE_APP_VERSION', '1.0.0'),
-  APP_ENV: getEnvVar('VITE_APP_ENV', 'development', value => {
+  APP_ENV: getEnvVar('VITE_APP_ENV', EnvironmentsType.DEVELOPMENT, value => {
     if (!['development', 'production', 'test'].includes(value)) {
       throw new Error(`Invalid APP_ENV: ${value}`)
     }
-    return value as 'development' | 'production' | 'test'
+    return value as EnvironmentsType
   }),
 
   // Feature Flags
-  ENABLE_ANALYTICS: getEnvVar('VITE_ENABLE_ANALYTICS', false, toBoolean),
   ENABLE_DEBUG: getEnvVar('VITE_ENABLE_DEBUG', true, toBoolean),
   ENABLE_DEVTOOLS: getEnvVar('VITE_ENABLE_DEVTOOLS', true, toBoolean),
 
@@ -81,15 +79,7 @@ export const env: EnvConfig = {
 
   // Pagination
   DEFAULT_PAGE_SIZE: getEnvVar('VITE_DEFAULT_PAGE_SIZE', 20, toNumber),
-  MAX_PAGE_SIZE: getEnvVar('VITE_MAX_PAGE_SIZE', 50, toNumber),
-
-  // Error Handling
-  ERROR_MESSAGE_TIMEOUT: getEnvVar(
-    'VITE_ERROR_MESSAGE_TIMEOUT',
-    5000,
-    toNumber
-  ),
-  TOAST_DURATION: getEnvVar('VITE_TOAST_DURATION', 3000, toNumber)
+  MAX_PAGE_SIZE: getEnvVar('VITE_MAX_PAGE_SIZE', 50, toNumber)
 }
 
 export const validateEnv = (): void => {
@@ -109,15 +99,15 @@ export const validateEnv = (): void => {
 }
 
 export const isDevelopment = (): boolean => {
-  return env.APP_ENV === 'development'
+  return env.APP_ENV === EnvironmentsType.DEVELOPMENT
 }
 
 export const isProduction = (): boolean => {
-  return env.APP_ENV === 'production'
+  return env.APP_ENV === EnvironmentsType.PRODUCTION
 }
 
 export const isTest = (): boolean => {
-  return env.APP_ENV === 'test'
+  return env.APP_ENV === EnvironmentsType.TEST
 }
 
 export const getCacheConfig = () => {

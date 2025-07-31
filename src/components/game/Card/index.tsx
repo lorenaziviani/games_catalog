@@ -26,13 +26,18 @@ const Card = ({ game, onGameClick }: CardProps) => {
     onGameClick?.(game)
   }
 
+  const handleFavoriteClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation()
+    handleToggleFavorite()
+  }
+
   return (
     <S.Card onClick={handleCardClick}>
       <S.ImageContainer>
         <Image src={game.background_image} alt={game.name} />
         <FavoriteButton
           isFavorite={isFavorite}
-          onToggle={handleToggleFavorite}
+          onToggle={handleFavoriteClick}
         />
         <RatingBadge rating={game.rating} />
       </S.ImageContainer>

@@ -1,3 +1,4 @@
+import { configService } from '@services/configService'
 import { env } from './env'
 
 export const API_CONFIG = {
@@ -38,7 +39,7 @@ export const getRawgApiUrl = (endpoint: string): string => {
     }
   }
 
-  if (env.ENABLE_DEBUG) {
+  if (configService.isDevelopment()) {
     console.log('URL construída:', url.toString())
   }
 
@@ -69,9 +70,5 @@ export const getDefaultHeaders = (): Record<string, string> => {
 }
 
 export const getTimeoutConfig = () => {
-  return {
-    timeout: env.APP_ENV === 'production' ? 10000 : 5000,
-    retryAttempts: env.RETRY_ATTEMPTS,
-    retryDelay: env.RETRY_DELAY
-  }
+  return configService.getTimeoutConfig()
 }

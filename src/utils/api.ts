@@ -1,11 +1,11 @@
 import { getDefaultHeaders } from '@/config/api'
-import { env, getTimeoutConfig } from '@/config/env'
+import { configService } from '@/services/configService'
 
 const fetchWithHeaders = async (url: string) => {
-  const timeoutConfig = getTimeoutConfig()
+  const timeoutConfig = configService.getTimeoutConfig()
   const headers = getDefaultHeaders()
 
-  if (env.APP_ENV === 'production') {
+  if (configService.isProduction()) {
     headers['Cache-Control'] = 'public, max-age=300'
   }
 

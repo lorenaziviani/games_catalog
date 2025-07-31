@@ -1,3 +1,11 @@
+export type Environment = 'development' | 'production' | 'test'
+
+export enum EnvironmentsType {
+  DEVELOPMENT = 'development',
+  PRODUCTION = 'production',
+  TEST = 'test'
+}
+
 export enum TextVariant {
   PRIMARY = 'primary',
   SECONDARY = 'secondary',
@@ -155,7 +163,10 @@ export const API_QUERY_PARAMS = {
 } as const
 
 export const API_ORDERING = {
-  RATING_DESC: '-rating'
+  RATING_DESC: '-rating',
+  NAME_ASC: 'name',
+  RELEASE_DESC: '-released',
+  ADDED_DESC: '-added'
 } as const
 
 export const API_ERROR_MESSAGES = {
@@ -178,7 +189,7 @@ export const FILTER_FIELDS = {
   TAGS: 'tags'
 } as const
 
-export const DEFAULT_FILTER_ORDERING = API_ORDERING.RATING_DESC
+export const DEFAULT_FILTER_ORDERING = API_ORDERING.ADDED_DESC
 
 export const SORT_OPTIONS = [
   { value: SortOption.NAME, label: 'Nome' },

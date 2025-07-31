@@ -1,4 +1,4 @@
-import { gamesApi } from '@/services/gamesApi'
+import { gameService } from '@/services/gameService'
 import type { GameDetails } from '@/types/game'
 import { useEffect, useState } from 'react'
 
@@ -25,7 +25,7 @@ export const useGameDetails = (gameId: number | null): UseGameDetailsReturn => {
       setError(null)
 
       try {
-        const details = await gamesApi.getGameById(gameId)
+        const details = await gameService.getGameById(gameId)
         setGameDetails(details)
       } catch (err) {
         setError(

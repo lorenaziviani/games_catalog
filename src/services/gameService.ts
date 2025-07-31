@@ -6,14 +6,7 @@ import {
   API_ORDERING,
   API_QUERY_PARAMS
 } from '../types/common'
-import type {
-  GameDetails,
-  GamesResponse,
-  GenresResponse,
-  PlatformsResponse,
-  StoresResponse,
-  TagsResponse
-} from '../types/game'
+import type { GameDetails, GamesResponse } from '../types/game'
 import { fetchWithHeaders } from '../utils/api'
 import { captureApiError, captureApiPerformance } from './observability'
 
@@ -30,7 +23,7 @@ interface FilterParams {
   ordering?: string
 }
 
-export const gamesApi = {
+export const gameService = {
   async getPopularGames(
     page = 1,
     pageSize = env.DEFAULT_PAGE_SIZE
@@ -45,7 +38,7 @@ export const gamesApi = {
           pageSize,
           env.MAX_PAGE_SIZE
         ).toString(),
-        [API_QUERY_PARAMS.ORDERING]: API_ORDERING.RATING_DESC
+        [API_QUERY_PARAMS.ORDERING]: API_ORDERING.ADDED_DESC
       })
 
       const response = await fetchWithHeaders(
@@ -120,7 +113,7 @@ export const gamesApi = {
           env.MAX_PAGE_SIZE
         ).toString(),
         [API_QUERY_PARAMS.ORDERING]:
-          filterParams.ordering || API_ORDERING.RATING_DESC
+          filterParams.ordering || API_ORDERING.ADDED_DESC
       })
 
       if (filterParams.search) {
@@ -200,7 +193,7 @@ export const gamesApi = {
           pageSize,
           env.MAX_PAGE_SIZE
         ).toString(),
-        [API_QUERY_PARAMS.ORDERING]: API_ORDERING.RATING_DESC
+        [API_QUERY_PARAMS.ORDERING]: API_ORDERING.ADDED_DESC
       })
 
       const response = await fetchWithHeaders(
@@ -216,80 +209,6 @@ export const gamesApi = {
       return data
     } catch (error) {
       console.error(API_ERROR_MESSAGES.GAMES_BY_GENRE, error)
-      throw error
-    }
-  },
-
-  async getGenres(): Promise<GenresResponse> {
-    try {
-      const response = await fetchWithHeaders(
-        getRawgApiUrl(API_ENDPOINTS.GENRES)
-      )
-
-      if (!response.ok) {
-        throw new Error(`${API_ERROR_MESSAGES.DEFAULT} ${response.status}`)
-      }
-
-      const data = await response.json()
-
-      return data
-    } catch (error) {
-      console.error(API_ERROR_MESSAGES.GENRES, error)
-      throw error
-    }
-  },
-
-  async getPlatforms(): Promise<PlatformsResponse> {
-    try {
-      const response = await fetchWithHeaders(
-        getRawgApiUrl(API_ENDPOINTS.PLATFORMS)
-      )
-
-      if (!response.ok) {
-        throw new Error(`${API_ERROR_MESSAGES.DEFAULT} ${response.status}`)
-      }
-
-      const data = await response.json()
-
-      return data
-    } catch (error) {
-      console.error(API_ERROR_MESSAGES.PLATFORMS, error)
-      throw error
-    }
-  },
-
-  async getStores(): Promise<StoresResponse> {
-    try {
-      const response = await fetchWithHeaders(
-        getRawgApiUrl(API_ENDPOINTS.STORES)
-      )
-
-      if (!response.ok) {
-        throw new Error(`${API_ERROR_MESSAGES.DEFAULT} ${response.status}`)
-      }
-
-      const data = await response.json()
-
-      return data
-    } catch (error) {
-      console.error(API_ERROR_MESSAGES.STORES, error)
-      throw error
-    }
-  },
-
-  async getTags(): Promise<TagsResponse> {
-    try {
-      const response = await fetchWithHeaders(getRawgApiUrl(API_ENDPOINTS.TAGS))
-
-      if (!response.ok) {
-        throw new Error(`${API_ERROR_MESSAGES.DEFAULT} ${response.status}`)
-      }
-
-      const data = await response.json()
-
-      return data
-    } catch (error) {
-      console.error(API_ERROR_MESSAGES.TAGS, error)
       throw error
     }
   }

@@ -5,7 +5,7 @@ import {
 } from '@/types/common'
 import type { FilterOption } from '@/types/filter'
 import type { Genre, Platform, Store, Tag } from '@/types/game'
-import { gamesApi } from '@services/gamesApi'
+import { metadataService } from '@services/metadataService'
 import { useQuery } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
 
@@ -43,28 +43,28 @@ export const useGameData = () => {
 
   const { data: genresData } = useQuery({
     queryKey: [GAME_DATA_QUERY_KEYS.GENRES],
-    queryFn: () => gamesApi.getGenres(),
+    queryFn: () => metadataService.getGenres(),
     staleTime: GAME_DATA_STALE_TIME,
     enabled: gameData.genres.length === 0
   })
 
   const { data: platformsData } = useQuery({
     queryKey: [GAME_DATA_QUERY_KEYS.PLATFORMS],
-    queryFn: () => gamesApi.getPlatforms(),
+    queryFn: () => metadataService.getPlatforms(),
     staleTime: GAME_DATA_STALE_TIME,
     enabled: gameData.platforms.length === 0
   })
 
   const { data: storesData } = useQuery({
     queryKey: [GAME_DATA_QUERY_KEYS.STORES],
-    queryFn: () => gamesApi.getStores(),
+    queryFn: () => metadataService.getStores(),
     staleTime: GAME_DATA_STALE_TIME,
     enabled: gameData.stores.length === 0
   })
 
   const { data: tagsData } = useQuery({
     queryKey: [GAME_DATA_QUERY_KEYS.TAGS],
-    queryFn: () => gamesApi.getTags(),
+    queryFn: () => metadataService.getTags(),
     staleTime: GAME_DATA_STALE_TIME,
     enabled: gameData.tags.length === 0
   })
