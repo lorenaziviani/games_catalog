@@ -243,6 +243,11 @@ heroes_catalog/
 │   │   ├── TagsContainer/  # Container de tags
 │   │   ├── Text/           # Componente de texto
 │   │   ├── ThemeButton/    # Botão de tema
+│   │   ├── AccessibilityButton/ # Sistema de acessibilidade
+│   │   │   ├── index.tsx   # Componente principal
+│   │   │   ├── styles.ts   # Estilos styled-components
+│   │   │   ├── AccessibilityButton.test.tsx # Testes unitários
+│   │   │   └── AccessibilityButton.stories.tsx # Storybook
 │   │   └── index.ts        # Exportações
 │   ├── config/             # Configurações
 │   │   ├── api.ts          # Configuração de API
@@ -252,7 +257,9 @@ heroes_catalog/
 │   │   ├── useGameData.ts  # Hook para dados de jogos
 │   │   ├── useFilters.ts   # Hook para filtros
 │   │   ├── useGames.ts     # Hook para jogos
-│   │   └── useSort.ts      # Hook para ordenação
+│   │   ├── useSort.ts      # Hook para ordenação
+│   │   ├── useAccessibility.ts # Hook para acessibilidade
+│   │   └── useTheme.ts     # Hook para gerenciamento de temas
 │   ├── pages/              # Páginas
 │   │   ├── Favorites/      # Página de favoritos
 │   │   └── Home/           # Página inicial
@@ -272,11 +279,11 @@ heroes_catalog/
 │   ├── styles/             # Estilos
 │   │   ├── breakpoint.ts   # Breakpoints responsivos
 │   │   ├── fontSize.ts     # Tamanhos de fonte
-│   │   ├── global.ts       # Estilos globais
+│   │   ├── global.ts       # Estilos globais (incluindo acessibilidade)
 │   │   ├── size.ts         # Sistema de tamanhos
-│   │   └── theme.ts        # Temas
+│   │   └── theme.ts        # Temas (incluindo temas de acessibilidade)
 │   ├── types/              # Tipos TypeScript
-│   │   ├── common.ts       # Tipos comuns (enums, constantes)
+│   │   ├── common.ts       # Tipos comuns (enums, constantes, acessibilidade)
 │   │   ├── filter.ts       # Tipos de filtros
 │   │   ├── game.ts         # Tipos de jogo
 │   │   └── theme.d.ts      # Tipos de tema
@@ -462,8 +469,84 @@ interface FavoritesState {
 - **Tema Claro/Escuro** - Sistema de tema dinâmico
 - **Design Tokens** - Tokens de design centralizados
 - **Design Responsivo** - Adaptação a diferentes telas
-- **Acessibilidade** - Recursos de acessibilidade
 - **Componentes Reutilizáveis** - Biblioteca de componentes
+
+#### **Sistema de Acessibilidade Avançado**
+
+O projeto implementa um sistema completo de acessibilidade com múltiplas funcionalidades para garantir uma experiência inclusiva para todos os usuários.
+
+##### **Funcionalidades de Acessibilidade:**
+
+- **Modos de Cor Adaptativos**
+  - **Modo Normal**: Cores padrão do design system
+  - **Modo Daltonismo**: Paleta de cores otimizada para deuteranopia
+  - **Modo Alto Contraste**: Cores de alto contraste para melhor visibilidade
+
+- **Ajustes de Texto**
+  - **Tamanho Normal**: Fonte padrão do sistema
+  - **Tamanho Grande**: Aumento de 20% no tamanho da fonte
+  - **Tamanho Extra Grande**: Aumento de 40% no tamanho da fonte
+
+- **Redução de Movimento**
+  - **Animações Reduzidas**: Para usuários sensíveis a movimento
+  - **Transições Suaves**: Mantém funcionalidade sem causar desconforto
+
+- **Interface Adaptativa**
+  - **Botão de Acessibilidade**: Menu centralizado com todas as opções
+  - **Persistência Local**: Configurações salvas automaticamente
+  - **Integração com Tema**: Modos de acessibilidade integrados ao sistema de temas
+
+##### **Componentes de Acessibilidade:**
+
+- **AccessibilityButton**: Botão principal com menu dropdown
+  - Localização: `src/components/common/ui/AccessibilityButton/`
+  - Funcionalidades: Modos de cor, tamanho de fonte, redução de movimento
+  - Testes: Jest unit tests e Storybook stories
+  - Documentação: Componentes isolados e interativos
+
+##### **Arquitetura do Sistema de Acessibilidade:**
+
+```typescript
+// Tipos centralizados
+export enum AccessibilityMode {
+  NORMAL = 'normal',
+  COLORBLIND = 'colorblind',
+  HIGH_CONTRAST = 'highContrast'
+}
+
+export enum FontSize {
+  NORMAL = 'normal',
+  LARGE = 'large',
+  EXTRA_LARGE = 'extra-large'
+}
+
+// Hook principal
+export const useAccessibility = () => {
+  // Gerencia configurações de acessibilidade
+  // Persiste no localStorage
+  // Aplica CSS classes dinamicamente
+}
+
+// Integração com tema
+const { setTheme } = useTheme()
+const handleModeChange = (mode: AccessibilityMode) => {
+  setMode(mode)
+  if (setTheme) {
+    setTheme(ThemeMode.COLORBLIND) // Aplica tema imediatamente
+  }
+}
+```
+
+##### **Como Usar:**
+
+1. **Acesse** o botão de acessibilidade (ícone de cadeira de rodas) no header
+2. **Selecione** o modo desejado:
+   - **Normal**: Cores padrão
+   - **Amigável para Daltonismo**: Cores adaptadas
+   - **Alto Contraste**: Alto contraste
+3. **Ajuste** o tamanho da fonte se necessário
+4. **Ative** redução de movimento se sensível a animações
+5. **Use** "Restaurar Padrão" para voltar às configurações iniciais
 
 ## 📋 TODO List - Funcionalidades Pendentes
 
@@ -476,29 +559,6 @@ interface FavoritesState {
   - [ ] Vídeos de gameplay
   - [ ] Zoom em imagens
   - [ ] Lightbox para visualização
-
-### **Acessibilidade**
-
-- [ ] **Navegação por Teclado**
-  - [ ] Tab navigation completa
-  - [ ] Atalhos de teclado
-  - [ ] Skip links
-  - [ ] Focus management
-- [ ] **Screen Readers**
-  - [ ] ARIA labels apropriados
-  - [ ] Alt text para imagens
-  - [ ] Landmark roles
-  - [ ] Live regions
-- [ ] **Contraste e Cores**
-  - [ ] Alto contraste
-  - [ ] Modo daltonismo
-  - [ ] Indicadores visuais
-  - [ ] Cores acessíveis
-- [ ] **Responsividade**
-  - [ ] Zoom até 200%
-  - [ ] Texto redimensionável
-  - [ ] Layout flexível
-  - [ ] Touch targets adequados
 
 ## Como Executar
 
@@ -556,6 +616,41 @@ npm run test:e2e
 # Storybook
 npm run storybook
 ```
+
+### **Testando Acessibilidade**
+
+```bash
+# Testes específicos de acessibilidade
+npm test -- src/components/common/ui/AccessibilityButton/
+
+# Storybook para visualizar componentes de acessibilidade
+npm run storybook
+# Acesse: http://localhost:6006
+# Navegue para: Common/UI/AccessibilityButton
+```
+
+#### **Como Testar Manualmente:**
+
+1. **Modos de Cor:**
+   - Clique no botão de acessibilidade (ícone de cadeira de rodas)
+   - Teste "Amigável para Daltonismo" - cores devem mudar imediatamente
+   - Teste "Alto Contraste" - interface deve ficar com alto contraste
+   - Verifique se o botão de dark mode desaparece durante modos de acessibilidade
+
+2. **Tamanho de Fonte:**
+   - Selecione "Grande" ou "Extra Grande"
+   - Verifique se o texto aumenta em toda a aplicação
+   - Teste a persistência recarregando a página
+
+3. **Redução de Movimento:**
+   - Ative "Reduzir Movimento"
+   - Verifique se as animações ficam mais suaves
+   - Teste hover e transições de componentes
+
+4. **Persistência:**
+   - Configure diferentes opções
+   - Recarregue a página
+   - Verifique se as configurações foram mantidas
 
 ### **Qualidade de Código**
 
