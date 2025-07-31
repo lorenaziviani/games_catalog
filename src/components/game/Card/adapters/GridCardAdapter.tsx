@@ -1,6 +1,6 @@
-import React from 'react'
-import GridCard from '@/components/game/GridCard'
 import type { CardRendererProps } from '@/components/game/Card/types'
+import GridCard from '@/components/game/GridCard'
+import React from 'react'
 
 const GridCardAdapter: React.FC<CardRendererProps> = ({
   game,
@@ -8,7 +8,7 @@ const GridCardAdapter: React.FC<CardRendererProps> = ({
 }) => {
   const games = [game]
 
-  const handleGameClick = (clickedGame: any) => {
+  const handleGameClick = (clickedGame: CardRendererProps['game']) => {
     onGameClick?.(clickedGame)
   }
 

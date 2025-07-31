@@ -1,5 +1,5 @@
-import React from 'react'
 import { captureError } from '@/services/observability/index'
+import React from 'react'
 
 interface ErrorBoundaryProps {
   children: React.ReactNode
@@ -30,6 +30,20 @@ export class ErrorBoundary extends React.Component<
     })
   }
 
+  componentDidUpdate(prevProps: ErrorBoundaryProps) {
+    // Reset error state when children change
+    if (prevProps.children !== this.props.children && this.state.hasError) {
+      this.setState({ hasError: false })
+    }
+  }
+
+  resetError = () => {
+    this.setState({ hasError: false }, () => {
+      // Força re-render após reset
+      this.forceUpdate()
+    })
+  }
+
   render(): React.ReactNode {
     if (this.state.hasError) {
       return (
@@ -39,13 +53,18 @@ export class ErrorBoundary extends React.Component<
         >
           <h2>Algo deu errado</h2>
           <p>Desculpe, ocorreu um erro inesperado.</p>
-          <button onClick={() => this.setState({ hasError: false })}>
-            Tentar novamente
-          </button>
+          <button onClick={this.resetError}>Tentar novamente</button>
         </div>
       )
     }
 
     return this.props.children
+  }
+
+  // Método para forçar reset do estado (usado nos testes)
+  forceReset = () => {
+    this.setState({ hasError: false }, () => {
+      this.forceUpdate()
+    })
   }
 }

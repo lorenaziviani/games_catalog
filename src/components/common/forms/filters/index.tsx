@@ -8,12 +8,13 @@ import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io'
 import { useTheme } from 'styled-components'
 import DynamicFilter from './DynamicFilter'
 import FilterSection from './FilterSection'
+// Importação do registro de filtros movida para evitar problemas de carregamento
 import './registerFilters'
 import * as S from './styles'
 
 interface FiltersProps {
   filters: FilterState
-  onUpdateFilter: (type: FilterType, value: any) => void
+  onUpdateFilter: (type: FilterType, value: string | number | string[]) => void
   onResetFilters: () => void
   hasActiveFilters: boolean
   activeFiltersCount: number
@@ -26,7 +27,7 @@ interface FiltersProps {
 interface FilterSectionConfig {
   title: string
   type: FilterType
-  value: any
+  value: string | number | string[]
   options?: Array<{ value: string; label: string }>
   placeholder?: string
   minValue?: number
@@ -99,7 +100,9 @@ const Filters = ({
       <DynamicFilter
         type={config.type}
         value={config.value}
-        onChange={(value: any) => onUpdateFilter(config.type, value)}
+        onChange={(value: string | number | string[]) =>
+          onUpdateFilter(config.type, value)
+        }
         options={config.options}
         placeholder={config.placeholder}
         minValue={config.minValue}
@@ -193,7 +196,7 @@ const Filters = ({
   }
 
   return (
-    <S.FiltersContainer>
+    <S.FiltersContainer data-testid="filters-section">
       {renderFiltersHeader()}
       {renderFiltersContent()}
     </S.FiltersContainer>

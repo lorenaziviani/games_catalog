@@ -32,7 +32,7 @@ const Card = ({ game, onGameClick }: CardProps) => {
   }
 
   return (
-    <S.Card onClick={handleCardClick}>
+    <S.Card onClick={handleCardClick} data-testid="game-card">
       <S.ImageContainer>
         <Image src={game.background_image} alt={game.name} />
         <FavoriteButton
@@ -47,6 +47,7 @@ const Card = ({ game, onGameClick }: CardProps) => {
           as={ElementType.TITLE}
           $lgFontSize={24}
           $variant={TextVariant.SECONDARY}
+          data-testid="game-title"
         >
           {game.name}
         </Text>

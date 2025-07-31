@@ -55,8 +55,7 @@ const mockGame: Game = {
         year_end: null,
         year_start: 2017,
         games_count: 1000,
-        image_background:
-          'https://media.rawg.io/media/games/20a/20aa03a10cda45239fe22d035c0ebe64.jpg'
+        image_background: 'https://placehold.co/600x400'
       },
       released_at: '2017-03-03',
       requirements_en: {
@@ -72,16 +71,14 @@ const mockGame: Game = {
       name: 'Adventure',
       slug: 'adventure',
       games_count: 1000,
-      image_background:
-        'https://media.rawg.io/media/games/20a/20aa03a10cda45239fe22d035c0ebe64.jpg'
+      image_background: 'https://placehold.co/600x400'
     },
     {
       id: 4,
       name: 'Action',
       slug: 'action',
       games_count: 2000,
-      image_background:
-        'https://media.rawg.io/media/games/20a/20aa03a10cda45239fe22d035c0ebe64.jpg'
+      image_background: 'https://placehold.co/600x400'
     }
   ],
   stores: [
@@ -93,8 +90,7 @@ const mockGame: Game = {
         slug: 'steam',
         domain: 'store.steampowered.com',
         games_count: 10000,
-        image_background:
-          'https://media.rawg.io/media/games/20a/20aa03a10cda45239fe22d035c0ebe64.jpg'
+        image_background: 'https://placehold.co/600x400'
       }
     }
   ],
@@ -105,8 +101,7 @@ const mockGame: Game = {
       slug: 'open-world',
       language: 'eng',
       games_count: 500,
-      image_background:
-        'https://media.rawg.io/media/games/20a/20aa03a10cda45239fe22d035c0ebe64.jpg'
+      image_background: 'https://placehold.co/600x400'
     },
     {
       id: 2,
@@ -114,20 +109,17 @@ const mockGame: Game = {
       slug: 'rpg',
       language: 'eng',
       games_count: 300,
-      image_background:
-        'https://media.rawg.io/media/games/20a/20aa03a10cda45239fe22d035c0ebe64.jpg'
+      image_background: 'https://placehold.co/600x400'
     }
   ],
   short_screenshots: [
     {
       id: 1,
-      image:
-        'https://media.rawg.io/media/games/20a/20aa03a10cda45239fe22d035c0ebe64.jpg'
+      image: 'https://placehold.co/600x400'
     },
     {
       id: 2,
-      image:
-        'https://media.rawg.io/media/games/20a/20aa03a10cda45239fe22d035c0ebe64.jpg'
+      image: 'https://placehold.co/600x400'
     }
   ],
   clip: null
@@ -163,6 +155,18 @@ const meta: Meta<typeof GameModal> = {
       control: 'object',
       description: 'Dados do jogo a ser exibido no modal'
     },
+    gameDetails: {
+      control: 'object',
+      description: 'Detalhes adicionais do jogo'
+    },
+    loading: {
+      control: 'boolean',
+      description: 'Indica se os detalhes estão sendo carregados'
+    },
+    error: {
+      control: 'text',
+      description: 'Mensagem de erro se houver'
+    },
     onClose: {
       action: 'closed',
       description: 'Função chamada quando o modal é fechado'
@@ -177,6 +181,9 @@ export const Default: Story = {
   args: {
     isOpen: true,
     game: mockGame,
+    gameDetails: null,
+    loading: false,
+    error: null,
     onClose: () => console.log('Modal fechado')
   }
 }
@@ -185,6 +192,9 @@ export const Closed: Story = {
   args: {
     isOpen: false,
     game: mockGame,
+    gameDetails: null,
+    loading: false,
+    error: null,
     onClose: () => console.log('Modal fechado')
   }
 }
@@ -193,6 +203,31 @@ export const NoGame: Story = {
   args: {
     isOpen: true,
     game: null,
+    gameDetails: null,
+    loading: false,
+    error: null,
+    onClose: () => console.log('Modal fechado')
+  }
+}
+
+export const Loading: Story = {
+  args: {
+    isOpen: true,
+    game: mockGame,
+    gameDetails: null,
+    loading: true,
+    error: null,
+    onClose: () => console.log('Modal fechado')
+  }
+}
+
+export const WithError: Story = {
+  args: {
+    isOpen: true,
+    game: mockGame,
+    gameDetails: null,
+    loading: false,
+    error: 'Erro ao carregar detalhes do jogo',
     onClose: () => console.log('Modal fechado')
   }
 }

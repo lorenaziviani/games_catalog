@@ -25,6 +25,7 @@ const TextFilter = ({ value, onChange, placeholder }: TextFilterProps) => {
       value={inputValue}
       onChange={handleInputChange}
       placeholder={placeholder}
+      data-testid="text-filter-input"
     />
   )
 }

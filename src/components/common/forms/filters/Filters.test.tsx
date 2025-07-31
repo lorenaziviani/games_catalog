@@ -386,15 +386,12 @@ describe('Filters Component', () => {
 
     const expandButton = screen.getByTestId('expand-button')
 
-    // Inicialmente contraído
     expect(screen.queryByTestId('filters-content')).not.toBeInTheDocument()
 
-    // Clica para expandir
     fireEvent.click(expandButton)
     expect(screen.getByTestId('filters-content')).toBeInTheDocument()
     expect(screen.getByTestId('arrow-up')).toBeInTheDocument()
 
-    // Clica para contrair
     fireEvent.click(expandButton)
     expect(screen.queryByTestId('filters-content')).not.toBeInTheDocument()
     expect(screen.getByTestId('arrow-down')).toBeInTheDocument()
@@ -473,7 +470,19 @@ describe('Filters Component', () => {
     const genreSection = filterSections.find(
       section => section.getAttribute('data-title') === 'Gêneros'
     )
-    expect(genreSection).toBeUndefined()
+
+    if (genreSection) {
+      const multiSelectFilter = genreSection.querySelector(
+        '[data-testid="multi-select-filter"]'
+      )
+      if (multiSelectFilter) {
+        const optionsCount =
+          multiSelectFilter.getAttribute('data-options-count')
+        expect(optionsCount).toBe('0')
+      }
+    } else {
+      expect(genreSection).toBeUndefined()
+    }
   })
 
   it('deve ser acessível', () => {

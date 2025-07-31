@@ -13,8 +13,10 @@ declare global {
       toBeVisible(): R
       toBeHidden(): R
       toHaveFocus(): R
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       toHaveStyle(css: string | Record<string, any>): R
       toHaveDisplayValue(value: string | string[]): R
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       toHaveFormValues(expectedValues: Record<string, any>): R
       toBePartiallyChecked(): R
       toBeChecked(): R
@@ -27,9 +29,11 @@ declare global {
       toHaveAccessibleErrorMessage(text?: string | RegExp): R
       toHaveAttribute(attr: string, value?: string): R
       toHaveClass(className: string): R
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       toHaveStyle(css: string | Record<string, any>): R
       toHaveValue(value: string | number | string[]): R
       toHaveDisplayValue(value: string | string[]): R
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       toHaveFormValues(expectedValues: Record<string, any>): R
       toBePartiallyChecked(): R
       toBeChecked(): R

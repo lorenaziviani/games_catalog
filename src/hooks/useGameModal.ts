@@ -1,11 +1,11 @@
-import type { Game } from '@/types/game'
+import type { Game, GameDetails } from '@/types/game'
 import { useCallback, useState } from 'react'
 import { useGameDetails } from './useGameDetails'
 
 interface UseGameModalReturn {
   isOpen: boolean
   selectedGame: Game | null
-  gameDetails: any
+  gameDetails: GameDetails | null
   loading: boolean
   error: string | null
   openModal: (game: Game) => void
@@ -23,14 +23,12 @@ export const useGameModal = (): UseGameModalReturn => {
   const openModal = useCallback((game: Game) => {
     setSelectedGame(game)
     setIsOpen(true)
-    // Previne scroll do body quando modal está aberto
     document.body.style.overflow = 'hidden'
   }, [])
 
   const closeModal = useCallback(() => {
     setIsOpen(false)
     setSelectedGame(null)
-    // Restaura scroll do body
     document.body.style.overflow = 'unset'
   }, [])
 

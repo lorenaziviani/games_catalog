@@ -205,7 +205,7 @@ export class FavoritesRepository implements IFavoritesRepository {
       }))
     } catch (error) {
       console.error('Erro ao obter gêneros disponíveis:', error)
-      return []
+      throw new Error('Falha ao obter gêneros disponíveis')
     }
   }
 
@@ -228,7 +228,7 @@ export class FavoritesRepository implements IFavoritesRepository {
       }))
     } catch (error) {
       console.error('Erro ao obter plataformas disponíveis:', error)
-      return []
+      throw new Error('Falha ao obter plataformas disponíveis')
     }
   }
 
@@ -247,7 +247,7 @@ export class FavoritesRepository implements IFavoritesRepository {
       }))
     } catch (error) {
       console.error('Erro ao obter lojas disponíveis:', error)
-      return []
+      throw new Error('Falha ao obter lojas disponíveis')
     }
   }
 
@@ -266,7 +266,7 @@ export class FavoritesRepository implements IFavoritesRepository {
       }))
     } catch (error) {
       console.error('Erro ao obter tags disponíveis:', error)
-      return []
+      throw new Error('Falha ao obter tags disponíveis')
     }
   }
 
@@ -276,7 +276,7 @@ export class FavoritesRepository implements IFavoritesRepository {
       return favoritesData.map(gameData => new Game(gameData))
     } catch (error) {
       console.error('Erro ao carregar favoritos:', error)
-      return []
+      throw error
     }
   }
 }

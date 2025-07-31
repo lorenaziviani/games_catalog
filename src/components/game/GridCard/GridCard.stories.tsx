@@ -124,7 +124,6 @@ const mockGame: Game = {
   clip: null
 }
 
-// Interface para o wrapper
 interface GridCardWrapperProps {
   games: Game[]
   initialFavorites: Game[]
@@ -169,16 +168,13 @@ const meta: Meta<GridCardWrapperProps> = {
 export default meta
 type Story = StoryObj<GridCardWrapperProps>
 
-// Wrapper para pré-carregar favoritos no Redux store
 const GridCardWithFavorites = ({
   games,
   initialFavorites,
   emptyMessage
 }: GridCardWrapperProps) => {
-  // Pré-carregar favoritos no store para demonstração
   React.useEffect(() => {
     if (initialFavorites.length > 0) {
-      // Simular favoritos pré-carregados
       initialFavorites.forEach(game => {
         store.dispatch({
           type: 'favorites/addToFavorites',

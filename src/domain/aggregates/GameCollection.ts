@@ -156,7 +156,7 @@ export class GameCollection {
 
   getGamesWithHighMetacriticScore(threshold: number = 80): Game[] {
     return this._games.filter(
-      game => game.hasMetacriticScore() && game.metacritic! >= threshold
+      game => game.hasMetacriticScore() && (game.metacritic ?? 0) >= threshold
     )
   }
 

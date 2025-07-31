@@ -6,8 +6,8 @@ import { GameRepository } from '@/infrastructure/repositories/GameRepository'
 
 class DDDContainer {
   private static instance: DDDContainer
-  private repositories: Map<string, any> = new Map()
-  private services: Map<string, any> = new Map()
+  private repositories: Map<string, unknown> = new Map()
+  private services: Map<string, unknown> = new Map()
 
   private constructor() {
     this.initializeRepositories()

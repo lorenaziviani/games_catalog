@@ -5,9 +5,13 @@ const meta: Meta<typeof Filters> = {
   title: 'Common/Forms/Filters/Filters',
   component: Filters,
   parameters: {
-    layout: 'centered'
+    layout: 'centered',
+    docs: {
+      description: {
+        component: 'Componente de filtros para jogos'
+      }
+    }
   },
-  tags: ['autodocs'],
   argTypes: {
     filters: {
       control: { type: 'object' },

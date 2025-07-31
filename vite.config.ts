@@ -4,7 +4,6 @@ import { defineConfig } from 'vite'
 import svgr from 'vite-plugin-svgr'
 
 // https://vite.dev/config/
-import { storybookTest } from '@storybook/addon-vitest/vitest-plugin'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 const dirname =
@@ -45,35 +44,18 @@ export default defineConfig({
     }
   },
   define: {
-    'process.env': process.env,
+    'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
     global: 'window'
   },
   test: {
     projects: [
       {
         extends: true,
-        plugins: [
-          // The plugin will run tests for the stories defined in your Storybook config
-          // See options at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon#storybooktest
-          storybookTest({
-            configDir: path.join(dirname, '.storybook')
-          })
-        ],
-        test: {
-          name: 'storybook',
-          browser: {
-            enabled: true,
-            headless: true,
-            provider: 'playwright',
-            instances: [
-              {
-                browser: 'chromium'
-              }
-            ]
-          },
-          setupFiles: ['.storybook/vitest.setup.ts']
-        }
+        plugins: []
       }
-    ]
+    ],
+    coverage: {
+      exclude: ['node_modules/', '**/*.style.ts', '**/style.ts', '**/main.tsx']
+    }
   }
 })

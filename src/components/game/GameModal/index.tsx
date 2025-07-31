@@ -1,4 +1,5 @@
 import type { Game } from '@/types/game'
+import type { GameDetails } from '@/types/game'
 import { useEffect } from 'react'
 import { createPortal } from 'react-dom'
 import GameDetails from './GameDetails'
@@ -7,7 +8,7 @@ import * as S from './styles'
 interface GameModalProps {
   isOpen: boolean
   game: Game | null
-  gameDetails: any
+  gameDetails: GameDetails | null
   loading: boolean
   error: string | null
   onClose: () => void
@@ -37,9 +38,13 @@ const GameModal = ({
   if (!isOpen || !game) return null
 
   return createPortal(
-    <S.ModalOverlay onClick={onClose} role="dialog">
+    <S.ModalOverlay onClick={onClose} role="dialog" data-testid="game-modal">
       <S.ModalContent onClick={e => e.stopPropagation()}>
-        <S.CloseButton onClick={onClose} aria-label="Fechar modal">
+        <S.CloseButton
+          onClick={onClose}
+          aria-label="Fechar modal"
+          data-testid="close-button"
+        >
           <S.CloseIcon>×</S.CloseIcon>
         </S.CloseButton>
         <GameDetails

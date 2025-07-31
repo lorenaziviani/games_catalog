@@ -1,5 +1,6 @@
 import { env } from '@/config/env'
 import { DEFAULT_SORT, ElementType, TextVariant } from '@/types/common'
+import type { Game } from '@/types/game'
 import {
   extractGameGenresIds,
   extractGamePlatformsIds,
@@ -36,30 +37,45 @@ const FavoritesPage = () => {
     handleResetFilters
   } = useFilters()
 
-  const isGameNameMatchingFilter = (game: any) => {
-    if (!filters.name) return true
-    return game.name.toLowerCase().includes(filters.name.toLowerCase())
-  }
+  const isGameNameMatchingFilter = useCallback(
+    (game: Game) => {
+      if (!filters.name) return true
+      return game.name.toLowerCase().includes(filters.name.toLowerCase())
+    },
+    [filters.name]
+  )
 
-  const isGameGenresMatchingFilter = (game: any) => {
-    const gameGenresIds = extractGameGenresIds(game)
-    return isGameMatchingFilterIds(gameGenresIds, filters.genres)
-  }
+  const isGameGenresMatchingFilter = useCallback(
+    (game: Game) => {
+      const gameGenresIds = extractGameGenresIds(game)
+      return isGameMatchingFilterIds(gameGenresIds, filters.genres)
+    },
+    [filters.genres]
+  )
 
-  const isGamePlatformsMatchingFilter = (game: any) => {
-    const gamePlatformsIds = extractGamePlatformsIds(game)
-    return isGameMatchingFilterIds(gamePlatformsIds, filters.platforms)
-  }
+  const isGamePlatformsMatchingFilter = useCallback(
+    (game: Game) => {
+      const gamePlatformsIds = extractGamePlatformsIds(game)
+      return isGameMatchingFilterIds(gamePlatformsIds, filters.platforms)
+    },
+    [filters.platforms]
+  )
 
-  const isGameStoresMatchingFilter = (game: any) => {
-    const gameStoresIds = extractGameStoresIds(game)
-    return isGameMatchingFilterIds(gameStoresIds, filters.stores)
-  }
+  const isGameStoresMatchingFilter = useCallback(
+    (game: Game) => {
+      const gameStoresIds = extractGameStoresIds(game)
+      return isGameMatchingFilterIds(gameStoresIds, filters.stores)
+    },
+    [filters.stores]
+  )
 
-  const isGameTagsMatchingFilter = (game: any) => {
-    const gameTagsIds = extractGameTagsIds(game)
-    return isGameMatchingFilterIds(gameTagsIds, filters.tags)
-  }
+  const isGameTagsMatchingFilter = useCallback(
+    (game: Game) => {
+      const gameTagsIds = extractGameTagsIds(game)
+      return isGameMatchingFilterIds(gameTagsIds, filters.tags)
+    },
+    [filters.tags]
+  )
 
   const filteredGames = useMemo(() => {
     return favorites.filter(game => {
@@ -71,7 +87,14 @@ const FavoritesPage = () => {
         isGameTagsMatchingFilter(game)
       )
     })
-  }, [favorites, filters])
+  }, [
+    favorites,
+    isGameNameMatchingFilter,
+    isGameGenresMatchingFilter,
+    isGamePlatformsMatchingFilter,
+    isGameStoresMatchingFilter,
+    isGameTagsMatchingFilter
+  ])
 
   const { sortedGames, currentSort, handleSortChange } = useSort(
     filteredGames,
@@ -98,7 +121,7 @@ const FavoritesPage = () => {
     setCurrentPage(1)
   }
 
-  const updateFilterAndResetPage = (type: any, value: any) => {
+  const updateFilterAndResetPage = (type: string, value: unknown) => {
     handleFilterChange(type, value)
     setCurrentPage(1)
   }

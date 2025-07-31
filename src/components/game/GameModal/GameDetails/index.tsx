@@ -75,7 +75,7 @@ const GameDetails = ({
             >
               Descrição
             </Text>
-            <S.DescriptionContainer>
+            <S.DescriptionContainer data-testid="game-description">
               <div
                 dangerouslySetInnerHTML={{
                   __html: sanitizeHTML(gameDetails.description)
@@ -87,7 +87,7 @@ const GameDetails = ({
 
         {/* Loading State */}
         {loading && (
-          <S.Section>
+          <S.Section data-testid="loading">
             <Text
               as={ElementType.P}
               $lgFontSize={16}
@@ -125,7 +125,11 @@ const GameDetails = ({
           >
             Gêneros
           </Text>
-          <TagsContainer items={game.genres} variant={TagVariant.GENRE} />
+          <TagsContainer
+            items={game.genres}
+            variant={TagVariant.GENRE}
+            data-testid="game-genres"
+          />
         </S.Section>
 
         <S.Section>

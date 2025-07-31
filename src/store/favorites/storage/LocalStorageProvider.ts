@@ -11,7 +11,7 @@ export class LocalStorageProvider implements StorageProvider {
     return `${this.prefix}${key}`
   }
 
-  async save(key: string, data: any): Promise<void> {
+  async save(key: string, data: unknown): Promise<void> {
     try {
       const fullKey = this.getKey(key)
       localStorage.setItem(fullKey, JSON.stringify(data))
@@ -21,7 +21,7 @@ export class LocalStorageProvider implements StorageProvider {
     }
   }
 
-  async load(key: string): Promise<any> {
+  async load(key: string): Promise<unknown> {
     try {
       const fullKey = this.getKey(key)
       const data = localStorage.getItem(fullKey)

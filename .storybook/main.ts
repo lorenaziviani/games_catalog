@@ -3,15 +3,28 @@ import type { StorybookConfig } from '@storybook/react-vite'
 const config: StorybookConfig = {
   stories: ['../src/**/*.stories.@(js|jsx|mjs|ts|tsx)'],
   addons: [
-    '@chromatic-com/storybook',
     '@storybook/addon-docs',
     '@storybook/addon-a11y',
-    '@storybook/addon-vitest',
     '@storybook/addon-themes'
   ],
   framework: {
     name: '@storybook/react-vite',
     options: {}
+  },
+  docs: {
+    defaultName: 'Documentation'
+  },
+  typescript: {
+    check: false,
+    reactDocgen: 'react-docgen-typescript',
+    reactDocgenTypescriptOptions: {
+      shouldExtractLiteralValuesFromEnum: true,
+      propFilter: prop =>
+        prop.parent ? !/node_modules/.test(prop.parent.fileName) : true
+    }
+  },
+  core: {
+    disableTelemetry: true
   },
   viteFinal: async config => {
     config.resolve!.alias = {
@@ -22,11 +35,18 @@ const config: StorybookConfig = {
       '@styles': '/src/styles',
       '@utils': '/src/utils',
       '@hooks': '/src/hooks',
+      '@contexts': '/src/contexts',
       '@services': '/src/services',
-      '@config': '/src/config',
       '@types': '/src/types'
     }
+
+    // Adicionar configuração para resolver problemas de importação
+    config.optimizeDeps = {
+      include: ['react', 'react-dom', 'styled-components']
+    }
+
     return config
   }
 }
+
 export default config

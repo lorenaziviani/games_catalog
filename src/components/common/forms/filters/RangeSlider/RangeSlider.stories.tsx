@@ -2,6 +2,17 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { useState } from 'react'
 import RangeSlider from './index.tsx'
 
+interface RangeSliderWrapperProps {
+  min: number
+  max: number
+  minValue: number
+  maxValue: number
+  step: number
+  onChange?: (min: number, max: number) => void
+  label?: string
+  unit?: string
+}
+
 const RangeSliderWrapper = ({
   min,
   max,
@@ -11,7 +22,7 @@ const RangeSliderWrapper = ({
   onChange,
   label,
   unit
-}: any) => {
+}: RangeSliderWrapperProps) => {
   const [localMin, setLocalMin] = useState(minValue)
   const [localMax, setLocalMax] = useState(maxValue)
 

@@ -72,7 +72,13 @@ const MultiSelectFilter = ({
     .join(', ')
 
   return (
-    <S.Container ref={dropdownRef}>
+    <S.Container
+      ref={dropdownRef}
+      data-testid="multi-select-filter"
+      data-options-count={options.length}
+      data-selected-count={selectedValues.length}
+      data-placeholder={placeholder}
+    >
       <S.SelectButton
         onClick={handleToggleDropdown}
         $isOpen={isOpen}

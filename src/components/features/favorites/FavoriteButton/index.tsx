@@ -21,6 +21,10 @@ const FavoriteButton = ({
       $isFavorite={isFavorite}
       $size={size}
       $position={position}
+      data-testid="favorite-button"
+      aria-label={
+        isFavorite ? 'Remover dos favoritos' : 'Adicionar aos favoritos'
+      }
     >
       <FaHeart />
     </S.FavoriteButton>

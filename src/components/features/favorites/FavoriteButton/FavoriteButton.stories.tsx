@@ -40,7 +40,17 @@ const meta: Meta<typeof FavoriteButton> = {
 export default meta
 type Story = StoryObj<typeof meta>
 
-const FavoriteButtonWrapper = ({ isFavorite, size, position }: any) => {
+interface FavoriteButtonWrapperProps {
+  isFavorite: boolean
+  size?: ComponentSize
+  position?: Position
+}
+
+const FavoriteButtonWrapper = ({
+  isFavorite,
+  size,
+  position
+}: FavoriteButtonWrapperProps) => {
   const [favorite, setFavorite] = useState(isFavorite)
 
   return (

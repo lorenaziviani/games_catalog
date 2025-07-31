@@ -2,12 +2,21 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { useState } from 'react'
 import MultiSelectFilter from './index.tsx'
 
+interface MultiSelectFilterWrapperProps {
+  options: Array<{ value: string; label: string }>
+  selectedValues: string[]
+  onChange?: (values: string[]) => void
+  placeholder?: string
+  isSingleSelect?: boolean
+  onToggle?: () => void
+}
+
 const MultiSelectFilterWrapper = ({
   options,
   selectedValues,
   onChange,
   ...props
-}: any) => {
+}: MultiSelectFilterWrapperProps) => {
   const [localSelectedValues, setLocalSelectedValues] = useState(selectedValues)
 
   const handleChange = (values: string[]) => {

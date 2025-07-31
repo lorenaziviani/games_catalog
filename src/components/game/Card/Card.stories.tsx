@@ -242,7 +242,6 @@ export const LowRating: Story = {
 
 export const Favorited: Story = {
   render: args => {
-    // Pré-carregar como favorito
     store.dispatch({
       type: 'favorites/addToFavorites',
       payload: args.game
@@ -263,7 +262,6 @@ export const Favorited: Story = {
 
 export const NotFavorited: Story = {
   render: args => {
-    // Garantir que não está favorito
     store.dispatch({
       type: 'favorites/removeFromFavorites',
       payload: args.game.id

@@ -97,7 +97,7 @@ export class GameDomainService {
     score += matchingPlatforms.length * 2
 
     if (game.hasMetacriticScore()) {
-      score += game.metacritic! / 20
+      score += (game.metacritic ?? 0) / 20
     }
 
     return score

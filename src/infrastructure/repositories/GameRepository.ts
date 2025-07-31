@@ -212,7 +212,7 @@ export class GameRepository implements IGameRepository {
   }
 
   private buildFilterParams(criteria: GameSearchCriteria) {
-    const params: any = {}
+    const params: Record<string, string> = {}
 
     if (criteria.page) params.page = criteria.page.toString()
     if (criteria.search) params.search = criteria.search

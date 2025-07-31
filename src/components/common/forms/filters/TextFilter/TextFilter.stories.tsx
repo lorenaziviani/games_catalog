@@ -2,7 +2,17 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { useState } from 'react'
 import TextFilter from './index.tsx'
 
-const TextFilterWrapper = ({ value, onChange, placeholder }: any) => {
+interface TextFilterWrapperProps {
+  value: string
+  onChange?: (value: string) => void
+  placeholder?: string
+}
+
+const TextFilterWrapper = ({
+  value,
+  onChange,
+  placeholder
+}: TextFilterWrapperProps) => {
   const [localValue, setLocalValue] = useState(value)
 
   const handleChange = (newValue: string) => {

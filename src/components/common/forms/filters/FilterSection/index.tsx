@@ -14,7 +14,7 @@ const FilterSection = ({ title, children }: FilterSectionProps) => {
   const theme = useTheme()
 
   return (
-    <S.Container>
+    <S.Container data-testid="filter-section" data-title={title}>
       <Text
         as={ElementType.P}
         $variant={

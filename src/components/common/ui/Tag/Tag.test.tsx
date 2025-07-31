@@ -131,4 +131,65 @@ describe('Tag Component', () => {
     const tag = screen.getByTestId('tag')
     expect(tag).toBeInTheDocument()
   })
+
+  it('deve renderizar com conteúdo vazio', () => {
+    render(<Tag></Tag>)
+
+    const tag = screen.getByTestId('tag')
+    expect(tag).toBeInTheDocument()
+    expect(tag).toHaveTextContent('')
+  })
+
+  it('deve renderizar com conteúdo numérico', () => {
+    render(<Tag>123</Tag>)
+
+    const tag = screen.getByTestId('tag')
+    expect(tag).toHaveTextContent('123')
+  })
+
+  it('deve renderizar com conteúdo especial', () => {
+    render(<Tag>Gênero & Ação</Tag>)
+
+    const tag = screen.getByTestId('tag')
+    expect(tag).toHaveTextContent('Gênero & Ação')
+  })
+
+  it('deve manter props consistentes após re-renderização', () => {
+    const { rerender } = render(
+      <Tag variant={TagVariant.GENRE} size={ComponentSize.MEDIUM}>
+        Teste
+      </Tag>
+    )
+
+    let tag = screen.getByTestId('tag')
+    expect(tag).toHaveAttribute('data-variant', TagVariant.GENRE)
+    expect(tag).toHaveAttribute('data-size', ComponentSize.MEDIUM)
+
+    rerender(
+      <Tag variant={TagVariant.PLATFORM} size={ComponentSize.LARGE}>
+        Teste 2
+      </Tag>
+    )
+
+    tag = screen.getByTestId('tag')
+    expect(tag).toHaveAttribute('data-variant', TagVariant.PLATFORM)
+    expect(tag).toHaveAttribute('data-size', ComponentSize.LARGE)
+    expect(tag).toHaveTextContent('Teste 2')
+  })
+
+  it('deve renderizar múltiplas tags independentemente', () => {
+    render(
+      <div>
+        <Tag variant={TagVariant.GENRE}>Ação</Tag>
+        <Tag variant={TagVariant.PLATFORM}>PC</Tag>
+        <Tag size={ComponentSize.SMALL}>RPG</Tag>
+      </div>
+    )
+
+    const tags = screen.getAllByTestId('tag')
+    expect(tags).toHaveLength(3)
+    expect(tags[0]).toHaveAttribute('data-variant', TagVariant.GENRE)
+    expect(tags[1]).toHaveAttribute('data-variant', TagVariant.PLATFORM)
+    expect(tags[2]).toHaveAttribute('data-size', ComponentSize.SMALL)
+  })
 })

@@ -3,7 +3,7 @@ import {
   RANGE_SLIDER_EVENTS,
   RangeSliderThumbType
 } from '@/types/common'
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import * as S from './styles'
 
 interface RangeSliderProps {
@@ -36,40 +36,46 @@ const RangeSlider = ({
     return ((value - minValue) / (maxValue - minValue)) * 100
   }
 
-  const getValueFromPercentage = (percentage: number) => {
-    return minValue + (percentage / 100) * (maxValue - minValue)
-  }
+  const getValueFromPercentage = useCallback(
+    (percentage: number) => {
+      return minValue + (percentage / 100) * (maxValue - minValue)
+    },
+    [minValue, maxValue]
+  )
 
   const handleMouseDown = (e: React.MouseEvent, type: RangeSliderThumbType) => {
     e.preventDefault()
     setIsDragging(type)
   }
 
-  const handleMouseMove = (e: MouseEvent) => {
-    if (!isDragging || !sliderRef.current) return
+  const handleMouseMove = useCallback(
+    (e: MouseEvent) => {
+      if (!isDragging || !sliderRef.current) return
 
-    const rect = sliderRef.current.getBoundingClientRect()
-    const percentage = Math.max(
-      RANGE_SLIDER_CONSTRAINTS.MIN_PERCENTAGE,
-      Math.min(
-        RANGE_SLIDER_CONSTRAINTS.MAX_PERCENTAGE,
-        ((e.clientX - rect.left) / rect.width) * 100
+      const rect = sliderRef.current.getBoundingClientRect()
+      const percentage = Math.max(
+        RANGE_SLIDER_CONSTRAINTS.MIN_PERCENTAGE,
+        Math.min(
+          RANGE_SLIDER_CONSTRAINTS.MAX_PERCENTAGE,
+          ((e.clientX - rect.left) / rect.width) * 100
+        )
       )
-    )
-    const value = Math.round(getValueFromPercentage(percentage) / step) * step
+      const value = Math.round(getValueFromPercentage(percentage) / step) * step
 
-    if (isDragging === RangeSliderThumbType.MIN) {
-      const newMin = Math.min(value, max)
-      onChange(newMin, max)
-    } else {
-      const newMax = Math.max(value, min)
-      onChange(min, newMax)
-    }
-  }
+      if (isDragging === RangeSliderThumbType.MIN) {
+        const newMin = Math.min(value, max)
+        onChange(newMin, max)
+      } else {
+        const newMax = Math.max(value, min)
+        onChange(min, newMax)
+      }
+    },
+    [isDragging, max, min, onChange, step, getValueFromPercentage]
+  )
 
-  const handleMouseUp = () => {
+  const handleMouseUp = useCallback(() => {
     setIsDragging(null)
-  }
+  }, [])
 
   const handleTouchStart = (
     e: React.TouchEvent,
@@ -79,32 +85,35 @@ const RangeSlider = ({
     setIsDragging(type)
   }
 
-  const handleTouchMove = (e: TouchEvent) => {
-    if (!isDragging || !sliderRef.current) return
+  const handleTouchMove = useCallback(
+    (e: TouchEvent) => {
+      if (!isDragging || !sliderRef.current) return
 
-    const rect = sliderRef.current.getBoundingClientRect()
-    const touch = e.touches[0]
-    const percentage = Math.max(
-      RANGE_SLIDER_CONSTRAINTS.MIN_PERCENTAGE,
-      Math.min(
-        RANGE_SLIDER_CONSTRAINTS.MAX_PERCENTAGE,
-        ((touch.clientX - rect.left) / rect.width) * 100
+      const rect = sliderRef.current.getBoundingClientRect()
+      const touch = e.touches[0]
+      const percentage = Math.max(
+        RANGE_SLIDER_CONSTRAINTS.MIN_PERCENTAGE,
+        Math.min(
+          RANGE_SLIDER_CONSTRAINTS.MAX_PERCENTAGE,
+          ((touch.clientX - rect.left) / rect.width) * 100
+        )
       )
-    )
-    const value = Math.round(getValueFromPercentage(percentage) / step) * step
+      const value = Math.round(getValueFromPercentage(percentage) / step) * step
 
-    if (isDragging === RangeSliderThumbType.MIN) {
-      const newMin = Math.min(value, max)
-      onChange(newMin, max)
-    } else {
-      const newMax = Math.max(value, min)
-      onChange(min, newMax)
-    }
-  }
+      if (isDragging === RangeSliderThumbType.MIN) {
+        const newMin = Math.min(value, max)
+        onChange(newMin, max)
+      } else {
+        const newMax = Math.max(value, min)
+        onChange(min, newMax)
+      }
+    },
+    [isDragging, max, min, onChange, step, getValueFromPercentage]
+  )
 
-  const handleTouchEnd = () => {
+  const handleTouchEnd = useCallback(() => {
     setIsDragging(null)
-  }
+  }, [])
 
   useEffect(() => {
     if (isDragging) {
@@ -135,7 +144,13 @@ const RangeSlider = ({
         handleTouchEnd
       )
     }
-  }, [isDragging])
+  }, [
+    isDragging,
+    handleMouseMove,
+    handleMouseUp,
+    handleTouchMove,
+    handleTouchEnd
+  ])
 
   const minPercentage = getPercentage(min)
   const maxPercentage = getPercentage(max)

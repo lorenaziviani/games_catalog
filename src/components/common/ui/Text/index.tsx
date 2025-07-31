@@ -6,7 +6,8 @@ type TextProps = {
   children: string
   as?: ElementType
   $variant?: TextVariant
-} & FontSizeType
+} & FontSizeType &
+  React.HTMLAttributes<HTMLElement>
 
 const Text = ({
   children,
@@ -14,7 +15,8 @@ const Text = ({
   $lgFontSize,
   $mdFontSize,
   $smFontSize,
-  $variant = TextVariant.PRIMARY
+  $variant = TextVariant.PRIMARY,
+  ...props
 }: TextProps) => {
   return (
     <S.TextContent
@@ -23,6 +25,7 @@ const Text = ({
       $mdFontSize={$mdFontSize}
       $smFontSize={$smFontSize}
       $variant={$variant}
+      {...props}
     >
       {children}
     </S.TextContent>

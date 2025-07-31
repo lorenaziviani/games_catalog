@@ -9,12 +9,12 @@ export class StorageService {
     this.prefix = config.prefix || ''
   }
 
-  async save(key: string, data: any): Promise<void> {
+  async save(key: string, data: unknown): Promise<void> {
     const fullKey = this.prefix ? `${this.prefix}_${key}` : key
     await this.provider.save(fullKey, data)
   }
 
-  async load(key: string): Promise<any> {
+  async load(key: string): Promise<unknown> {
     const fullKey = this.prefix ? `${this.prefix}_${key}` : key
     return await this.provider.load(fullKey)
   }

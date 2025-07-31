@@ -232,7 +232,7 @@ export const useDDDFavorites = () => {
 }
 
 export const useDDDInsights = () => {
-  const [insights, setInsights] = useState<any>(null)
+  const [insights, setInsights] = useState<unknown>(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
