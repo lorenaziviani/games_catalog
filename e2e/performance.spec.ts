@@ -32,11 +32,13 @@ test.describe('Performance', () => {
     await page.goto('/')
     await page.waitForLoadState('networkidle')
 
+
     const searchInput = page.locator(
       'input[type="text"], input[placeholder*="buscar"], input[placeholder*="search"]'
     )
     if (await searchInput.isVisible()) {
       const startTime = Date.now()
+
 
       await searchInput.fill('test')
       await page.waitForTimeout(500)
@@ -62,10 +64,12 @@ test.describe('Performance', () => {
 
     expect(navigationTime).toBeLessThan(15000)
 
+
     const gamesHeading = page.getByRole('heading', {
       name: /descubra seus jogos favoritos/i
     })
     await expect(gamesHeading).toBeVisible({ timeout: 10000 })
+
   })
 
   test('should handle responsive layout changes efficiently', async ({
@@ -161,6 +165,7 @@ test.describe('Performance', () => {
     await page.goto('/')
     await page.waitForLoadState('networkidle', { timeout: 30000 })
 
+
     const loadTime = Date.now() - startTime
     expect(loadTime).toBeLessThan(10000)
 
@@ -168,6 +173,7 @@ test.describe('Performance', () => {
       name: /descubra seus jogos favoritos/i
     })
     await expect(gamesHeading).toBeVisible()
+
   })
 
   test('should handle API errors gracefully', async ({ page }) => {
@@ -177,6 +183,7 @@ test.describe('Performance', () => {
 
     await page.goto('/')
     await page.waitForTimeout(3000)
+
 
     const body = page.locator('body')
     await expect(body).toBeVisible()
@@ -211,6 +218,7 @@ test.describe('Performance', () => {
 
       const rapidInteractionTime = Date.now() - startTime
       expect(rapidInteractionTime).toBeLessThan(2000)
+
     }
   })
 
