@@ -59,7 +59,10 @@ const mockGame: Game = {
           'https://media.rawg.io/media/games/20a/20aa03a10cda45239fe22d035c0ebe64.jpg'
       },
       released_at: '2017-03-03',
-      requirements_en: null,
+      requirements_en: {
+        minimum: 'Windows 10',
+        recommended: 'Windows 10'
+      },
       requirements_ru: null
     }
   ],
@@ -126,7 +129,8 @@ const mockGame: Game = {
       image:
         'https://media.rawg.io/media/games/20a/20aa03a10cda45239fe22d035c0ebe64.jpg'
     }
-  ]
+  ],
+  clip: null
 }
 
 const meta: Meta<typeof GameModal> = {

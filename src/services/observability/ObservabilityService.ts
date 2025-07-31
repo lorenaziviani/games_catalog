@@ -1,6 +1,7 @@
+import type { IObservabilityService } from '../interfaces/IObservabilityService'
 import type { ObservabilityConfig, ObservabilityProvider } from './types'
 
-export class ObservabilityService {
+export class ObservabilityService implements IObservabilityService {
   private providers: ObservabilityProvider[] = []
   private isInitialized = false
 
@@ -78,6 +79,25 @@ export class ObservabilityService {
       } catch (error) {
         console.error('Failed to identify user in provider:', error)
       }
+    })
+  }
+
+  captureApiError(endpoint: string, status: number, error: unknown): void {
+    this.captureError(new Error(`API Error: ${endpoint} - ${status}`), {
+      endpoint,
+      status: String(status),
+      error: error instanceof Error ? error.message : String(error)
+    })
+  }
+
+  captureApiPerformance(
+    endpoint: string,
+    duration: number,
+    status: number
+  ): void {
+    this.capturePerformance('api_response_time', duration, {
+      endpoint,
+      status: String(status)
     })
   }
 }

@@ -7,8 +7,9 @@ import type {
   TagsResponse
 } from '@/types/game'
 import { fetchWithHeaders } from '@/utils/api'
+import type { IMetadataService } from './interfaces/IMetadataService'
 
-export const metadataService = {
+export class MetadataService implements IMetadataService {
   async getGenres(): Promise<GenresResponse> {
     try {
       const response = await fetchWithHeaders(
@@ -26,7 +27,7 @@ export const metadataService = {
       console.error(API_ERROR_MESSAGES.GENRES, error)
       throw error
     }
-  },
+  }
 
   async getPlatforms(): Promise<PlatformsResponse> {
     try {
@@ -45,7 +46,7 @@ export const metadataService = {
       console.error(API_ERROR_MESSAGES.PLATFORMS, error)
       throw error
     }
-  },
+  }
 
   async getStores(): Promise<StoresResponse> {
     try {
@@ -64,7 +65,7 @@ export const metadataService = {
       console.error(API_ERROR_MESSAGES.STORES, error)
       throw error
     }
-  },
+  }
 
   async getTags(): Promise<TagsResponse> {
     try {

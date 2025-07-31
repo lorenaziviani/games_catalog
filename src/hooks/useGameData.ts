@@ -1,3 +1,4 @@
+import { serviceContainer } from '@/services/ServiceContainer'
 import {
   GAME_DATA_QUERY_KEYS,
   GAME_DATA_STALE_TIME,
@@ -5,7 +6,6 @@ import {
 } from '@/types/common'
 import type { FilterOption } from '@/types/filter'
 import type { Genre, Platform, Store, Tag } from '@/types/game'
-import { metadataService } from '@services/metadataService'
 import { useQuery } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
 
@@ -24,6 +24,8 @@ const DEFAULT_GAME_DATA: GameDataState = {
 }
 
 export const useGameData = () => {
+  const metadataService = serviceContainer.getMetadataService()
+
   const [gameData, setGameData] = useState<GameDataState>(() => {
     const savedData: Partial<GameDataState> = {}
 

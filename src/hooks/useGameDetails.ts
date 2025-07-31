@@ -1,4 +1,4 @@
-import { gameService } from '@/services/gameService'
+import { serviceContainer } from '@/services/ServiceContainer'
 import type { GameDetails } from '@/types/game'
 import { useEffect, useState } from 'react'
 
@@ -25,6 +25,7 @@ export const useGameDetails = (gameId: number | null): UseGameDetailsReturn => {
       setError(null)
 
       try {
+        const gameService = serviceContainer.getGameService()
         const details = await gameService.getGameById(gameId)
         setGameDetails(details)
       } catch (err) {

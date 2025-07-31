@@ -1,13 +1,15 @@
 import { configService } from '@/services/configService'
 import { buildApiParams } from '@/utils/apiParamsBuilder'
-import { gameService } from '@services/gameService'
 import { useQuery } from '@tanstack/react-query'
 import { useFilters } from './useFilters'
 import { useGameData } from './useGameData'
 import { usePagination } from './usePagination'
 import { useSearch } from './useSearch'
 
+import { serviceContainer } from '@/services/ServiceContainer'
+
 export const useGames = () => {
+  const gameService = serviceContainer.getGameService()
   const { gameData } = useGameData()
   const { defaultPageSize } = configService.getApiConfig()
 

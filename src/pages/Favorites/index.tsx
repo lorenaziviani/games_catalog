@@ -23,12 +23,55 @@ const FavoritesPage = () => {
 
   const {
     filters,
-    filteredGames,
-    updateFilter,
-    resetFilters,
     hasActiveFilters,
-    activeFiltersCount
-  } = useFilters(favorites)
+    activeFiltersCount,
+    handleFilterChange,
+    handleResetFilters
+  } = useFilters()
+
+  const filteredGames = useMemo(() => {
+    return favorites.filter(game => {
+      if (
+        filters.name &&
+        !game.name.toLowerCase().includes(filters.name.toLowerCase())
+      ) {
+        return false
+      }
+
+      if (filters.genres.length > 0) {
+        const gameGenres = game.genres?.map(g => g.id.toString()) || []
+        if (!filters.genres.some(genre => gameGenres.includes(genre))) {
+          return false
+        }
+      }
+
+      if (filters.platforms.length > 0) {
+        const gamePlatforms =
+          game.platforms?.map(p => p.platform.id.toString()) || []
+        if (
+          !filters.platforms.some(platform => gamePlatforms.includes(platform))
+        ) {
+          return false
+        }
+      }
+
+      if (filters.stores.length > 0) {
+        const gameStores = game.stores?.map(s => s.store.id.toString()) || []
+        if (!filters.stores.some(store => gameStores.includes(store))) {
+          return false
+        }
+      }
+
+      if (filters.tags.length > 0) {
+        const gameTags = game.tags?.map(t => t.id.toString()) || []
+        if (!filters.tags.some(tag => gameTags.includes(tag))) {
+          return false
+        }
+      }
+
+      return true
+    })
+  }, [favorites, filters])
 
   const { sortedGames, currentSort, handleSortChange } = useSort(
     filteredGames,
@@ -55,13 +98,13 @@ const FavoritesPage = () => {
     setCurrentPage(1)
   }
 
-  const handleFilterChange = (type: any, value: any) => {
-    updateFilter(type, value)
+  const onFilterChange = (type: any, value: any) => {
+    handleFilterChange(type, value)
     setCurrentPage(1)
   }
 
-  const handleResetFilters = () => {
-    resetFilters()
+  const onResetFilters = () => {
+    handleResetFilters()
     setCurrentPage(1)
   }
 
@@ -99,8 +142,8 @@ const FavoritesPage = () => {
 
       <Filters
         filters={filters}
-        onUpdateFilter={handleFilterChange}
-        onResetFilters={handleResetFilters}
+        onUpdateFilter={onFilterChange}
+        onResetFilters={onResetFilters}
         hasActiveFilters={hasActiveFilters}
         activeFiltersCount={activeFiltersCount}
         availableGenres={genres}

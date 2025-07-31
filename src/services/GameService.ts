@@ -8,22 +8,12 @@ import {
 } from '../types/common'
 import type { GameDetails, GamesResponse } from '../types/game'
 import { fetchWithHeaders } from '../utils/api'
-import { captureApiError, captureApiPerformance } from './observability'
+import type { FilterParams, IGameService } from './interfaces/IGameService'
+import type { IObservabilityService } from './interfaces/IObservabilityService'
 
-interface FilterParams {
-  page?: number
-  search?: string
-  genres?: string
-  platforms?: string
-  parent_platforms?: string
-  stores?: string
-  tags?: string
-  dates?: string
-  metacritic?: string
-  ordering?: string
-}
+export class GameService implements IGameService {
+  constructor(private observabilityService: IObservabilityService) {}
 
-export const gameService = {
   async getPopularGames(
     page = 1,
     pageSize = env.DEFAULT_PAGE_SIZE
@@ -48,7 +38,7 @@ export const gameService = {
       const duration = performance.now() - startTime
 
       if (!response.ok) {
-        captureApiError(
+        this.observabilityService.captureApiError(
           endpoint,
           response.status,
           `${API_ERROR_MESSAGES.DEFAULT} ${response.status}`
@@ -56,18 +46,22 @@ export const gameService = {
         throw new Error(`${API_ERROR_MESSAGES.DEFAULT} ${response.status}`)
       }
 
-      captureApiPerformance(endpoint, duration, response.status)
+      this.observabilityService.captureApiPerformance(
+        endpoint,
+        duration,
+        response.status
+      )
       const data = await response.json()
 
       return data
     } catch (error) {
       const duration = performance.now() - startTime
-      captureApiError(endpoint, 0, error)
-      captureApiPerformance(endpoint, duration, 0)
+      this.observabilityService.captureApiError(endpoint, 0, error)
+      this.observabilityService.captureApiPerformance(endpoint, duration, 0)
       console.error(API_ERROR_MESSAGES.POPULAR_GAMES, error)
       throw error
     }
-  },
+  }
 
   async searchGames(
     query: string,
@@ -99,7 +93,7 @@ export const gameService = {
       console.error(API_ERROR_MESSAGES.SEARCH_GAMES, error)
       throw error
     }
-  },
+  }
 
   async getGamesWithFilters(
     filterParams: FilterParams,
@@ -159,7 +153,7 @@ export const gameService = {
       console.error(API_ERROR_MESSAGES.FILTERED_GAMES, error)
       throw error
     }
-  },
+  }
 
   async getGameById(id: number): Promise<GameDetails> {
     try {
@@ -178,7 +172,7 @@ export const gameService = {
       console.error(API_ERROR_MESSAGES.GAME_BY_ID, error)
       throw error
     }
-  },
+  }
 
   async getGamesByGenre(
     genre: string,
