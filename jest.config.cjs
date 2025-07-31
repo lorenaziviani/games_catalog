@@ -3,7 +3,7 @@ const path = require('path')
 module.exports = {
   testEnvironment: 'jsdom',
   testPathIgnorePatterns: ['/node_modules/', '/dist/'],
-  coverageReporters: ['html', 'text', 'text-summary', 'coverage', 'json'],
+  coverageReporters: ['html', 'text', 'text-summary', 'json'],
   collectCoverage: true,
   testMatch: ['**/?(*.)(test).ts?(x)'],
   collectCoverageFrom: [

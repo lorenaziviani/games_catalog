@@ -1,0 +1,75 @@
+name: Performance & Bundle Analysis
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+env:
+  NODE_VERSION: '20'
+
+jobs:
+  bundle-analysis:
+    name: Bundle Analysis
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build with bundle analysis
+        run: npm run build
+
+      - name: Upload build artifacts for analysis
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-analysis
+          path: dist/
+          retention-days: 30
+
+  lighthouse:
+    name: Lighthouse Performance
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build application
+        run: npm run build
+
+      - name: Start application and wait
+        run: |
+          npm run preview &
+          echo "Waiting for server to start..."
+          sleep 15
+          echo "Checking if server is running..."
+          curl -f http://localhost:3000 || exit 1
+          echo "Server is running!"
+
+      - name: Run Lighthouse CI
+        run: |
+          npx @lhci/cli@0.12.x autorun --config=lighthouserc.cjs
+        env:
+          LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
