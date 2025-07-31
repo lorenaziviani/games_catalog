@@ -53,31 +53,17 @@ jobs:
             package-lock.json
           retention-days: 30
 
-      - name: Comment on PR
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const fs = require('fs');
-            let comment = '## Dependency Analysis\n\n';
-
-            try {
-              const tree = fs.readFileSync('dependency-tree.txt', 'utf8');
-              comment += '### Dependency Tree\n';
-              comment += '```\n' + tree + '\n```\n\n';
-            } catch (error) {
-              comment += 'Could not read dependency tree\n\n';
-            }
-
-            comment += '### Security Check\n';
-            comment += 'Security audit completed successfully.\n\n';
-            comment += '### Summary\n';
-            comment += '- Dependencies analyzed\n';
-            comment += '- Security vulnerabilities checked\n';
-            comment += '- Outdated packages identified\n';
-
-            github.rest.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: comment
-            });
+      - name: Security Summary
+        run: |
+          echo "## 🔍 Dependency Analysis Summary"
+          echo ""
+          echo "### ✅ Security Check"
+          echo "Security audit completed successfully."
+          echo ""
+          echo "### 📊 Summary"
+          echo "- ✅ Dependencies analyzed"
+          echo "- ✅ Security vulnerabilities checked"
+          echo "- ✅ Outdated packages identified"
+          echo ""
+          echo "### 📦 Dependency Tree"
+          echo "Check the uploaded artifacts for the complete dependency tree."

@@ -65,7 +65,7 @@ jobs:
           echo "Waiting for server to start..."
           sleep 15
           echo "Checking if server is running..."
-          curl -f http://localhost:4173 || exit 1
+          curl -f http://localhost:3000 || exit 1
           echo "Server is running!"
 
       - name: Run Lighthouse CI
