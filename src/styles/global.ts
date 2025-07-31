@@ -24,6 +24,7 @@ export const GlobalStyle = createGlobalStyle`
     &::-webkit-scrollbar-thumb {
       background: ${({ theme }) => theme.quaternary};
       border-radius: 10px;
+      border: 1px solid ${({ theme }) => theme.primary};
     }
     &::-webkit-scrollbar-thumb:hover {
       background: ${({ theme }) => theme.secondary};
