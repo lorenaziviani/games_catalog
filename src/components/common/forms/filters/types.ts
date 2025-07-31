@@ -36,5 +36,4 @@ export interface FilterRenderer {
 export interface FilterRegistry {
   registerFilter(renderer: FilterRenderer): void
   getFilter(type: FilterType): FilterRenderer | undefined
-  getAllFilters(): FilterRenderer[]
 }

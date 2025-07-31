@@ -32,25 +32,4 @@ export class StorageService {
     const fullKey = this.prefix ? `${this.prefix}_${key}` : key
     return await this.provider.has(fullKey)
   }
-
-  setProvider(provider: StorageProvider): void {
-    this.provider = provider
-  }
-
-  async migrateToProvider(
-    newProvider: StorageProvider,
-    keys: string[]
-  ): Promise<void> {
-    const oldProvider = this.provider
-
-    for (const key of keys) {
-      const fullKey = this.prefix ? `${this.prefix}_${key}` : key
-      const data = await oldProvider.load(fullKey)
-      if (data !== null) {
-        await newProvider.save(fullKey, data)
-      }
-    }
-
-    this.provider = newProvider
-  }
 }

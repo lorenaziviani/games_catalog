@@ -64,13 +64,5 @@ export const favoritesStorage = {
     } catch {
       return false
     }
-  },
-
-  setStorageProvider: (provider: any) => {
-    storageService.setProvider(provider)
-  },
-
-  migrateData: async (newProvider: any, keys: string[]) => {
-    await storageService.migrateToProvider(newProvider, keys)
   }
 }

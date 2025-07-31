@@ -11,18 +11,6 @@ export class FilterRegistry implements IFilterRegistry {
   getFilter(type: FilterType): FilterRenderer | undefined {
     return this.filters.get(type)
   }
-
-  getAllFilters(): FilterRenderer[] {
-    return Array.from(this.filters.values())
-  }
-
-  hasFilter(type: FilterType): boolean {
-    return this.filters.has(type)
-  }
-
-  removeFilter(type: FilterType): boolean {
-    return this.filters.delete(type)
-  }
 }
 
 export const filterRegistry = new FilterRegistry()

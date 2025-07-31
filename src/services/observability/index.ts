@@ -135,5 +135,3 @@ export const useAnalytics = () => {
 
   return { trackEvent, trackNavigation, trackUserInteraction }
 }
-
-export { observabilityService }

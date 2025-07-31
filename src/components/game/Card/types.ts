@@ -18,6 +18,5 @@ export interface CardRendererProps {
 export interface CardRegistry {
   registerRenderer(renderer: CardRenderer): void
   getRenderer(type: string): CardRenderer | undefined
-  getAllRenderers(): CardRenderer[]
   getDefaultRenderer(): CardRenderer | undefined
 }

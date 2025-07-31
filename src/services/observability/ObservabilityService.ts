@@ -80,18 +80,4 @@ export class ObservabilityService {
       }
     })
   }
-
-  addProvider(provider: ObservabilityProvider): void {
-    this.providers.push(provider)
-    if (this.isInitialized) {
-      provider.initialize()
-    }
-  }
-
-  removeProvider(provider: ObservabilityProvider): void {
-    const index = this.providers.indexOf(provider)
-    if (index > -1) {
-      this.providers.splice(index, 1)
-    }
-  }
 }
