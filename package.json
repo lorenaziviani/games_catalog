@@ -16,7 +16,11 @@
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
     "test:playwright": "playwright test --headed --config=playwright.config.ts --project=chromium",
-    "test:playwright:helper": "npx playwright codegen http://localhost:3000"
+    "test:playwright:helper": "npx playwright codegen http://localhost:3000",
+    "test:all": "./scripts/test-all.sh",
+    "test:ci": "npm run lint && npm run test:coverage && npm run build",
+    "security:audit": "npm audit --audit-level=moderate",
+    "security:outdated": "npm outdated"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [

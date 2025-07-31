@@ -1,0 +1,82 @@
+name: Notifications
+
+on:
+  workflow_run:
+    workflows:
+      [
+        'CI/CD Pipeline',
+        'Security & Dependencies',
+        'Performance & Bundle Analysis'
+      ]
+    types:
+      - completed
+
+jobs:
+  notify:
+    name: Send Notifications
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion != 'skipped' }}
+
+    steps:
+      - name: Notify on Failure
+        if: ${{ github.event.workflow_run.conclusion == 'failure' }}
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number
+            });
+
+            const botComment = comments.find(comment =>
+              comment.user.type === 'Bot' &&
+              comment.body.includes('CI/CD Status')
+            );
+
+            const message = `🚨 **CI/CD Pipeline Failed**
+
+            **Workflow**: ${{ github.event.workflow_run.name }}
+            **Branch**: ${{ github.event.workflow_run.head_branch }}
+            **Commit**: ${{ github.event.workflow_run.head_sha }}
+            **Run ID**: ${{ github.event.workflow_run.id }}
+
+            [View Details](${{ github.event.workflow_run.html_url }})
+
+            Please check the logs and fix the issues before merging.`;
+
+            if (botComment) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: botComment.id,
+                body: message
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body: message
+              });
+            }
+
+      - name: Notify on Success
+        if: ${{ github.event.workflow_run.conclusion == 'success' }}
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const message = `✅ **CI/CD Pipeline Success**
+
+            **Workflow**: ${{ github.event.workflow_run.name }}
+            **Branch**: ${{ github.event.workflow_run.head_branch }}
+            **Commit**: ${{ github.event.workflow_run.head_sha }}
+
+            [View Details](${{ github.event.workflow_run.html_url }})`;
+
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: message
+            });

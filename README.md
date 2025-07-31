@@ -89,6 +89,70 @@ O **Games Catalog** é uma aplicação React TypeScript de nível empresarial qu
 - **Deploy Automatizado** - Deploy automático
 - **Performance Monitoring** - Monitoramento de performance
 
+## 🚀 CI/CD Pipeline
+
+### **Pipeline Completo**
+
+O projeto possui um pipeline de CI/CD robusto configurado com GitHub Actions:
+
+#### **Workflows Disponíveis:**
+
+1. **CI/CD Principal** (`ci-cd.yml`)
+   - Code Quality (ESLint, Prettier, TypeScript)
+   - Unit Tests (Jest com cobertura)
+   - Build (Vite)
+   - E2E Tests (Playwright)
+   - Deploy (GitHub Pages)
+
+2. **Security & Dependencies** (`security.yml`)
+   - Security Audit (npm audit)
+   - Dependency Review
+   - Weekly automated checks
+
+3. **Performance & Bundle** (`performance.yml`)
+   - Bundle Analysis
+   - Lighthouse Performance Tests
+
+4. **Playwright Tests** (`playwright.yml`)
+   - Dedicated E2E testing
+
+#### **Execução Local:**
+
+```bash
+# Executar pipeline completo localmente
+npm run test:all
+
+# Executar apenas testes CI
+npm run test:ci
+
+# Verificar segurança
+npm run security:audit
+npm run security:outdated
+```
+
+#### **Configuração:**
+
+- **Node.js**: v20
+- **Cache**: npm dependencies
+- **Artifacts**: 30 dias de retenção
+- **Timeout**: 10-60 minutos por job
+
+#### **Deploy Automático:**
+
+- **Trigger**: Push para `main`/`master`
+- **Platform**: GitHub Pages
+- **Branch**: `gh-pages`
+- **Custom Domain**: Configurável via secret `CNAME`
+
+#### **Monitoramento:**
+
+- **Cobertura**: Mínimo 80%
+- **Performance**: Score mínimo 0.8
+- **Acessibilidade**: Score mínimo 0.9
+- **Build Time**: Máximo 10 minutos
+
+**Documentação Completa**: [docs/CI-CD.md](./docs/CI-CD.md)
+
 ## Husky - Git Hooks
 
 ### **O que é o Husky?**
