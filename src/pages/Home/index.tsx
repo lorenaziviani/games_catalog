@@ -3,7 +3,7 @@ import Filters from '@components/common/forms/filters'
 import Sort from '@components/common/forms/Sort'
 import Banner from '@components/common/layout/Banner'
 import Text from '@components/common/ui/Text'
-import List from '@components/game/List'
+import GameListWithModal from '@components/game/GameListWithModal'
 import { useGames } from '@hooks/useGames'
 import { useSort } from '@hooks/useSort'
 import { BiSolidJoystick } from 'react-icons/bi'
@@ -72,7 +72,7 @@ const HomePage = () => {
 
       <Sort currentSort={currentSort} onSortChange={handleSortChange} />
 
-      <List
+      <GameListWithModal
         games={sortedGames}
         loading={loading}
         error={error}

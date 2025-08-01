@@ -1,14 +1,28 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import * as S from './styles'
 
 interface TextFilterProps {
-  value: string
+  value:
+    | string
+    | number
+    | string[]
+    | { start: string; end: string }
+    | { min: number; max: number }
   onChange: (value: string) => void
   placeholder?: string
 }
 
 const TextFilter = ({ value, onChange, placeholder }: TextFilterProps) => {
-  const [inputValue, setInputValue] = useState(value)
+  const [inputValue, setInputValue] = useState(
+    typeof value === 'string' ? value : ''
+  )
+
+  // Atualiza o inputValue quando o value externo muda
+  useEffect(() => {
+    if (typeof value === 'string') {
+      setInputValue(value)
+    }
+  }, [value])
 
   const handleInputChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -25,6 +39,7 @@ const TextFilter = ({ value, onChange, placeholder }: TextFilterProps) => {
       value={inputValue}
       onChange={handleInputChange}
       placeholder={placeholder}
+      data-testid="text-filter-input"
     />
   )
 }

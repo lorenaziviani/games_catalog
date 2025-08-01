@@ -2,11 +2,11 @@ import { ElementType, TextVariant } from '@/types/common'
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { BiSolidJoystick } from 'react-icons/bi'
 import { FaHeart } from 'react-icons/fa'
-import Text from '../../ui/Text'
+import Text from '@/components/common/ui/Text'
 import Banner from './index'
 
 const meta: Meta<typeof Banner> = {
-  title: 'Components/Banner',
+  title: 'Common/Layout/Banner',
   component: Banner,
   parameters: {
     layout: 'padded',

@@ -7,11 +7,13 @@ import * as S from './styles'
 interface GridProps {
   games: Game[]
   emptyMessage?: string
+  onGameClick?: (game: Game) => void
 }
 
 const GridCard = ({
   games,
-  emptyMessage = 'Nenhum jogo encontrado.'
+  emptyMessage = 'Nenhum jogo encontrado.',
+  onGameClick
 }: GridProps) => {
   if (games.length === 0) {
     return (
@@ -30,7 +32,7 @@ const GridCard = ({
   return (
     <S.GridCard>
       {games.map(game => (
-        <Card key={game.id} game={game} />
+        <Card key={game.id} game={game} onGameClick={onGameClick} />
       ))}
     </S.GridCard>
   )

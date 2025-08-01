@@ -4,7 +4,7 @@ import * as S from './styles'
 
 interface FavoriteButtonProps {
   isFavorite: boolean
-  onToggle: () => void
+  onToggle: (e: React.MouseEvent<HTMLButtonElement>) => void
   size?: ComponentSize
   position?: Position
 }
@@ -17,10 +17,14 @@ const FavoriteButton = ({
 }: FavoriteButtonProps) => {
   return (
     <S.FavoriteButton
-      onClick={onToggle}
+      onClick={e => onToggle(e)}
       $isFavorite={isFavorite}
       $size={size}
       $position={position}
+      data-testid="favorite-button"
+      aria-label={
+        isFavorite ? 'Remover dos favoritos' : 'Adicionar aos favoritos'
+      }
     >
       <FaHeart />
     </S.FavoriteButton>

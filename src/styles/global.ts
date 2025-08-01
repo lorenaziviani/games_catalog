@@ -14,6 +14,21 @@ export const GlobalStyle = createGlobalStyle`
     margin: 0 auto;
     color: ${({ theme }) => theme.primary};
     background-color: ${({ theme }) => theme.secondary};
+    &::-webkit-scrollbar {
+      width: 10px;
+      height: 10px;
+    }
+    &::-webkit-scrollbar-track {
+      background: ${({ theme }) => theme.primary};
+    }
+    &::-webkit-scrollbar-thumb {
+      background: ${({ theme }) => theme.quaternary};
+      border-radius: 10px;
+      border: 1px solid ${({ theme }) => theme.primary};
+    }
+    &::-webkit-scrollbar-thumb:hover {
+      background: ${({ theme }) => theme.secondary};
+    }
   }
 
   /* Accessibility Styles */

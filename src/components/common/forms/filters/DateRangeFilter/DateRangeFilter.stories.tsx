@@ -2,7 +2,17 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { useState } from 'react'
 import DateRangeFilter from './index.tsx'
 
-const DateRangeFilterWrapper = ({ startDate, endDate, onChange }: any) => {
+interface DateRangeFilterWrapperProps {
+  startDate: string
+  endDate: string
+  onChange?: (start: string, end: string) => void
+}
+
+const DateRangeFilterWrapper = ({
+  startDate,
+  endDate,
+  onChange
+}: DateRangeFilterWrapperProps) => {
   const [localStartDate, setLocalStartDate] = useState(startDate)
   const [localEndDate, setLocalEndDate] = useState(endDate)
 
@@ -22,7 +32,7 @@ const DateRangeFilterWrapper = ({ startDate, endDate, onChange }: any) => {
 }
 
 const meta: Meta<typeof DateRangeFilter> = {
-  title: 'Components/Filters/DateRangeFilter',
+  title: 'Common/Forms/Filters/DateRangeFilter',
   component: DateRangeFilter,
   parameters: {
     layout: 'centered',

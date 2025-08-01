@@ -3,6 +3,7 @@ import { expect, test } from '@playwright/test'
 test.describe('Accessibility', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/')
+    await page.waitForLoadState('networkidle')
   })
 
   test('should have proper page title', async ({ page }) => {

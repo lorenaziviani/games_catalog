@@ -9,10 +9,10 @@ export const Input = styled.input`
   font-size: 0.9rem;
   transition: all 0.2s ease;
   background: ${({ theme }) => theme.white};
-  color: ${({ theme }) => theme.primary};
+  color: ${({ theme }) => getDarkSecondaryLightPrimary(theme)};
 
   &::placeholder {
-    color: ${({ theme }) => theme.tertiary};
+    color: ${({ theme }) => getDarkSecondaryLightPrimary(theme)};
   }
 
   &:focus {

@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Provider } from 'react-redux'
 import { ThemeProvider } from 'styled-components'
-import { store } from '../../../../store'
-import { LightTheme } from '../../../../styles/theme'
+import { store } from '@/store'
+import { LightTheme } from '@/styles/theme'
 import AccessibilityButton from './index'
 
 const meta: Meta<typeof AccessibilityButton> = {

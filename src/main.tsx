@@ -1,17 +1,18 @@
+import { configService } from '@services/configService'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.tsx'
 import { validateApiConfig } from './config/api'
-import { env, getCacheConfig, getRetryConfig, validateEnv } from './config/env'
+import { validateEnv } from './config/env'
 import './styles/global.ts'
 
 validateEnv()
 validateApiConfig()
 
-const cacheConfig = getCacheConfig()
-const retryConfig = getRetryConfig()
+const cacheConfig = configService.getCacheConfig()
+const retryConfig = configService.getRetryConfig()
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -36,11 +37,18 @@ const queryClient = new QueryClient({
   }
 })
 
-ReactDOM.createRoot(document.getElementById('root')!).render(
+const rootElement = document.getElementById('root')
+if (!rootElement) {
+  throw new Error('Root element not found')
+}
+
+ReactDOM.createRoot(rootElement).render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
       <App />
-      {env.ENABLE_DEVTOOLS && <ReactQueryDevtools initialIsOpen={false} />}
+      {configService.isDevelopment() && (
+        <ReactQueryDevtools initialIsOpen={false} />
+      )}
     </QueryClientProvider>
   </React.StrictMode>
 )

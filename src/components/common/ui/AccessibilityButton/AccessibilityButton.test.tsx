@@ -2,11 +2,10 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { Provider } from 'react-redux'
 import { BrowserRouter } from 'react-router-dom'
 import { ThemeProvider } from 'styled-components'
-import { store } from '../../../../store'
-import { LightTheme } from '../../../../styles/theme'
+import { store } from '@/store'
+import { LightTheme } from '@/styles/theme'
 import AccessibilityButton from './index'
 
-// Mock do hook useAccessibility
 const mockSetMode = jest.fn()
 const mockSetFontSize = jest.fn()
 const mockSetReducedMotion = jest.fn()

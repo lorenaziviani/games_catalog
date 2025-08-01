@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import RatingBadge from './index'
 
 const meta: Meta<typeof RatingBadge> = {
-  title: 'Components/RatingBadge',
+  title: 'Game/RatingBadge',
   component: RatingBadge,
   parameters: {
     layout: 'centered',

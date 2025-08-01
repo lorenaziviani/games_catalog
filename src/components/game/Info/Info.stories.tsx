@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import Info from './index'
 
 const meta: Meta<typeof Info> = {
-  title: 'Components/Info',
+  title: 'Game/Info',
   component: Info,
   parameters: {
     layout: 'centered',

@@ -1,7 +1,7 @@
+import { useAccessibility } from '@/hooks/useAccessibility'
 import { AccessibilityMode, FontSize, ThemeMode } from '@/types/common'
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { IoAccessibility, IoEye, IoEyeOff } from 'react-icons/io5'
-import { useAccessibility } from '../../../../hooks/useAccessibility'
 import * as S from './styles'
 
 type AccessibilityButtonProps = {
@@ -12,8 +12,28 @@ const AccessibilityButton: React.FC<AccessibilityButtonProps> = ({
   setTheme
 }) => {
   const [isOpen, setIsOpen] = useState(false)
+  const containerRef = useRef<HTMLDivElement>(null)
   const { settings, setMode, setFontSize, setReducedMotion, resetSettings } =
     useAccessibility()
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        containerRef.current &&
+        !containerRef.current.contains(event.target as Node)
+      ) {
+        setIsOpen(false)
+      }
+    }
+
+    if (isOpen) {
+      document.addEventListener('mousedown', handleClickOutside)
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [isOpen])
 
   const handleModeChange = (mode: AccessibilityMode) => {
     setMode(mode)
@@ -49,7 +69,7 @@ const AccessibilityButton: React.FC<AccessibilityButtonProps> = ({
   }
 
   return (
-    <div style={{ position: 'relative' }}>
+    <div ref={containerRef} style={{ position: 'relative' }}>
       <S.Button
         onClick={() => setIsOpen(!isOpen)}
         aria-label="Configurações de acessibilidade"

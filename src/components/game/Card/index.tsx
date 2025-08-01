@@ -12,22 +12,32 @@ import * as S from './styles'
 
 interface CardProps {
   game: Game
+  onGameClick?: (game: Game) => void
 }
 
-const Card = ({ game }: CardProps) => {
+const Card = ({ game, onGameClick }: CardProps) => {
   const { isFavorite, toggleFavorite } = useIsFavorite(game.id)
 
   const handleToggleFavorite = () => {
     toggleFavorite(game)
   }
 
+  const handleCardClick = () => {
+    onGameClick?.(game)
+  }
+
+  const handleFavoriteClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation()
+    handleToggleFavorite()
+  }
+
   return (
-    <S.Card>
+    <S.Card onClick={handleCardClick} data-testid="game-card">
       <S.ImageContainer>
         <Image src={game.background_image} alt={game.name} />
         <FavoriteButton
           isFavorite={isFavorite}
-          onToggle={handleToggleFavorite}
+          onToggle={handleFavoriteClick}
         />
         <RatingBadge rating={game.rating} />
       </S.ImageContainer>
@@ -37,6 +47,7 @@ const Card = ({ game }: CardProps) => {
           as={ElementType.TITLE}
           $lgFontSize={24}
           $variant={TextVariant.SECONDARY}
+          data-testid="game-title"
         >
           {game.name}
         </Text>

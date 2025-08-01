@@ -1,12 +1,8 @@
 import { useTheme } from 'styled-components'
-import type { SortOption } from '../../../../types/common'
-import {
-  ElementType,
-  SORT_OPTIONS,
-  TextVariant
-} from '../../../../types/common'
-import { isDarkMode } from '../../../../utils/themeUtils'
-import Text from '../../ui/Text'
+import type { SortOption } from '@/types/common'
+import { ElementType, SORT_OPTIONS, TextVariant } from '@/types/common'
+import { isDarkMode } from '@/utils/themeUtils'
+import Text from '@/components/common/ui/Text'
 import MultiSelectFilter from '../filters/MultiSelectFilter'
 import * as S from './styles'
 

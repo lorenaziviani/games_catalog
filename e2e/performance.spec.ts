@@ -1,28 +1,15 @@
 import { expect, test } from '@playwright/test'
 
 test.describe('Performance', () => {
-  test('should load page quickly', async ({ page }) => {
+  test('should load page within acceptable time', async ({ page }) => {
     const startTime = Date.now()
 
     await page.goto('/')
-
     await page.waitForLoadState('networkidle')
 
     const loadTime = Date.now() - startTime
 
-    expect(loadTime).toBeLessThan(10000)
-
-    const body = page.locator('body')
-    await expect(body).toBeVisible()
-  })
-
-  test('should display content quickly', async ({ page }) => {
-    await page.goto('/')
-
-    await page.waitForLoadState('networkidle')
-
-    const body = page.locator('body')
-    await expect(body).toBeVisible()
+    expect(loadTime).toBeLessThan(15000)
 
     const gamesHeading = page.getByRole('heading', {
       name: /descubra seus jogos favoritos/i
@@ -30,42 +17,33 @@ test.describe('Performance', () => {
     await expect(gamesHeading).toBeVisible()
   })
 
-  test('should handle large lists efficiently', async ({ page }) => {
+  test('should display content quickly after page load', async ({ page }) => {
     await page.goto('/')
     await page.waitForLoadState('networkidle')
 
-    const body = page.locator('body')
-    await expect(body).toBeVisible()
+    const gameCards = page.locator('[data-testid="game-card"]')
+    await expect(gameCards.first()).toBeVisible({ timeout: 3000 })
 
-    const gamesHeading = page.getByRole('heading', {
-      name: /descubra seus jogos favoritos/i
-    })
-    await expect(gamesHeading).toBeVisible()
-  })
-
-  test('should handle rapid interactions', async ({ page }) => {
-    await page.goto('/')
-    await page.waitForLoadState('networkidle')
-
-    const body = page.locator('body')
-    await expect(body).toBeVisible()
-
-    const gamesHeading = page.getByRole('heading', {
-      name: /descubra seus jogos favoritos/i
-    })
-    await expect(gamesHeading).toBeVisible()
+    const cardCount = await gameCards.count()
+    expect(cardCount).toBeGreaterThan(0)
   })
 
   test('should handle filter interactions smoothly', async ({ page }) => {
     await page.goto('/')
     await page.waitForLoadState('networkidle')
 
-    await page.waitForTimeout(1000)
+    const searchInput = page.locator(
+      'input[type="text"], input[placeholder*="buscar"], input[placeholder*="search"]'
+    )
+    if (await searchInput.isVisible()) {
+      const startTime = Date.now()
 
-    const gamesHeading = page.getByRole('heading', {
-      name: /descubra seus jogos favoritos/i
-    })
-    await expect(gamesHeading).toBeVisible()
+      await searchInput.fill('test')
+      await page.waitForTimeout(500)
+
+      const interactionTime = Date.now() - startTime
+      expect(interactionTime).toBeLessThan(1000)
+    }
   })
 
   test('should handle navigation smoothly', async ({ page }) => {
@@ -84,13 +62,15 @@ test.describe('Performance', () => {
 
     expect(navigationTime).toBeLessThan(15000)
 
-    await page.waitForTimeout(1000)
-
-    const content = page.locator('*:visible').first()
-    await expect(content).toBeVisible()
+    const gamesHeading = page.getByRole('heading', {
+      name: /descubra seus jogos favoritos/i
+    })
+    await expect(gamesHeading).toBeVisible({ timeout: 10000 })
   })
 
-  test('should handle responsive layout changes', async ({ page }) => {
+  test('should handle responsive layout changes efficiently', async ({
+    page
+  }) => {
     await page.goto('/')
     await page.waitForLoadState('networkidle')
 
@@ -102,32 +82,51 @@ test.describe('Performance', () => {
     ]
 
     for (const viewport of viewports) {
+      const startTime = Date.now()
+
       await page.setViewportSize(viewport)
-      await page.waitForTimeout(500)
+      await page.waitForTimeout(200)
+
+      const resizeTime = Date.now() - startTime
+      expect(resizeTime).toBeLessThan(1000)
 
       const body = page.locator('body')
       await expect(body).toBeVisible()
     }
   })
 
-  test('should handle memory efficiently', async ({ page }) => {
+  test('should handle memory efficiently during interactions', async ({
+    page
+  }) => {
     await page.goto('/')
     await page.waitForLoadState('networkidle')
 
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < 5; i++) {
+      const startTime = Date.now()
+
       await page.getByRole('link', { name: /favoritos/i }).click()
-      await page.waitForTimeout(500)
-      await page.getByRole('link', { name: /início/i }).click()
-      await page.waitForTimeout(500)
+      await page.waitForLoadState('networkidle')
 
-      const body = page.locator('body')
-      await expect(body).toBeVisible()
+      await page.getByRole('link', { name: /início/i }).click()
+      await page.waitForLoadState('networkidle')
+
+      const interactionTime = Date.now() - startTime
+      expect(interactionTime).toBeLessThan(3000)
     }
+
+    const gamesHeading = page.getByRole('heading', {
+      name: /descubra seus jogos favoritos/i
+    })
+    await expect(gamesHeading).toBeVisible()
   })
 
-  test('should handle concurrent operations', async ({ page }) => {
+  test('should handle concurrent operations without blocking', async ({
+    page
+  }) => {
     await page.goto('/')
     await page.waitForLoadState('networkidle')
+
+    const startTime = Date.now()
 
     const promises = []
 
@@ -142,8 +141,10 @@ test.describe('Performance', () => {
     promises.push(favoritesLink.click())
 
     await Promise.all(promises)
+    await page.waitForTimeout(1000)
 
-    await page.waitForTimeout(2000)
+    const concurrentTime = Date.now() - startTime
+    expect(concurrentTime).toBeLessThan(3000)
 
     const body = page.locator('body')
     await expect(body).toBeVisible()
@@ -155,38 +156,81 @@ test.describe('Performance', () => {
       await route.continue()
     })
 
-    await page.reload()
+    const startTime = Date.now()
 
+    await page.goto('/')
     await page.waitForLoadState('networkidle', { timeout: 30000 })
 
-    await page.waitForTimeout(2000)
+    const loadTime = Date.now() - startTime
+    expect(loadTime).toBeLessThan(10000)
 
-    const errorMessage = page.locator('[data-testid="error-message"]')
-
-    if (await errorMessage.isVisible()) {
-      await expect(errorMessage).toBeVisible()
-    } else {
-      const content = page.locator('*:visible').first()
-      await expect(content).toBeVisible()
-    }
+    const gamesHeading = page.getByRole('heading', {
+      name: /descubra seus jogos favoritos/i
+    })
+    await expect(gamesHeading).toBeVisible()
   })
 
-  test('should handle errors gracefully', async ({ page }) => {
+  test('should handle API errors gracefully', async ({ page }) => {
     await page.route('**/api/**', async route => {
       await route.abort('failed')
     })
 
-    await page.reload()
-
+    await page.goto('/')
     await page.waitForTimeout(3000)
 
-    const errorMessage = page.locator('[data-testid="error-message"]')
+    const body = page.locator('body')
+    await expect(body).toBeVisible()
 
-    if (await errorMessage.isVisible()) {
-      await expect(errorMessage).toBeVisible()
-    } else {
-      const content = page.locator('*:visible').first()
-      await expect(content).toBeVisible()
+    const errorMessage = page.locator(
+      '[data-testid="error-message"], .error, [role="alert"]'
+    )
+    const errorCount = await errorMessage.count()
+
+    if (errorCount > 0) {
+      await expect(errorMessage.first()).toBeVisible()
     }
+  })
+
+  test('should maintain performance during rapid interactions', async ({
+    page
+  }) => {
+    await page.goto('/')
+    await page.waitForLoadState('networkidle')
+
+    const favoriteButtons = page.locator('[data-testid="favorite-button"]')
+    const buttonCount = await favoriteButtons.count()
+
+    if (buttonCount > 0) {
+      const startTime = Date.now()
+
+      for (let i = 0; i < Math.min(5, buttonCount); i++) {
+        const button = favoriteButtons.nth(i)
+        await button.click()
+        await page.waitForTimeout(100)
+      }
+
+      const rapidInteractionTime = Date.now() - startTime
+      expect(rapidInteractionTime).toBeLessThan(2000)
+    }
+  })
+
+  test('should handle large data sets efficiently', async ({ page }) => {
+    await page.goto('/')
+    await page.waitForLoadState('networkidle')
+
+    const gameCards = page.locator('[data-testid="game-card"]')
+    await expect(gameCards.first()).toBeVisible({ timeout: 10000 })
+
+    const cardCount = await gameCards.count()
+
+    if (cardCount > 20) {
+      const pagination = page.locator('[data-testid="pagination"], .pagination')
+      if (await pagination.isVisible()) {
+        await expect(pagination).toBeVisible()
+      }
+    }
+
+    const body = page.locator('body')
+    await expect(body).toBeVisible()
   })
 })

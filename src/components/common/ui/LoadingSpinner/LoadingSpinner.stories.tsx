@@ -9,7 +9,7 @@ import { ThemeProvider } from 'styled-components'
 import LoadingSpinner from './index'
 
 const meta: Meta<typeof LoadingSpinner> = {
-  title: 'Components/LoadingSpinner',
+  title: 'Common/UI/LoadingSpinner',
   component: LoadingSpinner,
   parameters: {
     layout: 'centered',

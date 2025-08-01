@@ -2,14 +2,31 @@ import favoritesReducer from '@/store/favorites/reducer'
 import { LightTheme } from '@/styles/theme'
 import type { Game } from '@/types/game'
 import { configureStore } from '@reduxjs/toolkit'
-import { render, screen } from '@testing-library/react'
+import { fireEvent, render, screen } from '@testing-library/react'
 import { Provider } from 'react-redux'
 import { ThemeProvider } from 'styled-components'
 import Card from './index'
 
+jest.mock('@/services/observability/providers/LogRocketProvider', () => ({
+  LogRocketProvider: jest.fn(() => null)
+}))
+
+jest.mock('@/config/env', () => import('@/config/env.mock'))
+jest.mock(
+  '@/services/configService',
+  () => import('@/services/configService.mock')
+)
+jest.mock('@/config/api', () => import('@/config/api.mock'))
+
 jest.mock('../../features/favorites/FavoriteButton', () => ({
   __esModule: true,
-  default: ({ isFavorite, onToggle }: any) => (
+  default: ({
+    isFavorite,
+    onToggle
+  }: {
+    isFavorite: boolean
+    onToggle: () => void
+  }) => (
     <button
       onClick={onToggle}
       aria-label={
@@ -24,19 +41,21 @@ jest.mock('../../features/favorites/FavoriteButton', () => ({
 
 jest.mock('../../common/ui/Text', () => ({
   __esModule: true,
-  default: ({ children }: any) => <span>{children}</span>
+  default: ({ children }: { children: React.ReactNode }) => (
+    <span>{children}</span>
+  )
 }))
 
 jest.mock('../../common/ui/Image', () => ({
   __esModule: true,
-  default: ({ src, alt }: any) => (
+  default: ({ src, alt }: { src: string; alt: string }) => (
     <img src={src} alt={alt} data-testid="game-image" />
   )
 }))
 
 jest.mock('../Info', () => ({
   __esModule: true,
-  default: ({ released, playtime }: any) => (
+  default: ({ released, playtime }: { released: string; playtime: number }) => (
     <div data-testid="info-component">
       <span>{new Date(released).toLocaleDateString('pt-BR')}</span>
       <span>{playtime}h</span>
@@ -104,7 +123,7 @@ describe('Card', () => {
     id: 1,
     name: 'Test Game',
     slug: 'test-game',
-    background_image: 'https://example.com/image.jpg',
+    background_image: 'https://example.com/game-image.jpg',
     rating: 4.5,
     rating_top: 5,
     metacritic: 85,
@@ -146,7 +165,7 @@ describe('Card', () => {
           year_end: null,
           year_start: null,
           games_count: 1000,
-          image_background: 'https://example.com/pc.jpg'
+          image_background: 'https://example.com/platform-bg.jpg'
         },
         released_at: '2023-01-01',
         requirements_en: {
@@ -164,7 +183,7 @@ describe('Card', () => {
           year_end: null,
           year_start: null,
           games_count: 500,
-          image_background: 'https://example.com/ps.jpg'
+          image_background: 'https://example.com/platform-bg.jpg'
         },
         released_at: '2023-01-01',
         requirements_en: {
@@ -180,14 +199,14 @@ describe('Card', () => {
         name: 'Action',
         slug: 'action',
         games_count: 100,
-        image_background: 'https://example.com/action.jpg'
+        image_background: 'https://example.com/genre-bg.jpg'
       },
       {
         id: 2,
         name: 'Adventure',
         slug: 'adventure',
         games_count: 80,
-        image_background: 'https://example.com/adventure.jpg'
+        image_background: 'https://example.com/adventure-bg.jpg'
       }
     ],
     tags: [
@@ -197,7 +216,7 @@ describe('Card', () => {
         slug: 'open-world',
         language: 'eng',
         games_count: 50,
-        image_background: 'https://example.com/open-world.jpg'
+        image_background: 'https://example.com/tag-bg.jpg'
       }
     ],
     short_screenshots: [],
@@ -210,7 +229,7 @@ describe('Card', () => {
           slug: 'steam',
           domain: 'store.steampowered.com',
           games_count: 10000,
-          image_background: 'https://example.com/steam.jpg'
+          image_background: 'https://example.com/store-bg.jpg'
         }
       }
     ],
@@ -237,7 +256,7 @@ describe('Card', () => {
 
     const image = screen.getByAltText('Test Game')
     expect(image).toBeInTheDocument()
-    expect(image).toHaveAttribute('src', 'https://example.com/image.jpg')
+    expect(image).toHaveAttribute('src', 'https://example.com/game-image.jpg')
   })
 
   it('renderiza o botão de favorito', () => {
@@ -272,5 +291,90 @@ describe('Card', () => {
 
     expect(screen.getByText(/31\/12\/2022|01\/01\/2023/)).toBeInTheDocument()
     expect(screen.getByText('20h')).toBeInTheDocument()
+  })
+
+  it('deve chamar onGameClick quando o card é clicado', () => {
+    const mockOnGameClick = jest.fn()
+    renderWithProviders(<Card game={mockGame} onGameClick={mockOnGameClick} />)
+
+    const card = screen.getByTestId('game-card')
+    fireEvent.click(card)
+
+    expect(mockOnGameClick).toHaveBeenCalledWith(mockGame)
+  })
+
+  it('não deve chamar onGameClick quando não fornecido', () => {
+    renderWithProviders(<Card game={mockGame} />)
+
+    const card = screen.getByTestId('game-card')
+    expect(() => fireEvent.click(card)).not.toThrow()
+  })
+
+  it('deve parar propagação quando o botão de favorito é clicado', () => {
+    const mockOnGameClick = jest.fn()
+    renderWithProviders(<Card game={mockGame} onGameClick={mockOnGameClick} />)
+
+    const favoriteButton = screen.getByTestId('favorite-button')
+    fireEvent.click(favoriteButton)
+
+    expect(mockOnGameClick).not.toHaveBeenCalled()
+  })
+
+  it('deve renderizar com jogo sem imagem', () => {
+    const gameWithoutImage = {
+      ...mockGame,
+      background_image: ''
+    }
+
+    renderWithProviders(<Card game={gameWithoutImage} />)
+
+    const image = screen.getByTestId('game-image')
+    expect(image).toBeInTheDocument()
+  })
+
+  it('deve renderizar com jogo com rating zero', () => {
+    const gameWithZeroRating = {
+      ...mockGame,
+      rating: 0
+    }
+
+    renderWithProviders(<Card game={gameWithZeroRating} />)
+
+    expect(screen.getByText('0')).toBeInTheDocument()
+  })
+
+  it('deve renderizar com jogo com playtime zero', () => {
+    const gameWithZeroPlaytime = {
+      ...mockGame,
+      playtime: 0
+    }
+
+    renderWithProviders(<Card game={gameWithZeroPlaytime} />)
+
+    expect(screen.getByText('0h')).toBeInTheDocument()
+  })
+
+  it('deve ser acessível com role e aria-label', () => {
+    renderWithProviders(<Card game={mockGame} />)
+
+    const card = screen.getByTestId('game-card')
+    expect(card).toBeInTheDocument()
+  })
+
+  it('deve renderizar múltiplos cards independentemente', () => {
+    const game2 = { ...mockGame, id: 2, name: 'Test Game 2' }
+    const game3 = { ...mockGame, id: 3, name: 'Test Game 3' }
+
+    renderWithProviders(
+      <div>
+        <Card game={mockGame} />
+        <Card game={game2} />
+        <Card game={game3} />
+      </div>
+    )
+
+    expect(screen.getByText('Test Game')).toBeInTheDocument()
+    expect(screen.getByText('Test Game 2')).toBeInTheDocument()
+    expect(screen.getByText('Test Game 3')).toBeInTheDocument()
   })
 })

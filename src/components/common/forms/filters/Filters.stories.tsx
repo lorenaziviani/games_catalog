@@ -2,12 +2,16 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import Filters from './index.tsx'
 
 const meta: Meta<typeof Filters> = {
-  title: 'Filters/Filters',
+  title: 'Common/Forms/Filters/Filters',
   component: Filters,
   parameters: {
-    layout: 'centered'
+    layout: 'centered',
+    docs: {
+      description: {
+        component: 'Componente de filtros para jogos'
+      }
+    }
   },
-  tags: ['autodocs'],
   argTypes: {
     filters: {
       control: { type: 'object' },

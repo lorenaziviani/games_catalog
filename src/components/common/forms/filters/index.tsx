@@ -6,16 +6,23 @@ import { useCallback, useState } from 'react'
 import { FiRefreshCw } from 'react-icons/fi'
 import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io'
 import { useTheme } from 'styled-components'
-import DateRangeFilter from './DateRangeFilter'
+import DynamicFilter from './DynamicFilter'
 import FilterSection from './FilterSection'
-import MultiSelectFilter from './MultiSelectFilter'
-import RangeSlider from './RangeSlider'
+// Importação do registro de filtros movida para evitar problemas de carregamento
+import './registerFilters'
 import * as S from './styles'
-import TextFilter from './TextFilter'
 
 interface FiltersProps {
   filters: FilterState
-  onUpdateFilter: (type: FilterType, value: any) => void
+  onUpdateFilter: (
+    type: FilterType,
+    value:
+      | string
+      | number
+      | string[]
+      | { start: string; end: string }
+      | { min: number; max: number }
+  ) => void
   onResetFilters: () => void
   hasActiveFilters: boolean
   activeFiltersCount: number
@@ -23,6 +30,23 @@ interface FiltersProps {
   availablePlatforms: Array<{ value: string; label: string }>
   availableStores: Array<{ value: string; label: string }>
   availableTags: Array<{ value: string; label: string }>
+}
+
+interface FilterSectionConfig {
+  title: string
+  type: FilterType
+  value:
+    | string
+    | number
+    | string[]
+    | { start: string; end: string }
+    | { min: number; max: number }
+  options?: Array<{ value: string; label: string }>
+  placeholder?: string
+  minValue?: number
+  maxValue?: number
+  step?: number
+  unit?: string
 }
 
 const Filters = ({
@@ -39,140 +63,160 @@ const Filters = ({
   const theme = useTheme()
   const [isExpanded, setIsExpanded] = useState(false)
 
-  const handleToggleExpanded = () => {
+  const handleToggleExpanded = useCallback(() => {
     setIsExpanded(!isExpanded)
-  }
+  }, [isExpanded])
 
   const handleResetFilters = useCallback(() => {
     onResetFilters()
   }, [onResetFilters])
 
+  const renderFiltersHeader = () => (
+    <S.FiltersHeader>
+      <S.FiltersTitle>
+        <Text
+          as={ElementType.SPAN}
+          $variant={
+            isDarkMode(theme) ? TextVariant.SECONDARY : TextVariant.PRIMARY
+          }
+          $lgFontSize={20}
+        >
+          Filtros
+        </Text>
+        {hasActiveFilters && (
+          <S.ActiveFiltersBadge>
+            <Text as={ElementType.SPAN} $variant={TextVariant.WHITE}>
+              {activeFiltersCount.toString()}
+            </Text>
+          </S.ActiveFiltersBadge>
+        )}
+      </S.FiltersTitle>
+      <S.FiltersActions>
+        {hasActiveFilters && (
+          <S.ResetButton onClick={handleResetFilters}>
+            <FiRefreshCw />
+          </S.ResetButton>
+        )}
+        <S.ExpandButton onClick={handleToggleExpanded}>
+          {isExpanded ? (
+            <IoIosArrowUp size={16} />
+          ) : (
+            <IoIosArrowDown size={16} />
+          )}
+        </S.ExpandButton>
+      </S.FiltersActions>
+    </S.FiltersHeader>
+  )
+
+  const createFilterSection = (config: FilterSectionConfig) => (
+    <FilterSection title={config.title}>
+      <DynamicFilter
+        type={config.type}
+        value={config.value}
+        onChange={(
+          value:
+            | string
+            | number
+            | string[]
+            | { start: string; end: string }
+            | { min: number; max: number }
+        ) => onUpdateFilter(config.type, value)}
+        options={config.options}
+        placeholder={config.placeholder}
+        minValue={config.minValue}
+        maxValue={config.maxValue}
+        step={config.step}
+        unit={config.unit}
+      />
+    </FilterSection>
+  )
+
+  const renderFilterSections = () => {
+    const filterConfigs: FilterSectionConfig[] = [
+      {
+        title: 'Nome do Jogo',
+        type: 'name',
+        value: filters.name,
+        placeholder: 'Digite o nome do jogo...'
+      },
+      {
+        title: 'Data de Lançamento',
+        type: 'dateRange',
+        value: filters.dateRange
+      },
+      {
+        title: 'Gêneros',
+        type: 'genres',
+        value: filters.genres,
+        options: availableGenres,
+        placeholder: 'Selecione os gêneros...'
+      }
+    ]
+
+    const conditionalFilters: FilterSectionConfig[] = [
+      {
+        title: 'Plataformas',
+        type: 'platforms',
+        value: filters.platforms,
+        options: availablePlatforms,
+        placeholder: 'Selecione as plataformas...'
+      },
+      {
+        title: 'Lojas',
+        type: 'stores',
+        value: filters.stores,
+        options: availableStores,
+        placeholder: 'Selecione as lojas...'
+      },
+      {
+        title: 'Tags',
+        type: 'tags',
+        value: filters.tags,
+        options: availableTags,
+        placeholder: 'Selecione as tags...'
+      },
+      {
+        title: 'Score Metacritic (0-100)',
+        type: 'metacriticRange',
+        value: filters.metacriticRange,
+        minValue: 0,
+        maxValue: 100,
+        step: 1,
+        unit: ''
+      }
+    ]
+
+    const availableOptions = [
+      { config: conditionalFilters[0], data: availableGenres },
+      { config: conditionalFilters[1], data: availablePlatforms },
+      { config: conditionalFilters[2], data: availableStores },
+      { config: conditionalFilters[3], data: availableTags }
+    ]
+
+    return (
+      <S.FiltersGrid>
+        {filterConfigs.map(config => (
+          <div key={config.type}>{createFilterSection(config)}</div>
+        ))}
+        {availableOptions.map(({ config, data }) => (
+          <div key={config.type}>
+            {data.length > 0 && createFilterSection(config)}
+          </div>
+        ))}
+      </S.FiltersGrid>
+    )
+  }
+
+  const renderFiltersContent = () => {
+    if (!isExpanded) return null
+
+    return <S.FiltersContent>{renderFilterSections()}</S.FiltersContent>
+  }
+
   return (
-    <S.FiltersContainer>
-      <S.FiltersHeader>
-        <S.FiltersTitle>
-          <Text
-            as={ElementType.SPAN}
-            $variant={
-              isDarkMode(theme) ? TextVariant.SECONDARY : TextVariant.PRIMARY
-            }
-            $lgFontSize={20}
-          >
-            Filtros
-          </Text>
-          {hasActiveFilters && (
-            <S.ActiveFiltersBadge>
-              <Text as={ElementType.SPAN} $variant={TextVariant.WHITE}>
-                {activeFiltersCount.toString()}
-              </Text>
-            </S.ActiveFiltersBadge>
-          )}
-        </S.FiltersTitle>
-        <S.FiltersActions>
-          {hasActiveFilters && (
-            <S.ResetButton onClick={handleResetFilters}>
-              <FiRefreshCw />
-            </S.ResetButton>
-          )}
-          <S.ExpandButton onClick={handleToggleExpanded}>
-            {isExpanded ? (
-              <IoIosArrowUp size={16} />
-            ) : (
-              <IoIosArrowDown size={16} />
-            )}
-          </S.ExpandButton>
-        </S.FiltersActions>
-      </S.FiltersHeader>
-
-      {isExpanded && (
-        <S.FiltersContent>
-          <S.FiltersGrid>
-            {/* Busca por Nome */}
-            <FilterSection title="Nome do Jogo">
-              <TextFilter
-                value={filters.name}
-                onChange={(value: string) => onUpdateFilter('name', value)}
-                placeholder="Digite o nome do jogo..."
-              />
-            </FilterSection>
-
-            {/* Gêneros */}
-            {availableGenres.length > 0 && (
-              <FilterSection title="Gêneros">
-                <MultiSelectFilter
-                  options={availableGenres}
-                  selectedValues={filters.genres}
-                  onChange={value => onUpdateFilter('genres', value)}
-                  placeholder="Selecione os gêneros..."
-                />
-              </FilterSection>
-            )}
-
-            {/* Plataformas */}
-            {availablePlatforms.length > 0 && (
-              <FilterSection title="Plataformas">
-                <MultiSelectFilter
-                  options={availablePlatforms}
-                  selectedValues={filters.platforms}
-                  onChange={value => onUpdateFilter('platforms', value)}
-                  placeholder="Selecione as plataformas..."
-                />
-              </FilterSection>
-            )}
-
-            {/* Lojas */}
-            {availableStores.length > 0 && (
-              <FilterSection title="Lojas">
-                <MultiSelectFilter
-                  options={availableStores}
-                  selectedValues={filters.stores}
-                  onChange={value => onUpdateFilter('stores', value)}
-                  placeholder="Selecione as lojas..."
-                />
-              </FilterSection>
-            )}
-
-            {/* Tags */}
-            {availableTags.length > 0 && (
-              <FilterSection title="Tags">
-                <MultiSelectFilter
-                  options={availableTags}
-                  selectedValues={filters.tags}
-                  onChange={value => onUpdateFilter('tags', value)}
-                  placeholder="Selecione as tags..."
-                />
-              </FilterSection>
-            )}
-
-            {/* Data de Lançamento */}
-            <FilterSection title="Data de Lançamento">
-              <DateRangeFilter
-                startDate={filters.dateRange.start}
-                endDate={filters.dateRange.end}
-                onChange={(start, end) =>
-                  onUpdateFilter('dateRange', { start, end })
-                }
-              />
-            </FilterSection>
-
-            {/* Metacritic Score */}
-            <FilterSection title="Score Metacritic (0-100)">
-              <RangeSlider
-                min={filters.metacriticRange.min}
-                max={filters.metacriticRange.max}
-                minValue={0}
-                maxValue={100}
-                step={1}
-                onChange={(min, max) =>
-                  onUpdateFilter('metacriticRange', { min, max })
-                }
-                label="Selecione a faixa de score"
-                unit=""
-              />
-            </FilterSection>
-          </S.FiltersGrid>
-        </S.FiltersContent>
-      )}
+    <S.FiltersContainer data-testid="filters-section">
+      {renderFiltersHeader()}
+      {renderFiltersContent()}
     </S.FiltersContainer>
   )
 }

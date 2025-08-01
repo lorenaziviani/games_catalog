@@ -1,16 +1,25 @@
 import { env } from '@/config/env'
 import { DEFAULT_SORT, ElementType, TextVariant } from '@/types/common'
+import type { Game } from '@/types/game'
+import type { FilterType } from '@/types/filter'
+import {
+  extractGameGenresIds,
+  extractGamePlatformsIds,
+  extractGameStoresIds,
+  extractGameTagsIds,
+  isGameMatchingFilterIds
+} from '@/utils/gameUtils'
 import { scrollToTop } from '@/utils/scrollUtils'
 import Filters from '@components/common/forms/filters'
 import Sort from '@components/common/forms/Sort'
 import Banner from '@components/common/layout/Banner'
 import Text from '@components/common/ui/Text'
-import List from '@components/game/List'
+import GameListWithModal from '@components/game/GameListWithModal'
 import Stats from '@components/game/Stats'
 import { useFavorites } from '@hooks/useFavorites'
 import { useFilters } from '@hooks/useFilters'
 import { useSort } from '@hooks/useSort'
-import { useMemo, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { FaHeart } from 'react-icons/fa'
 
 const FavoritesPage = () => {
@@ -23,12 +32,70 @@ const FavoritesPage = () => {
 
   const {
     filters,
-    filteredGames,
-    updateFilter,
-    resetFilters,
     hasActiveFilters,
-    activeFiltersCount
-  } = useFilters(favorites)
+    activeFiltersCount,
+    handleFilterChange,
+    handleResetFilters
+  } = useFilters()
+
+  const isGameNameMatchingFilter = useCallback(
+    (game: Game) => {
+      if (!filters.name) return true
+      return game.name.toLowerCase().includes(filters.name.toLowerCase())
+    },
+    [filters.name]
+  )
+
+  const isGameGenresMatchingFilter = useCallback(
+    (game: Game) => {
+      const gameGenresIds = extractGameGenresIds(game)
+      return isGameMatchingFilterIds(gameGenresIds, filters.genres)
+    },
+    [filters.genres]
+  )
+
+  const isGamePlatformsMatchingFilter = useCallback(
+    (game: Game) => {
+      const gamePlatformsIds = extractGamePlatformsIds(game)
+      return isGameMatchingFilterIds(gamePlatformsIds, filters.platforms)
+    },
+    [filters.platforms]
+  )
+
+  const isGameStoresMatchingFilter = useCallback(
+    (game: Game) => {
+      const gameStoresIds = extractGameStoresIds(game)
+      return isGameMatchingFilterIds(gameStoresIds, filters.stores)
+    },
+    [filters.stores]
+  )
+
+  const isGameTagsMatchingFilter = useCallback(
+    (game: Game) => {
+      const gameTagsIds = extractGameTagsIds(game)
+      return isGameMatchingFilterIds(gameTagsIds, filters.tags)
+    },
+    [filters.tags]
+  )
+
+  const filteredGames = useMemo(() => {
+    return favorites.filter(game => {
+      return (
+        isGameNameMatchingFilter(game) &&
+        isGameGenresMatchingFilter(game) &&
+        isGamePlatformsMatchingFilter(game) &&
+        isGameStoresMatchingFilter(game) &&
+        isGameTagsMatchingFilter(game)
+      )
+    })
+  }, [
+    favorites,
+    isGameNameMatchingFilter,
+    isGameGenresMatchingFilter,
+    isGamePlatformsMatchingFilter,
+    isGameStoresMatchingFilter,
+    isGameTagsMatchingFilter
+  ])
 
   const { sortedGames, currentSort, handleSortChange } = useSort(
     filteredGames,
@@ -43,64 +110,56 @@ const FavoritesPage = () => {
 
   const totalPages = Math.ceil(sortedGames.length / env.DEFAULT_PAGE_SIZE)
 
-  const handlePageChange = (page: number) => {
+  const navigateToPage = (page: number) => {
     setCurrentPage(page)
     setTimeout(() => {
       scrollToTop()
     }, 0)
   }
 
-  const handleClearAll = () => {
+  const clearAllFavoritesAndResetPage = () => {
     clearAllFavorites()
     setCurrentPage(1)
   }
 
-  const handleFilterChange = (type: any, value: any) => {
-    updateFilter(type, value)
+  const updateFilterAndResetPage = (type: FilterType, value: unknown) => {
+    handleFilterChange(type, value as string | number | string[])
     setCurrentPage(1)
   }
 
-  const handleResetFilters = () => {
-    resetFilters()
+  const resetFiltersAndResetPage = () => {
+    handleResetFilters()
     setCurrentPage(1)
   }
 
-  return (
-    <>
-      <Banner
-        badge={{
-          icon: FaHeart,
-          text: 'Meus Favoritos'
-        }}
+  const renderBanner = () => (
+    <Banner
+      badge={{
+        icon: FaHeart,
+        text: 'Meus Favoritos'
+      }}
+    >
+      <Text
+        as={ElementType.TITLE}
+        $variant={TextVariant.PRIMARY}
+        $lgFontSize={40}
       >
-        <Text
-          as={ElementType.TITLE}
-          $variant={TextVariant.PRIMARY}
-          $lgFontSize={40}
-        >
-          Sua Biblioteca de Jogos
-        </Text>
+        Sua Biblioteca de Jogos
+      </Text>
 
-        <Text
-          as={ElementType.P}
-          $variant={TextVariant.TERTIARY}
-          $lgFontSize={20}
-        >
-          Gerencie seus jogos favoritos, organize por gênero e descubra novos
-          títulos baseados no que você ama.
-        </Text>
-      </Banner>
+      <Text as={ElementType.P} $variant={TextVariant.TERTIARY} $lgFontSize={20}>
+        Gerencie seus jogos favoritos, organize por gênero e descubra novos
+        títulos baseados no que você ama.
+      </Text>
+    </Banner>
+  )
 
-      <Stats
-        games={favorites}
-        onClearAll={handleClearAll}
-        showClearButton={true}
-      />
-
+  const renderFiltersAndSort = () => (
+    <>
       <Filters
         filters={filters}
-        onUpdateFilter={handleFilterChange}
-        onResetFilters={handleResetFilters}
+        onUpdateFilter={updateFilterAndResetPage}
+        onResetFilters={resetFiltersAndResetPage}
         hasActiveFilters={hasActiveFilters}
         activeFiltersCount={activeFiltersCount}
         availableGenres={genres}
@@ -110,20 +169,36 @@ const FavoritesPage = () => {
       />
 
       <Sort currentSort={currentSort} onSortChange={handleSortChange} />
+    </>
+  )
 
-      <List
+  const getEmptyMessage = () => {
+    return hasActiveFilters
+      ? 'Nenhum jogo encontrado com os filtros aplicados.'
+      : 'Você ainda não tem jogos favoritos.'
+  }
+
+  return (
+    <>
+      {renderBanner()}
+
+      <Stats
+        games={favorites}
+        onClearAll={clearAllFavoritesAndResetPage}
+        showClearButton={true}
+      />
+
+      {renderFiltersAndSort()}
+
+      <GameListWithModal
         games={paginatedFavorites}
         loading={false}
         error={null}
         currentPage={currentPage}
         totalPages={totalPages}
-        onPageChange={handlePageChange}
+        onPageChange={navigateToPage}
         showPagination={true}
-        emptyMessage={
-          hasActiveFilters
-            ? 'Nenhum jogo encontrado com os filtros aplicados.'
-            : 'Você ainda não tem jogos favoritos.'
-        }
+        emptyMessage={getEmptyMessage()}
       />
     </>
   )

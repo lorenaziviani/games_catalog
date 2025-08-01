@@ -4,7 +4,7 @@ import { useState } from 'react'
 import FavoriteButton from './index'
 
 const meta: Meta<typeof FavoriteButton> = {
-  title: 'Components/FavoriteButton',
+  title: 'Features/Favorites/FavoriteButton',
   component: FavoriteButton,
   parameters: {
     layout: 'centered',
@@ -40,7 +40,17 @@ const meta: Meta<typeof FavoriteButton> = {
 export default meta
 type Story = StoryObj<typeof meta>
 
-const FavoriteButtonWrapper = ({ isFavorite, size, position }: any) => {
+interface FavoriteButtonWrapperProps {
+  isFavorite: boolean
+  size?: ComponentSize
+  position?: Position
+}
+
+const FavoriteButtonWrapper = ({
+  isFavorite,
+  size,
+  position
+}: FavoriteButtonWrapperProps) => {
   const [favorite, setFavorite] = useState(isFavorite)
 
   return (

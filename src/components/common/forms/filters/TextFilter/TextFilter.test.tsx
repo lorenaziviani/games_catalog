@@ -1,11 +1,17 @@
+import { LightTheme } from '@/styles/theme'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { ThemeProvider } from 'styled-components'
-import { LightTheme } from '../../../../../styles/theme'
 import TextFilter from './index.tsx'
 
 jest.mock('./styles', () => ({
-  Input: ({ type, value, onChange, placeholder, ...props }: any) => (
+  Input: ({
+    type,
+    value,
+    onChange,
+    placeholder,
+    ...props
+  }: React.InputHTMLAttributes<HTMLInputElement>) => (
     <input
       data-testid="text-filter-input"
       type={type}
@@ -75,7 +81,12 @@ describe('TextFilter', () => {
       const input = screen.getByTestId('text-filter-input')
       await user.type(input, 'teste')
 
-      expect(mockOnChange).toHaveBeenCalledWith('teste')
+      expect(mockOnChange).toHaveBeenCalledTimes(5)
+      expect(mockOnChange).toHaveBeenNthCalledWith(1, 't')
+      expect(mockOnChange).toHaveBeenNthCalledWith(2, 'te')
+      expect(mockOnChange).toHaveBeenNthCalledWith(3, 'tes')
+      expect(mockOnChange).toHaveBeenNthCalledWith(4, 'test')
+      expect(mockOnChange).toHaveBeenNthCalledWith(5, 'teste')
     })
 
     it('deve chamar onChange com valor vazio quando o usuário limpa o input', async () => {
@@ -120,6 +131,7 @@ describe('TextFilter', () => {
       const input = screen.getByTestId('text-filter-input')
       await user.type(input, 'jogo@#$%123')
 
+      expect(mockOnChange).toHaveBeenCalledTimes(11)
       expect(mockOnChange).toHaveBeenLastCalledWith('jogo@#$%123')
     })
 
@@ -132,6 +144,7 @@ describe('TextFilter', () => {
       const input = screen.getByTestId('text-filter-input')
       await user.type(input, '  texto com espaços  ')
 
+      expect(mockOnChange).toHaveBeenCalledTimes(21)
       expect(mockOnChange).toHaveBeenLastCalledWith('  texto com espaços  ')
     })
   })
@@ -164,7 +177,7 @@ describe('TextFilter', () => {
     })
   })
 
-  describe('Casos edge', () => {
+  describe('Edge Cases', () => {
     it('deve lidar com texto muito longo', async () => {
       const user = userEvent.setup()
       const mockOnChange = jest.fn()
@@ -175,6 +188,7 @@ describe('TextFilter', () => {
       const input = screen.getByTestId('text-filter-input')
       await user.type(input, longText)
 
+      expect(mockOnChange).toHaveBeenCalledTimes(1000)
       expect(mockOnChange).toHaveBeenLastCalledWith(longText)
     })
 
@@ -196,8 +210,42 @@ describe('TextFilter', () => {
 
     it('deve lidar com onChange undefined', () => {
       expect(() => {
-        renderWithTheme(<TextFilter value="" onChange={undefined as any} />)
+        renderWithTheme(
+          <TextFilter
+            value=""
+            onChange={undefined as unknown as (value: string) => void}
+          />
+        )
       }).not.toThrow()
+    })
+
+    it('deve lidar com valor undefined', () => {
+      expect(() => {
+        renderWithTheme(
+          <TextFilter
+            value={undefined as unknown as string}
+            onChange={jest.fn()}
+          />
+        )
+      }).not.toThrow()
+    })
+
+    it('deve lidar com valor null', () => {
+      expect(() => {
+        renderWithTheme(
+          <TextFilter value={null as unknown as string} onChange={jest.fn()} />
+        )
+      }).not.toThrow()
+    })
+
+    it('deve lidar com placeholder muito longo', () => {
+      const longPlaceholder = 'A'.repeat(500)
+      renderWithTheme(
+        <TextFilter {...defaultProps} placeholder={longPlaceholder} />
+      )
+
+      const input = screen.getByTestId('text-filter-input')
+      expect(input).toHaveAttribute('placeholder', longPlaceholder)
     })
   })
 
@@ -223,7 +271,8 @@ describe('TextFilter', () => {
       await user.click(input)
       await user.keyboard('teste')
 
-      expect(mockOnChange).toHaveBeenCalledWith('teste')
+      expect(mockOnChange).toHaveBeenCalledTimes(5)
+      expect(mockOnChange).toHaveBeenLastCalledWith('teste')
     })
 
     it('deve manter o foco durante a digitação', async () => {
@@ -237,6 +286,20 @@ describe('TextFilter', () => {
 
       expect(input).toHaveFocus()
     })
+
+    it('deve suportar teclas especiais', async () => {
+      const user = userEvent.setup()
+      const mockOnChange = jest.fn()
+
+      renderWithTheme(<TextFilter {...defaultProps} onChange={mockOnChange} />)
+
+      const input = screen.getByTestId('text-filter-input')
+      await user.click(input)
+      await user.keyboard('teste{Backspace}')
+
+      expect(mockOnChange).toHaveBeenCalledTimes(6)
+      expect(mockOnChange).toHaveBeenLastCalledWith('test')
+    })
   })
 
   describe('Performance', () => {
@@ -245,7 +308,6 @@ describe('TextFilter', () => {
 
       renderWithTheme(<TextFilter {...defaultProps} onChange={mockOnChange} />)
 
-      // O componente deve renderizar sem erros
       const input = screen.getByTestId('text-filter-input')
       expect(input).toBeInTheDocument()
     })
@@ -268,7 +330,21 @@ describe('TextFilter', () => {
 
       const input = screen.getByTestId('text-filter-input')
       expect(input).toBeInTheDocument()
-      expect(input).toHaveValue('valor 0')
+      expect(input).toHaveValue('valor 9')
+    })
+
+    it('deve lidar com digitação rápida', async () => {
+      const user = userEvent.setup()
+      const mockOnChange = jest.fn()
+
+      renderWithTheme(<TextFilter {...defaultProps} onChange={mockOnChange} />)
+
+      const input = screen.getByTestId('text-filter-input')
+
+      await user.type(input, 'teste')
+
+      expect(mockOnChange).toHaveBeenCalledTimes(5)
+      expect(mockOnChange).toHaveBeenLastCalledWith('teste')
     })
   })
 
@@ -295,6 +371,177 @@ describe('TextFilter', () => {
       await waitFor(() => {
         expect(mockOnChange).toHaveBeenCalledWith('teste assíncrono')
       })
+    })
+  })
+
+  describe('Validação de Entrada', () => {
+    it('deve aceitar caracteres Unicode', async () => {
+      const user = userEvent.setup()
+      const mockOnChange = jest.fn()
+
+      renderWithTheme(<TextFilter {...defaultProps} onChange={mockOnChange} />)
+
+      const input = screen.getByTestId('text-filter-input')
+      await user.type(input, 'café mañana ñoño')
+
+      expect(mockOnChange).toHaveBeenCalledTimes(16)
+      expect(mockOnChange).toHaveBeenLastCalledWith('café mañana ñoño')
+    })
+
+    it('deve aceitar emojis', async () => {
+      const user = userEvent.setup()
+      const mockOnChange = jest.fn()
+
+      renderWithTheme(<TextFilter {...defaultProps} onChange={mockOnChange} />)
+
+      const input = screen.getByTestId('text-filter-input')
+      await user.type(input, '🎮 jogo 🎯')
+
+      expect(mockOnChange).toHaveBeenCalledTimes(10)
+      expect(mockOnChange).toHaveBeenLastCalledWith('🎮 jogo 🎯')
+    })
+
+    it('deve aceitar números', async () => {
+      const user = userEvent.setup()
+      const mockOnChange = jest.fn()
+
+      renderWithTheme(<TextFilter {...defaultProps} onChange={mockOnChange} />)
+
+      const input = screen.getByTestId('text-filter-input')
+      await user.type(input, '123456789')
+
+      expect(mockOnChange).toHaveBeenCalledTimes(9)
+      expect(mockOnChange).toHaveBeenLastCalledWith('123456789')
+    })
+
+    it('deve aceitar símbolos especiais', async () => {
+      const user = userEvent.setup()
+      const mockOnChange = jest.fn()
+
+      renderWithTheme(<TextFilter {...defaultProps} onChange={mockOnChange} />)
+
+      const input = screen.getByTestId('text-filter-input')
+      await user.type(input, '!@#$%^&*()_+-=')
+
+      expect(mockOnChange).toHaveBeenCalledTimes(14)
+      expect(mockOnChange).toHaveBeenLastCalledWith('!@#$%^&*()_+-=')
+    })
+  })
+
+  describe('Comportamento de Limpeza', () => {
+    it('deve limpar o input corretamente', async () => {
+      const user = userEvent.setup()
+      const mockOnChange = jest.fn()
+
+      renderWithTheme(
+        <TextFilter
+          {...defaultProps}
+          value="texto inicial"
+          onChange={mockOnChange}
+        />
+      )
+
+      const input = screen.getByTestId('text-filter-input')
+      await user.clear(input)
+
+      expect(mockOnChange).toHaveBeenCalledWith('')
+    })
+
+    it('deve lidar com seleção e substituição', async () => {
+      const user = userEvent.setup()
+      const mockOnChange = jest.fn()
+
+      renderWithTheme(
+        <TextFilter
+          {...defaultProps}
+          value="texto antigo"
+          onChange={mockOnChange}
+        />
+      )
+
+      const input = screen.getByTestId('text-filter-input')
+      await user.click(input)
+      await user.keyboard('{Control>}a{/Control}')
+      await user.type(input, 'texto novo')
+
+      expect(mockOnChange).toHaveBeenCalled()
+    })
+  })
+
+  describe('Responsividade', () => {
+    it('deve renderizar corretamente em diferentes tamanhos', () => {
+      renderWithTheme(<TextFilter {...defaultProps} />)
+
+      const input = screen.getByTestId('text-filter-input')
+      expect(input).toBeInTheDocument()
+    })
+
+    it('deve lidar com mudanças de tamanho dinâmicas', () => {
+      const { rerender } = renderWithTheme(
+        <TextFilter {...defaultProps} value="texto curto" />
+      )
+
+      rerender(
+        <TextFilter
+          {...defaultProps}
+          value="texto muito mais longo que pode causar problemas de layout"
+        />
+      )
+
+      const input = screen.getByTestId('text-filter-input')
+      expect(input).toBeInTheDocument()
+    })
+  })
+
+  describe('Testes de Regressão', () => {
+    it('deve manter comportamento consistente entre renderizações', () => {
+      const { rerender } = renderWithTheme(
+        <TextFilter {...defaultProps} value="valor inicial" />
+      )
+
+      let input = screen.getByTestId('text-filter-input')
+      expect(input).toHaveValue('valor inicial')
+
+      rerender(<TextFilter {...defaultProps} value="valor inicial" />)
+      input = screen.getByTestId('text-filter-input')
+      expect(input).toHaveValue('valor inicial')
+    })
+
+    it('deve preservar funcionalidade após múltiplas atualizações', () => {
+      const mockOnChange = jest.fn()
+      const { rerender } = renderWithTheme(
+        <TextFilter {...defaultProps} onChange={mockOnChange} />
+      )
+
+      for (let i = 0; i < 5; i++) {
+        rerender(
+          <TextFilter
+            {...defaultProps}
+            value={`valor ${i}`}
+            onChange={mockOnChange}
+          />
+        )
+      }
+
+      const input = screen.getByTestId('text-filter-input')
+      expect(input).toBeInTheDocument()
+      expect(input).toHaveValue('valor 4')
+    })
+  })
+
+  describe('Compatibilidade', () => {
+    it('deve funcionar com diferentes navegadores (simulado)', () => {
+      renderWithTheme(<TextFilter {...defaultProps} />)
+
+      const input = screen.getByTestId('text-filter-input')
+      expect(input).toBeInTheDocument()
+    })
+
+    it('deve funcionar com diferentes dispositivos (simulado)', () => {
+      renderWithTheme(<TextFilter {...defaultProps} />)
+
+      const input = screen.getByTestId('text-filter-input')
+      expect(input).toBeInTheDocument()
     })
   })
 })

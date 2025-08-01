@@ -5,7 +5,7 @@ import { Provider } from 'react-redux'
 import Stats from './index'
 
 const meta: Meta<typeof Stats> = {
-  title: 'Components/Stats',
+  title: 'Game/Stats',
   component: Stats,
   parameters: {
     layout: 'padded',

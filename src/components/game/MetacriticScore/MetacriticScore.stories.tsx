@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import MetacriticScore from './index'
 
 const meta: Meta<typeof MetacriticScore> = {
-  title: 'Components/MetacriticScore',
+  title: 'Game/MetacriticScore',
   component: MetacriticScore,
   parameters: {
     layout: 'centered',

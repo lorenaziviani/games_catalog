@@ -116,4 +116,71 @@ describe('ThemeButton Component', () => {
     expect(container).toContainElement(button)
     expect(button).toContainElement(icon)
   })
+
+  it('deve chamar onClick múltiplas vezes', () => {
+    render(<ThemeButton onClick={mockOnClick} />)
+
+    const button = screen.getByTestId('theme-button')
+
+    fireEvent.click(button)
+    fireEvent.click(button)
+    fireEvent.click(button)
+
+    expect(mockOnClick).toHaveBeenCalledTimes(3)
+  })
+
+  it('deve funcionar com diferentes eventos de teclado', () => {
+    render(<ThemeButton onClick={mockOnClick} />)
+
+    const button = screen.getByTestId('theme-button')
+
+    fireEvent.keyDown(button, { key: 'Enter' })
+    fireEvent.keyDown(button, { key: ' ' })
+    fireEvent.keyDown(button, { key: 'Space' })
+
+    expect(button).toBeInTheDocument()
+  })
+
+  it('deve manter estado consistente após múltiplos cliques', () => {
+    render(<ThemeButton onClick={mockOnClick} />)
+
+    const button = screen.getByTestId('theme-button')
+    const icon = screen.getByTestId('moon-icon')
+
+    fireEvent.click(button)
+    expect(mockOnClick).toHaveBeenCalledTimes(1)
+    expect(icon).toBeInTheDocument()
+
+    fireEvent.click(button)
+    expect(mockOnClick).toHaveBeenCalledTimes(2)
+    expect(icon).toBeInTheDocument()
+  })
+
+  it('deve renderizar corretamente sem onClick', () => {
+    render(<ThemeButton onClick={() => {}} />)
+
+    const button = screen.getByTestId('theme-button')
+    expect(button).toBeInTheDocument()
+  })
+
+  it('deve ser focável', () => {
+    render(<ThemeButton onClick={mockOnClick} />)
+
+    const button = screen.getByTestId('theme-button')
+    button.focus()
+
+    expect(button).toHaveFocus()
+  })
+
+  it('deve funcionar com mouse events', () => {
+    render(<ThemeButton onClick={mockOnClick} />)
+
+    const button = screen.getByTestId('theme-button')
+
+    fireEvent.mouseDown(button)
+    fireEvent.mouseUp(button)
+    fireEvent.click(button)
+
+    expect(mockOnClick).toHaveBeenCalledTimes(1)
+  })
 })

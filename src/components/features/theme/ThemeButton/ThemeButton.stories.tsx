@@ -1,12 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { useState } from 'react'
 import { ThemeProvider } from 'styled-components'
-import { GlobalStyle } from '../../../../styles/global'
-import { DarkTheme, LightTheme } from '../../../../styles/theme'
+import { GlobalStyle } from '@/styles/global'
+import { DarkTheme, LightTheme } from '@/styles/theme'
 import ThemeButton from './index'
 
 const meta: Meta<typeof ThemeButton> = {
-  title: 'Components/ThemeButton',
+  title: 'Features/Theme/ThemeButton',
   component: ThemeButton,
   parameters: {
     layout: 'centered',

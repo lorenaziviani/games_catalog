@@ -1,120 +1,182 @@
 import { expect, test } from '@playwright/test'
 
 test.describe('Favorites', () => {
-  test('should display favorites page', async ({ page }) => {
+  test('should display favorites page with empty state', async ({ page }) => {
     await page.goto('/favorites')
 
     await expect(
       page.getByRole('heading', { name: /sua biblioteca de jogos/i })
     ).toBeVisible()
-  })
-
-  test('should display empty favorites state', async ({ page }) => {
-    await page.goto('/favorites')
 
     await expect(
       page.getByText(/você ainda não tem jogos favoritos/i)
     ).toBeVisible()
   })
 
-  test('should add game to favorites', async ({ page }) => {
+  test('should add and remove game from favorites', async ({ page }) => {
     await page.goto('/')
     await page.waitForLoadState('networkidle')
 
-    const body = page.locator('body')
-    await expect(body).toBeVisible()
+    const gameCards = page.locator('[data-testid="game-card"]')
+    await expect(gameCards.first()).toBeVisible({ timeout: 10000 })
 
-    const gamesHeading = page.getByRole('heading', {
-      name: /descubra seus jogos favoritos/i
-    })
-    await expect(gamesHeading).toBeVisible()
-  })
+    const firstFavoriteButton = page
+      .locator('[data-testid="favorite-button"]')
+      .first()
+    await firstFavoriteButton.click()
 
-  test('should remove game from favorites', async ({ page }) => {
-    await page.goto('/')
+    await expect(firstFavoriteButton).toHaveAttribute(
+      'aria-label',
+      /remover dos favoritos/i
+    )
+
+    await page.getByRole('link', { name: /favoritos/i }).click()
+    await expect(page).toHaveURL(/.*\/favorites/)
+
+    const favoriteGames = page.locator('[data-testid="game-card"]')
+    await expect(favoriteGames.first()).toBeVisible()
+
+    await page.getByRole('link', { name: /início/i }).click()
     await page.waitForLoadState('networkidle')
 
-    const body = page.locator('body')
-    await expect(body).toBeVisible()
+    const favoriteButton = page
+      .locator('[data-testid="favorite-button"]')
+      .first()
+    await favoriteButton.click()
 
-    const gamesHeading = page.getByRole('heading', {
-      name: /descubra seus jogos favoritos/i
-    })
-    await expect(gamesHeading).toBeVisible()
+    await expect(favoriteButton).toHaveAttribute(
+      'aria-label',
+      /adicionar aos favoritos/i
+    )
   })
 
   test('should display favorite games in favorites page', async ({ page }) => {
     await page.goto('/')
     await page.waitForLoadState('networkidle')
 
-    const body = page.locator('body')
-    await expect(body).toBeVisible()
+    const favoriteButtons = page.locator('[data-testid="favorite-button"]')
+    const buttonCount = await favoriteButtons.count()
 
-    await page.goto('/favorites')
+    for (let i = 0; i < Math.min(3, buttonCount); i++) {
+      const button = favoriteButtons.nth(i)
+      await button.click()
+      await page.waitForTimeout(500)
+    }
 
-    await expect(
-      page.getByRole('heading', { name: /sua biblioteca de jogos/i })
-    ).toBeVisible()
+    await page.getByRole('link', { name: /favoritos/i }).click()
+    await expect(page).toHaveURL(/.*\/favorites/)
+
+    const favoriteGames = page.locator('[data-testid="game-card"]')
+    const favoriteCount = await favoriteGames.count()
+    expect(favoriteCount).toBeGreaterThan(0)
   })
 
   test('should persist favorites across sessions', async ({ page }) => {
     await page.goto('/')
     await page.waitForLoadState('networkidle')
 
-    const body = page.locator('body')
-    await expect(body).toBeVisible()
+    const firstFavoriteButton = page
+      .locator('[data-testid="favorite-button"]')
+      .first()
+    await firstFavoriteButton.click()
+
+    await expect(firstFavoriteButton).toHaveAttribute(
+      'aria-label',
+      /remover dos favoritos/i
+    )
 
     await page.reload()
     await page.waitForLoadState('networkidle')
 
-    await expect(body).toBeVisible()
+    const favoriteButton = page
+      .locator('[data-testid="favorite-button"]')
+      .first()
+    await expect(favoriteButton).toHaveAttribute(
+      'aria-label',
+      /remover dos favoritos/i
+    )
   })
 
-  test('should display favorite button with correct state', async ({
-    page
-  }) => {
+  test('should display favorites count in header', async ({ page }) => {
     await page.goto('/')
     await page.waitForLoadState('networkidle')
 
-    const body = page.locator('body')
-    await expect(body).toBeVisible()
+    const favoritesLink = page.getByRole('link', { name: /favoritos/i })
+    await expect(favoritesLink).toBeVisible()
 
-    const gamesHeading = page.getByRole('heading', {
-      name: /descubra seus jogos favoritos/i
-    })
-    await expect(gamesHeading).toBeVisible()
+    const firstFavoriteButton = page
+      .locator('[data-testid="favorite-button"]')
+      .first()
+    await firstFavoriteButton.click()
+
+    await expect(favoritesLink).toBeVisible()
   })
 
   test('should handle multiple favorite operations', async ({ page }) => {
     await page.goto('/')
     await page.waitForLoadState('networkidle')
 
-    const body = page.locator('body')
-    await expect(body).toBeVisible()
+    const favoriteButtons = page.locator('[data-testid="favorite-button"]')
+    const buttonCount = await favoriteButtons.count()
 
-    const gamesHeading = page.getByRole('heading', {
-      name: /descubra seus jogos favoritos/i
-    })
-    await expect(gamesHeading).toBeVisible()
+    for (let i = 0; i < Math.min(5, buttonCount); i++) {
+      const button = favoriteButtons.nth(i)
+
+      await button.click()
+      await page.waitForTimeout(200)
+
+      await expect(button).toHaveAttribute(
+        'aria-label',
+        /remover dos favoritos/i
+      )
+
+      await button.click()
+      await page.waitForTimeout(200)
+
+      await expect(button).toHaveAttribute(
+        'aria-label',
+        /adicionar aos favoritos/i
+      )
+    }
   })
 
-  test('should display favorites count in header', async ({ page }) => {
+  test('should clear all favorites', async ({ page }) => {
     await page.goto('/')
+    await page.waitForLoadState('networkidle')
 
-    const header = page.getByRole('banner')
-    await expect(header).toBeVisible()
+    const gameCards = page.locator('[data-testid="game-card"]')
+    await expect(gameCards.first()).toBeVisible({ timeout: 15000 })
 
-    const navLinks = page.getByRole('link')
-    await expect(navLinks.first()).toBeVisible()
-  })
+    const favoriteButtons = page.locator('[data-testid="favorite-button"]')
+    const buttonCount = await favoriteButtons.count()
 
-  test('should navigate to favorites from header', async ({ page }) => {
-    await page.goto('/')
+    for (let i = 0; i < Math.min(3, buttonCount); i++) {
+      const button = favoriteButtons.nth(i)
+      await button.click()
+      await page.waitForTimeout(1000)
+    }
 
-    const header = page.getByRole('banner')
-    await expect(header).toBeVisible()
+    await page.getByRole('link', { name: /favoritos/i }).click()
+    await page.waitForLoadState('networkidle')
 
-    const navLinks = page.getByRole('link')
-    await expect(navLinks.first()).toBeVisible()
+    const favoriteGames = page.locator('[data-testid="game-card"]')
+    await expect(favoriteGames.first()).toBeVisible({ timeout: 10000 })
+    const initialCount = await favoriteGames.count()
+    expect(initialCount).toBeGreaterThan(0)
+
+    const removeButtons = page.locator('[data-testid="favorite-button"]')
+    const removeCount = await removeButtons.count()
+
+    for (let i = 0; i < removeCount; i++) {
+      const button = removeButtons.first()
+      await button.click()
+      await page.waitForTimeout(2000)
+    }
+
+    await page.waitForTimeout(3000)
+
+    await expect(
+      page.getByText(/você ainda não tem jogos favoritos/i)
+    ).toBeVisible({ timeout: 10000 })
   })
 })

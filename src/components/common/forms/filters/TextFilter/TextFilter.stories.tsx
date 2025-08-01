@@ -2,7 +2,17 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { useState } from 'react'
 import TextFilter from './index.tsx'
 
-const TextFilterWrapper = ({ value, onChange, placeholder }: any) => {
+interface TextFilterWrapperProps {
+  value: string
+  onChange?: (value: string) => void
+  placeholder?: string
+}
+
+const TextFilterWrapper = ({
+  value,
+  onChange,
+  placeholder
+}: TextFilterWrapperProps) => {
   const [localValue, setLocalValue] = useState(value)
 
   const handleChange = (newValue: string) => {
@@ -20,7 +30,7 @@ const TextFilterWrapper = ({ value, onChange, placeholder }: any) => {
 }
 
 const meta: Meta<typeof TextFilter> = {
-  title: 'Components/Filters/TextFilter',
+  title: 'Common/Forms/Filters/TextFilter',
   component: TextFilter,
   parameters: {
     layout: 'centered',
@@ -48,7 +58,7 @@ const meta: Meta<typeof TextFilter> = {
 }
 
 export default meta
-type Story = StoryObj<typeof meta>
+type Story = StoryObj<typeof TextFilterWrapper>
 
 export const Default: Story = {
   render: args => <TextFilterWrapper {...args} />,

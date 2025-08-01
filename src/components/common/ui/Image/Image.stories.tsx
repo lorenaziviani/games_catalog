@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import Image from './index'
 
 const meta: Meta<typeof Image> = {
-  title: 'Components/Image',
+  title: 'Common/UI/Image',
   component: Image,
   parameters: {
     layout: 'centered',
