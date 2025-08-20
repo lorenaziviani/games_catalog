@@ -61,6 +61,10 @@ Desenvolvido com React 19, TypeScript 5.8 e Vite 7.0, o sistema garante alta per
 
 O **Games Catalog** é uma aplicação React TypeScript que demonstra as melhores práticas de desenvolvimento frontend em nível senior. O projeto implementa uma arquitetura limpa, gerenciamento de estado avançado, testes abrangentes e ferramentas profissionais para criar uma experiência de usuário excepcional.
 
+## Demo
+
+**Acesse a aplicação em produção:** [https://games-catalog-delta.vercel.app/](https://games-catalog-delta.vercel.app/)
+
 ### Objetivos do Projeto
 
 - **Escalabilidade**: Arquitetura escalável e manutenível
@@ -70,7 +74,7 @@ O **Games Catalog** é uma aplicação React TypeScript que demonstra as melhore
 - **DevOps**: Pipeline de CI/CD robusto e automatizado
 - **Acessibilidade**: Experiência inclusiva para todos os usuários
 
-## 🏗️ Arquitetura do Sistema
+## Arquitetura do Sistema
 
 ### **Diagrama da Arquitetura**
 
