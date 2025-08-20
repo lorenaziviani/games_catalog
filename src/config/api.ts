@@ -16,7 +16,13 @@ export const getRawgApiUrl = (endpoint: string): string => {
 
   const [path, queryString] = cleanEndpoint.split('?')
 
-  const url = new URL(baseUrl + '/' + path)
+  let url: URL
+  if (baseUrl.startsWith('http://') || baseUrl.startsWith('https://')) {
+    url = new URL(baseUrl + '/' + path)
+  } else {
+    const currentOrigin = window.location.origin
+    url = new URL(currentOrigin + baseUrl + '/' + path)
+  }
 
   if (queryString) {
     const params = new URLSearchParams(queryString)
@@ -41,9 +47,26 @@ export const getRawgApiUrl = (endpoint: string): string => {
 
   if (configService.isDevelopment()) {
     console.log('URL construída:', url.toString())
+  } else {
+    // Log para debug em produção (pode ser removido depois)
+    console.log('URL construída (produção):', url.toString())
   }
 
   return url.toString()
+}
+
+export const testUrlConstruction = (): void => {
+  try {
+    const testEndpoint = 'genres'
+    const result = getRawgApiUrl(testEndpoint)
+    console.log('✅ Teste de construção de URL:', {
+      endpoint: testEndpoint,
+      result,
+      baseUrl: API_CONFIG.BASE_URL
+    })
+  } catch (error) {
+    console.error('❌ Erro no teste de construção de URL:', error)
+  }
 }
 
 export const validateApiConfig = (): void => {
@@ -56,6 +79,15 @@ export const validateApiConfig = (): void => {
       'API_KEY não configurada. Algumas funcionalidades podem não funcionar.'
     )
   }
+
+  // Debug para produção
+  console.log('API Config:', {
+    BASE_URL: API_CONFIG.BASE_URL,
+    API_KEY: API_CONFIG.API_KEY ? '***' : 'não configurada',
+    IS_ABSOLUTE_URL: API_CONFIG.BASE_URL.startsWith('http'),
+    CURRENT_ORIGIN:
+      typeof window !== 'undefined' ? window.location.origin : 'N/A'
+  })
 }
 
 export const getDefaultHeaders = (): Record<string, string> => {

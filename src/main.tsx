@@ -4,12 +4,13 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.tsx'
-import { validateApiConfig } from './config/api'
+import { validateApiConfig, testUrlConstruction } from './config/api'
 import { validateEnv } from './config/env'
 import './styles/global.ts'
 
 validateEnv()
 validateApiConfig()
+testUrlConstruction()
 
 const cacheConfig = configService.getCacheConfig()
 const retryConfig = configService.getRetryConfig()

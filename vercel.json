@@ -23,5 +23,10 @@
         }
       ]
     }
-  ]
+  ],
+  "functions": {
+    "api/rawg/**/*.js": {
+      "maxDuration": 30
+    }
+  }
 }
