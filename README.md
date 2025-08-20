@@ -1,6 +1,45 @@
-# Heroes Catalog - Sistema de Catálogo de Jogos
+# Games Catalog - Sistema de Catálogo de Jogos
 
-> Projeto Demonstrativo de uma aplicação React TypeScript de nível empresarial que demonstra arquitetura limpa, performance otimizada, testes abrangentes e ferramentas profissionais.
+<div align="center">
+<img src=".gitassets/logo.png" width="350" />
+
+<div data-badges>
+  <img src="https://img.shields.io/github/stars/lorenaziviani/games_catalog?style=for-the-badge&logo=github" alt="GitHub stars" />
+  <img src="https://img.shields.io/github/forks/lorenaziviani/games_catalog?style=for-the-badge&logo=github" alt="GitHub forks" />
+  <img src="https://img.shields.io/github/last-commit/lorenaziviani/games_catalog?style=for-the-badge&logo=github" alt="GitHub last commit" />
+</div>
+
+<div data-badges>
+  <img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" alt="React" />
+  <img src="https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript" />
+  <img src="https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white" alt="Vite" />
+  <img src="https://img.shields.io/badge/Redux-593D88?style=for-the-badge&logo=redux&logoColor=white" alt="Redux" />
+  <img src="https://img.shields.io/badge/styled--components-DB7093?style=for-the-badge&logo=styled-components&logoColor=white" alt="Styled Components" />
+  <img src="https://img.shields.io/badge/Jest-C21325?style=for-the-badge&logo=jest&logoColor=white" alt="Jest" />
+  <img src="https://img.shields.io/badge/Playwright-2EAD33?style=for-the-badge&logo=playwright&logoColor=white" alt="Playwright" />
+  <img src="https://img.shields.io/badge/Storybook-FF4785?style=for-the-badge&logo=storybook&logoColor=white" alt="Storybook" />
+</div>
+</div> </br>
+
+O **Games Catalog** é uma aplicação React TypeScript de nível empresarial que demonstra arquitetura limpa, performance otimizada, testes abrangentes e ferramentas profissionais para criar uma experiência de usuário excepcional:
+
+✔ **Clean Architecture** com separação clara de responsabilidades e inversão de dependência
+
+✔ **Domain-Driven Design** implementando entidades, repositórios e serviços de domínio
+
+✔ **Sistema de Filtros Modular** com padrões Registry e Adapter para máxima reutilização
+
+✔ **Gerenciamento de Estado Avançado** combinando Redux Toolkit e React Query
+
+✔ **Testes Abrangentes** com Jest, React Testing Library, Playwright e Storybook
+
+✔ **Observabilidade Completa** com LogRocket para tracking de erros e performance
+
+✔ **Sistema de Design Responsivo** com tokens centralizados e tema dinâmico
+
+✔ **Acessibilidade WCAG 2.1** com modos de cor, tamanhos de fonte e redução de movimento
+
+Desenvolvido com React 19, TypeScript 5.8 e Vite 7.0, o sistema garante alta performance, manutenibilidade e experiência de usuário excepcional para ambientes de produção.
 
 ## Índice
 
@@ -20,7 +59,7 @@
 
 ## Visão Geral
 
-O **Heroes Catalog** é uma aplicação React TypeScript que demonstra as melhores práticas de desenvolvimento frontend em nível senior. O projeto implementa uma arquitetura limpa, gerenciamento de estado avançado, testes abrangentes e ferramentas profissionais para criar uma experiência de usuário excepcional.
+O **Games Catalog** é uma aplicação React TypeScript que demonstra as melhores práticas de desenvolvimento frontend em nível senior. O projeto implementa uma arquitetura limpa, gerenciamento de estado avançado, testes abrangentes e ferramentas profissionais para criar uma experiência de usuário excepcional.
 
 ### Objetivos do Projeto
 
@@ -505,8 +544,8 @@ const queryClient = new QueryClient({
 
 ```bash
 # Clone o repositório
-git clone https://github.com/lorenaziviani/heroes-catalog.git
-cd heroes-catalog
+git clone https://github.com/lorenaziviani/games-catalog.git
+cd games-catalog
 
 # Instale as dependências
 npm install
@@ -567,7 +606,7 @@ npm run type-check
 ## 📁 Estrutura do Projeto
 
 ```
-heroes_catalog/
+games_catalog/
 ├── src/
 │   ├── components/          # Componentes reutilizáveis
 │   │   ├── common/         # Componentes comuns
