@@ -19,7 +19,7 @@ jobs:
 
     steps:
       - name: Debug Context
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         with:
           script: |
             console.log('=== Debug Context ===');
@@ -34,7 +34,7 @@ jobs:
 
       - name: Notify on Failure
         if: ${{ github.event.workflow_run.conclusion == 'failure' }}
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         with:
           script: |
             // Verifica se estamos em um contexto de issue ou pull request
@@ -100,7 +100,7 @@ jobs:
 
       - name: Notify on Success
         if: ${{ github.event.workflow_run.conclusion == 'success' }}
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         with:
           script: |
             // Verifica se estamos em um contexto de issue ou pull request

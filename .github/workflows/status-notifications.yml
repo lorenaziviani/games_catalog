@@ -19,7 +19,7 @@ jobs:
 
     steps:
       - name: Update Commit Status
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         with:
           script: |
             const workflowRun = context.payload.workflow_run;
